@@ -26,13 +26,13 @@
 
 ***************************************************************************/
   
-#ifndef HEADER_C_H
-#define HEADER_C_H
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+
+#ifndef HEADER_C_H
+#define HEADER_C_H
 
 #include "elements.h"
 
@@ -43,13 +43,6 @@ struct Location_S
 };
 
 typedef struct Location_S Location;
-
-/* location functions */
-void setCoord(Location *loc, const double ix, const double iy, const double iz);
-char* getElementSymbol(unsigned elem);
-void setElement(Location *loc, const AtomicSymbol ielem);
-
-#include "Location.h"
 
 /* defines pi for future use */
 static const double PI = 3.1415926535;
@@ -82,7 +75,7 @@ int makeStructure(double orig_lattice[3], int supercell[2][2],\
 
 double getLatticeVectorAngle(int a, int b);
 void printHelp();
-double dtor(double deg);
-int atob(char a);
+double dtor(double deg) __attribute__ ((const));
+int atob(char a) __attribute__ ((pure));
  
 #endif

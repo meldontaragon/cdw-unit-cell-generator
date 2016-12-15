@@ -26,7 +26,8 @@
 ***********************************************************************/
 
 #include "header_c.h"
-#include "time.h"
+#include <math.h>
+#include <time.h>
 
 void makeMSite\
 (Location atomsM[], unsigned num, double orig_lattice[3],\
@@ -35,7 +36,7 @@ void makeMSite\
   double r1 = 0, r2 = 0;
   double scale = orig_lattice[0] * 0.03;
 
-  unsigned n, i;
+  unsigned n;
 
    /* fractional location of atom within supercell */
   double (*frac_loc)[3];
@@ -84,7 +85,7 @@ void makeXSite
   /* correction vector for displacement of X atoms relative to M sites */
   double correction[2][2];
 
-  unsigned n, i;
+  unsigned n;
   /* fractional location of atom within supercell */
   double (*frac_loc)[3];
   
