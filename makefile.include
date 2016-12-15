@@ -11,12 +11,16 @@ CXX=g++
 #general flags for all compilers
 #debug flags are used by default
 #use make final to use the final flags
-FLAGS_BASE=-I$(IDIR) -I$(SDIR) -std=c++98
+FLAGS_BASE=-I$(IDIR) -I$(SDIR) -std=c++98 -Wall -Wextra -Wpedantic -Werror
 OFLAG_DEBUG=-O0 -g3 -pg $(WARN_FLAG)
+#-fpack-struct=4
+OFLAG_FINAL=-O3
 WARN_FLAG=\
--Wall\
--Wextra\
--Wpedantic\
+-Wfloat-equal\
+-Wnarrowing\
+-Wc++11-compat\
+-Wunused\
+-Wunknown-pragmas\
 -Wwrite-strings\
 -Winit-self\
 -Wcast-align\
@@ -40,13 +44,23 @@ WARN_FLAG=\
 -Wshadow\
 -Wsign-promo\
 -Wstrict-null-sentinel\
--Wstrict-overflow=5\
+-Wstrict-overflow=4\
 -Wswitch-default\
 -Wundef\
 -Wno-unused\
 -Wsign-conversion\
--Werror
-OFLAG_FINAL=-O2 -Wall -Wextra -Wpedantic -Werror
+-Wsuggest-attribute=pure\
+-Wsuggest-attribute=const\
+-Wsuggest-attribute=noreturn\
+-Wsuggest-attribute=format\
+-Wmissing-format-attribute\
+-Wtype-limits\
+-Wconversion\
+-Wsign-compare\
+-Wlogical-op\
+-Wmissing-field-initializers\
+-Wno-multichar\
+-Winline
 
 #library include flags
 LDFLAGS=

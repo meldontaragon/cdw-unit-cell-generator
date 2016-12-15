@@ -174,12 +174,13 @@ int makeStructure(vector<double> & orig_lattice, vector< vector<int> > & superce
     since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
     (x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
   */
-  num = ceil(sqrt(supercell[0][0]*supercell[0][0]
-		  + supercell[0][1]*supercell[0][1]
-		  - supercell[0][0]*supercell[0][1])
-	     *sqrt(supercell[1][0]*supercell[1][0]
-		   + supercell[1][1]*supercell[1][1]
-		   - supercell[1][0]*supercell[1][1]));
+  num = static_cast<unsigned>(
+			      ceil(sqrt(supercell[0][0]*supercell[0][0]
+					+ supercell[0][1]*supercell[0][1]
+					- supercell[0][0]*supercell[0][1])
+				   *sqrt(supercell[1][0]*supercell[1][0]
+					 + supercell[1][1]*supercell[1][1]
+					 - supercell[1][0]*supercell[1][1])));
 
   /* debug statement
      cout << "a'^2: " << (supercell[0][0]*supercell[0][0] + \

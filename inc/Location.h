@@ -33,7 +33,7 @@
 
 using namespace std;
 
-class Location
+struct Location
 {
  private:
   double x, y, z;

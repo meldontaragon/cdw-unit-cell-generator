@@ -34,7 +34,7 @@ void makeMSite\
  bool monolayer)
 {
   if (!(inversion) && !(monolayer))
-    atomsM = vector<Location>(num*2.0,Location());
+    atomsM = vector<Location>(num*2,Location());
   else
     atomsM = vector<Location>(num,Location());
   vector< vector<double> > frac_loc = vector< vector<double> >(num,vector<double>(3,0.0));
@@ -48,7 +48,7 @@ void makeMSite\
   double r1 = 0, r2 = 0;
   double scale = orig_lattice[0] * 0.03;
 
-  srand(time(NULL));
+  srand(static_cast<unsigned>(time(NULL)));
   for (unsigned n = 0; n < num; n++)
     {
       //cout << "DEBUG: n=" << n << endl;
@@ -89,9 +89,9 @@ void makeXSite(vector<Location>& atomsX, unsigned num, vector<double> & orig_lat
 	       vector< vector<int> > & supercell, bool inversion, bool monolayer)
 {
   if (!(inversion) && !(monolayer))
-    atomsX = vector<Location>(num*4.0,Location());
+    atomsX = vector<Location>(num*4,Location());
   else
-    atomsX = vector<Location>(num*2.0,Location());
+    atomsX = vector<Location>(num*2,Location());
 
   //fractional location of atom within supercell
   vector< vector<double> > frac_loc = vector< vector<double> >(2*num,vector<double>(3,0.0));
