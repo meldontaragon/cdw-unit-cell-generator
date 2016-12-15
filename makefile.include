@@ -1,0 +1,71 @@
+#!/usr/bin/make
+#makefile include file
+#this file should be edited for an indivdiual system
+
+#options are cpp, c, f
+CODEBIN=cpp
+
+######################
+#     Compilers      #
+######################
+#change these to match your system settings
+CXX=g++-4.6
+CC=gcc
+FC=gfortran
+
+#general flags for all compilers
+#debug flags are used by default
+#use make final to use the final flags
+FLAGS_BASE = -I$(IDIR) -I$(SDIR) -Wall -ansi
+OFLAG_DEBUG = -O0 -Wextra -g3 -pg 
+#-Wpedantic
+OFLAG_FINAL = -O2
+
+#library include flags
+LDFLAGS = -L/usr/lib -L/usr/lib64
+
+########################################################
+# The following is defined on a project specific basis #
+########################################################
+#these definitions should NOT contain file suffix
+_BIN = tmd_sc_generator
+
+#all future definitions SHOULD include file suffix
+#header files and object files
+_DEPS = elements.h Location.h header.h
+_CLASS = 
+
+#object (.o) files to be built
+_CXXOBJ = tmd_functions.o
+_COBJ =
+_FOBJ =
+
+#latex src files
+_TSRC = 
+
+#specific flags
+#typically there isn't much here
+#these are used for debugging builds and final builds
+########################
+#       C++ Flags      #
+########################
+CXXFLAGS_BASE = #-std=c++0x
+CXXFLAGS_DEBUG = $(CXXFLAGS_BASE)
+CXXFLAGS_FINAL = $(CXXFLAGS_BASE)
+
+########################
+#        C Flags       #
+########################
+C_FLAGS_BASE =
+CFLAGS_DEBUG = $(CFLAGS_BASE)
+CFLAGS_FINAL = $(CFLAGS_BASE)
+
+########################
+#    Fortran Flags     #
+########################
+FFLAGS_BASE =
+FFLAGS_DEBUG = $(FFLAGS_BASE)
+FFLAGS_FINAL = $(FFLAGS_BASE)
+
+#change to the local of desired installation (default is /usr/local/bin)
+INSTALLDIR:=/usr/local/bin
