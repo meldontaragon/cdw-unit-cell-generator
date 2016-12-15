@@ -25,14 +25,15 @@
    throughout this code.
 
 ***************************************************************************/
+
+#ifndef HEADER_C_H
+#define HEADER_C_H
   
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-
-#ifndef HEADER_C_H
-#define HEADER_C_H
+#include <time.h>
 
 #include "elements.h"
 
@@ -57,15 +58,15 @@ void makeMSite(Location atomsM[], unsigned num, double orig_lattice[3],\
 void makeXSite(Location atomsX[], unsigned num, double orig_lattice[3],\
 	       int supercell[2][2], int inversion, unsigned layers);
 
-
 /* output */
 void printVASP(Location locTa[], Location locS[], unsigned n,\
 	       double lattice[3][3], char * name, char * elemM, char * elemX);
 
 void printXYZ(Location LocTa[], Location locS[], unsigned n);
+void printHelp();
 
 /* fractional coordinate generation */
-void generateFracCoord(double frac_loc[][3], unsigned num,	\
+void generateFracCoord(double frac_loc[][3], unsigned num,\
 		       int supercell[2][2]);
 
 /* structure generation functions */
@@ -74,7 +75,7 @@ int makeStructure(double orig_lattice[3], int supercell[2][2],\
 		  AtomicSymbol elemX, int strained, int strain_axis[3]);
 
 double getLatticeVectorAngle(int a, int b);
-void printHelp();
+
 double dtor(double deg) __attribute__ ((const));
 int atob(char a) __attribute__ ((pure));
  

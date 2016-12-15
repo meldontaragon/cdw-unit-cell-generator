@@ -68,14 +68,14 @@ CFLAGS_FINAL=$(CFLAGS_BASE)
 # The following is defined on a project specific basis #
 ########################################################
 #these definitions should NOT contain file suffix
-_BIN = tmd_sc_generator
+_BIN = generateTMDSuperCell
 
 #all future definitions SHOULD include file suffix
 #header files and object files
-_DEPS = elements.h header_c.h
+_DEPS = elements.h header.h
 
 #object (.o) files to be built
-_COBJ = tmd_arr_functions.o
+_COBJ = tmd_functions.o printing.o fractional.o atomic_sites.o structure.o
 
 #change to the local of desired installation (default is /usr/local/bin)
 INSTALLDIR:=/usr/local/bin

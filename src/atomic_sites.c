@@ -16,18 +16,18 @@
   <http://www.gnu.org/licenses/>.
 */
 /* ********************************************************************
-   tmd_arr_functions.c
+   atomic_sites.c
    code written by David Miller
    mill2723 at msu dot edu
 
-   Additional functions to generator the coordinates for TMD trilayers.
-   All of these functions use arrays as opposed to vectors.
+   Generates atomic sites for a given lattice using fractional coordinates
+   and sets them on a super lattice as defined by a set of vectors. This
+   accounts for different TMD structures (1T and 2H) as well as slightly
+   randomizing the positions of the metal if so desired.
 
 ***********************************************************************/
 
-#include "header_c.h"
-#include <math.h>
-#include <time.h>
+#include "header.h"
 
 void makeMSite\
 (Location atomsM[], unsigned num, double orig_lattice[3],\
@@ -152,152 +152,3 @@ void makeXSite
     }
   free (frac_loc);
 }/* end of makeXSite(...) */
-
-void printXYZ(Location locTa[], Location locS[], unsigned n)
-{
-  unsigned j;
-  printf("%d\n",3*n);
-  printf("c-cdw-TaS2 super cell SQRT(13)xSQRT(13)x1 (in angstroms)\n");
-  
-  for (j = 0; j < n; j++)
-    {
-      printf("Ta        %.4f        %.4f        %.4f\n",\
-	     locTa[j].x, locTa[j].y,locTa[j].z);
-      printf("S        %.4f        %.4f        %.4f\n",\
-	     locS[j].x, locS[j].y,locS[j].z);
-      printf("S        %.4f        %.4f        %.4f\n",\
-	     locS[j+n].x, locS[j+n].y,locS[j+n].z);
-    }
-}
-
-void printVASP\
-(Location locTa[], Location locS[], unsigned n,\
- double lattice[3][3], char* name, char* elemM, char* elemX)
-{
-  unsigned i;
-  printf("%s\n",name);
-  printf("%.1f\n",1.0);
-
-  for (i = 0; i < 3; i++)
-    printf("   %.9f                %.9f                %.9f\n",\
-	   lattice[i][0], lattice[i][1], lattice[i][2]);
-
-  printf("     %s         %s\n",elemM,elemX);
-  printf("      %d         %d\n",n,2*n);
-  printf("Cartesian\n");
-  
-  for (i = 0; i < n; i++) printf("        %.9f                %.9f                %.9f\n",\
-				 locTa[i].x,locTa[i].y,locTa[i].z);
-  
-  for (i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",\
-				   locS[i].x,locS[i].y,locS[i].x);
-}
-
-double dtor(double deg)
-{
-  return deg*PI/180.0;
-}
-
-double getLatticeVectorAngle(int n, int m)
-{
-  /* angle = arccos(a*b)/|a|*|b| */
-  return acos((n - 0.5*m)/(sqrt(n*n + m*m - n*m*1.0))); 
-}
-
-void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
-{
-  unsigned xmax, ymax, count, ii, jj, kk;
-  double min_angle;
-  
-  xmax = (unsigned)(abs(supercell[0][0]) + abs(supercell[1][0]));
-  ymax = (unsigned)(abs(supercell[0][1]) + abs(supercell[1][1]));
-
-  count = 0;
-  min_angle = getLatticeVectorAngle(supercell[0][0], supercell[0][1]);
-
-  for (ii = 0; ii < xmax; ii++)
-    {
-      for (jj = 0; jj < ymax; jj++)
-	{
-	  if (count >= num) { break; }	  
-	  
-	  if ( (ii == 0) && (jj == 0) )
-	    {
-	      for (kk = 0; kk < 3; kk++)
-		{
-		  frac_loc[0][kk] = 0;
-		}
-	      count++;
-	    }
-	  else
-	    {
-	      if( ( getLatticeVectorAngle((int)(ii),(int)(jj)) - min_angle ) > -EPS )
-		{
-		  frac_loc[count][0] = ii; 
-		  frac_loc[count][1] = jj; 
-		  frac_loc[count][2] = 0;
-  		  count++;
-		}
-	    }	  
-	}
-    }
-  if (count < num)
-    {
-      printf("Not enough coordinates made...\n");
-      return;
-    }
-}
-
-void printHelp()
-{
-  printf("TMD CDW Unit Cell Generator");
-  printf("\n");
-  printf("Code written by David Miller ");
-  printf("(mill2723 at msu dot edu)");
-  printf("\n");
-  printf("This code is licensed under the GNU LGPL License");
-  printf("\n");
-  printf("For details see <http://www.gnu.org/licenses/>");
-  printf("\n");
-  printf("There is NO warranty; not even for MERCHANTABILITY or ");
-  printf("FITNESS FOR A PARTICULAR PURPOSE.");
-  printf("\n");
-  printf("\n");;
-  printf("Used to generate various sized unit cells for\n");
-  printf("1T and 2H trilayers of transition metal \n");
-  printf("dichalcogenides (TMD) with the MX2 structure.");
-  printf("\n");
-  printf("\n");
-  printf("\n");;
-  printf("All options below must be specified in the following order:");
-  printf("\n");;
-  printf("\t(1)  Lattice parameter a");
-  printf("\n");;
-  printf("\t(2)  Lattice parameter c");
-  printf("\n");;
-  printf("\t(3)  Super cell length a\'");
-  printf("\n");;
-  printf("\t(4)  Super cell length a\'\'");
-  printf("\n");;
-  printf("\t(5)  Super cell length b\'");
-  printf("\n");;
-  printf("\t(6)  Super cell length b\'\'");
-  printf("\n");;
-  printf("\t(7)  Monolayer (T) or Bulk (F)");
-  printf("\n");
-  printf("\t(8)  1T (T) or 2H (F)");
-  printf("\n");
-  printf("\t(9)  Randomize coordinates (T/F)");
-  printf("\n");
-  printf("\t(10) Element M (use atomic number)");
-  printf("\n");
-  printf("\t(11) Element X (use atomic number)");
-  printf("\n");  
-}
-
-int atob(char a)
-{
-  if ( (a == 't') || (a == 'T') ) return 1;
-  else if ( (a == 'f') || (a == 'F') ) return 0;
-  else exit(-1);
-}
