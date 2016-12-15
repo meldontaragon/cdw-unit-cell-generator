@@ -29,7 +29,7 @@
 using namespace std;
 
 void makeMSite\
-(vector<Location>& atomsM, int num, vector<double> & orig_lattice,\
+(vector<Location>& atomsM, unsigned num, vector<double> & orig_lattice,\
  vector< vector<int> > & supercell, bool randomize, bool inversion,\
  bool monolayer)
 {
@@ -49,7 +49,7 @@ void makeMSite\
   double scale = orig_lattice[0] * 0.03;
 
   srand(time(NULL));
-  for (int n = 0; n < num; n++)
+  for (unsigned n = 0; n < num; n++)
     {
       //cout << "DEBUG: n=" << n << endl;
       if (randomize)
@@ -85,7 +85,7 @@ void makeMSite\
     }
 }//end of makeMSite(...)
 
-void makeXSite(vector<Location>& atomsX, int num, vector<double> & orig_lattice,
+void makeXSite(vector<Location>& atomsX, unsigned num, vector<double> & orig_lattice,
 	       vector< vector<int> > & supercell, bool inversion, bool monolayer)
 {
   if (!(inversion) && !(monolayer))
@@ -99,7 +99,7 @@ void makeXSite(vector<Location>& atomsX, int num, vector<double> & orig_lattice,
 
   //correction vector for displacement of X atoms relative to M sites
   vector< vector<double> > correction = vector< vector<double> >(2,vector<double>(2,0.0));
-  for (int n = 0; n < num; n++)
+  for (unsigned n = 0; n < num; n++)
     {
       if (inversion)
 	{
@@ -163,12 +163,12 @@ void makeXSite(vector<Location>& atomsX, int num, vector<double> & orig_lattice,
     }
 }//end of makeXSite(...)
 
-void printXYZ(vector<Location> & locTa, vector<Location>& locS, int n)
+void printXYZ(vector<Location> & locTa, vector<Location>& locS, unsigned n)
 {
   cout << 3*n << endl;
   cout << "c-cdw-TaS2 super cell SQRT(13)xSQRT(13)x1 (in angstroms)" <<endl;
   
-  for (int j = 0; j < n; j++)
+  for (unsigned j = 0; j < n; j++)
     {
       printf("Ta        %.4f        %.4f        %.4f\n",
 	     locTa[j][0], locTa[j][1],locTa[j][2]);
@@ -179,14 +179,16 @@ void printXYZ(vector<Location> & locTa, vector<Location>& locS, int n)
     }
 }
 
-void printVASP(vector<Location> & locTa, vector<Location> & locS, int n, vector< vector<double> > & lattice, string name, string elemM = "Ta", string elemX = "S")
+void printVASP\
+(vector<Location> & locTa, vector<Location> & locS, unsigned n,		\
+ vector< vector<double> > & lattice, string name, string elemM = "Ta", string elemX = "S")
 {
   cout << name << endl;
   cout << "1.0" << endl;
 
   cout << setprecision(10);
 
-  for (int i = 0; i < 3; i++)
+  for (unsigned i = 0; i < 3; i++)
     printf("   %.9f                %.9f                %.9f\n",
 	   lattice[i][0], lattice[i][1], lattice[i][2]);
   
@@ -194,10 +196,10 @@ void printVASP(vector<Location> & locTa, vector<Location> & locS, int n, vector<
   cout << "     " << n << "         " << 2*n << endl;
   cout << "Cartesian\n";
   
-  for (int i = 0; i < n; i++) printf("        %.9f                %.9f                %.9f\n",
+  for (unsigned i = 0; i < n; i++) printf("        %.9f                %.9f                %.9f\n",
 				     locTa[i][0],locTa[i][1],locTa[i][2]);
   
-  for (int i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",
+  for (unsigned i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",
 				       locS[i][0],locS[i][1],locS[i][2]);
 }
 
@@ -211,29 +213,29 @@ double getLatticeVectorAngle(int n, int m)
   return acos((n - 0.5*m)/(sqrt(n*n + m*m - n*m*1.0))); //angle = arccos(a*b)/|a|*|b|
 }
 
-void generateFracCoord(vector< vector<double> > &frac_loc, int num, vector< vector<int> > &supercell)
+void generateFracCoord(vector< vector<double> > &frac_loc, unsigned num, vector< vector<int> > &supercell)
 {
-  int xmax = abs(supercell[0][0]) + abs(supercell[1][0]);
-  int ymax = abs(supercell[0][1]) + abs(supercell[1][1]);
+  unsigned xmax = static_cast<unsigned>(abs(supercell[0][0]) + abs(supercell[1][0]));
+  unsigned ymax = static_cast<unsigned>(abs(supercell[0][1]) + abs(supercell[1][1]));
 
-  int count = 0;
+  unsigned count = 0;
   double min_angle = getLatticeVectorAngle(supercell[0][0], supercell[0][1]);
   //cout << "DEBUG:  num=" << num  << endl;
   //cout << "DEBUG: xmax=" << xmax << endl;
   //cout << "DEBUG: ymax=" << ymax << endl;
   //cout << "DEBUG: angle=" << min_angle << endl;
   //define vectors for the a and b lattices
-  for (int ii = 0; ii < xmax; ii++)
+  for (unsigned ii = 0; ii < xmax; ii++)
     {
       //cout << "\tDEBUG: ii=" << ii << endl;
-      for (int jj = 0; jj < ymax; jj++)
+      for (unsigned jj = 0; jj < ymax; jj++)
 	{
 	  //cout << "\t\tDEBUG: jj=" << jj << endl;
 	  if (count >= num) { break; }	  
 	  
 	  if ( (ii == 0) && (jj == 0) )
 	    {
-	      for (int kk = 0; kk < 3; kk++)
+	      for (unsigned kk = 0; kk < 3; kk++)
 		{
 		  frac_loc[0][kk] = 0;
 		}
@@ -244,7 +246,7 @@ void generateFracCoord(vector< vector<double> > &frac_loc, int num, vector< vect
 	    {
 	      //cout << "\t\tCurrent Angle:" << getLatticeVectorAngle(ii,jj) << endl;
 	      //cout << "\t\tAngle Param: " << ( getLatticeVectorAngle(ii,jj) - min_angle ) << endl;
-	      if( ( getLatticeVectorAngle(ii,jj) - min_angle ) > -EPS )
+	      if( ( getLatticeVectorAngle(static_cast<int>(ii),static_cast<int>(jj)) - min_angle ) > -EPS )
 		{
 		  //cout << "\t\tCOORD[" << count << "]: (" << ii << ", " << jj << ")" << endl;
 		  frac_loc[count][0] = ii; ///xmax;

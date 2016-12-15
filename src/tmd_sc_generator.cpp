@@ -151,7 +151,7 @@ int makeStructure(vector<double> & orig_lattice, vector< vector<int> > & superce
   ****************************************/
 
   /* number of M atoms, number of X atoms = 2*num */
-  int num = 0; 
+  unsigned num = 0; 
   
   vector<Location> atomsM = vector<Location>(num);
   vector<Location> atomsX = vector<Location>(2*num);

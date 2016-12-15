@@ -19,18 +19,18 @@ Try the following:
 
 Other options:
 + make dir
-  - run this or manually make the necessary directories (./bin,
-  ./obj)
+  - run this or manually make the necessary directories (`./bin`
+  and `./obj`)
 + make final
-  - final binary files will be in ./bin
+  - final binary files will be in `./bin`
 + make link
-  - will create symbolic links in INSTALLDIR for the binaries
+  - will create symbolic links in INSTALLDIR for the binary files
 + make all
   - will make binary files using the debug optimization options
   (for distributed versions there is a chance that `make all`
   runs `make final` and `make debug` runs this case)
 + make uninstall
-  - removes binaries from INSTALLDIR (whether linked or copied)
+  - removes binary files from INSTALLDIR (whether linked or copied)
 
 You may need to run any of the above as root depending on 
 local folder privileges.
@@ -80,7 +80,7 @@ angle between the super cell and the primitive cell.
 
 ### Bugs
 
-Please report bugs to me (mill2723 at msu dot edu) with the subject
+Please report bugs to me (`mill2723 at msu dot edu`) with the subject
 "TMD CDW Coordinate Generator - Bug" and a description of the relevant
 information about how to replicate the bug. Please include: the program
 being run, version information, an attached input and output file (if
@@ -97,14 +97,16 @@ This program was designed to be compiled with the GNU C++ Compiler
 work on any Linux/UNIX system that can meet these requirements but I can
 offer no guarantees. I suspect (but have not tested) that this could be
 compiled on Cygwin or any other system with a C++ compiler if one so
-desired.
+desired. If another C++ compiler is used it is very likely that the current
+compiler options will need to be changed. This program does not use
+any special libraries so it should suffice to pass the include and source
+directories (`./src` and `./inc`).
 
-Currently I have used this on Ubuntu 16.04, and CentOS 6.6 (the Michigan
-State University High Performance Computing Center)
+Currently I have used this on Ubuntu 16.04, and CentOS 6.6.
 
 Dependencies:
 
-+ GNU g++ 4.6.4 
++ GNU g++ 4.4.7
 + GNU Make 3.81 (again, this is what I have run it with but I suspect
 it would work with an earlier version)
 + GNU bash 4.1.2 (same as above)
@@ -116,9 +118,9 @@ better portability.
 
 Also, the code was written on an x64 system but there shouldn't be
 many dependencies if any. If you do compile and run this code 
-(completing the tests properly) on a widely different system than 
-what has been described (or perhaps just a very popular system) 
-please let me know so I can add it to this document.
+on a widely different system (or perhaps just a very popular system)
+than what has been described please let me know so I can add it to
+this document.
 
 To install:
 

@@ -49,21 +49,21 @@ const double PI = 4*atan(1.0);
 /* defines a minimum value for double comparision */
 const double EPS = 10E-5;
 
-void makeMSite(vector<Location>& atomsM, int num, vector<double> & orig_lattice,\
+void makeMSite(vector<Location>& atomsM, unsigned num, vector<double> & orig_lattice,\
 	       vector< vector<int> > & supercell, bool randomize, bool inversion, bool monolayer);
-void makeXSite(vector<Location>& atomsX, int num, vector<double> & orig_lattice,\
+void makeXSite(vector<Location>& atomsX, unsigned num, vector<double> & orig_lattice,\
 	       vector< vector<int> > & supercell, bool inversion, bool monolayer);
 
 double dtor(double deg);
 
-void printVASP(vector<Location>& locTa, vector<Location> & locS, int n,\
+void printVASP(vector<Location>& locTa, vector<Location> & locS, unsigned n,\
 	       vector< vector<double> > & lattice, string name);
-void printVASP(vector<Location> & locTa, vector<Location> & locS, int n,\
+void printVASP(vector<Location> & locTa, vector<Location> & locS, unsigned n,\
 	       vector< vector<double> > & lattice, string name, string elemM, string elemX);
 
-void printXYZ(vector<Location>& LocTa, vector<Location>& locS, int n);
+void printXYZ(vector<Location>& LocTa, vector<Location>& locS, unsigned n);
 double getLatticeVectorAngle(int a, int b);
-void generateFracCoord(vector< vector<double> > &frac_loc, int num,\
+void generateFracCoord(vector< vector<double> > &frac_loc, unsigned num,\
 		       vector< vector<int> > &supercell);
 
 int makeStructure(vector<double> & orig_lattice, vector< vector<int> > & supercell,\

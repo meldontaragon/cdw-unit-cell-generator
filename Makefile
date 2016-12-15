@@ -21,8 +21,6 @@ SDIR = src
 DIRLIST += $(ODIR) $(BDIR) $(IDIR) $(SDIR)
 
 CXXSUFFIX=.cpp
-CSUFFIX=.c
-FSUFFIX=.f90
 
 BINC=$(CXX)
 BINSUFFIX=$(CXXSUFFIX)
@@ -31,15 +29,11 @@ BINFLAGS=$(CXXFLAGS)
 OFLAG=$(OFLAG_DEBUG)
 #specific flags
 CXXFLAGS=$(CXXFLAGS_DEBUG)
-CFLAGS=$(CFLAGS_DEBUG)
-FFLAGS=$(FFLAGS_DEBUG)
 
 #working directory
 MAINDIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 _OBJ = $(patsubst %.o,%$(CXXSUFFIX).o,$(_CXXOBJ))
-_OBJ += $(patsubst %.o,%$(CSUFFIX).o,$(_COBJ))
-_OBJ += $(patsubst %.o,%$(FSUFFIX).o,$(_FOBJ))
 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
@@ -52,22 +46,13 @@ BIN = $(patsubst %,$(BDIR)/%,$(_BIN))
 ##########################################################################
 
 .PRECIOUS: $(ODIR)/%$(CXXSUFFIX).o\
-           $(ODIR)/%$(CSUFFIX).o\
-           $(ODIR)/%$(FSUFFIX).o\
 
 .PHONY: all
 all: $(BIN)
 
-
 #prog
 $(ODIR)/%$(CXXSUFFIX).o: $(SDIR)/%$(CXXSUFFIX) $(DEPS) $(CLASS)
 	$(CXX) -c -o $@ $< $(FLAGS_BASE) $(OFLAG) $(LDFLAGS) $(CXXFLAGS)
-
-$(ODIR)/%$(CSUFFIX).o: $(SDIR)/%$(CSUFFIX) $(DEPS)
-	$(CC) -c -o $@ $< $(FLAGS_BASE) $(OFLAG) $(LDFLAGS) $(CFLAGS)
-
-$(ODIR)/%$(FSUFFIX).o: $(SDIR)/%$(F90SUFFIX) $(DEPS)
-	$(FC) -c -o $@ $< $(FLAGS_BASE) $(OFLAG) $(LDFLAGS) $(FFLAGS)
 
 $(BDIR)/%: $(OBJ) $(ODIR)/%$(BINSUFFIX).o
 	$(BINC) $^ $(FLAGS_BASE) $(OFLAG) $(LDFLAGS) $(BINFLAGS) -o $@
