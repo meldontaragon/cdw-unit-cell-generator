@@ -1,6 +1,6 @@
 # CDW Unit Cell Generator
 
-Code written by David C. Miller (mill2723 at msu dot edu)
+Code written by David C. Miller (`mill2723 at msu dot edu`)
 
 Michigan State University
 
@@ -14,7 +14,7 @@ Try the following:
   - this is defined in makefile.include or can be passed
     through make
 + make install
-  - this will run 'make reset', 'make all', and then
+  - this will run `make reset`, `make all`, and then
   install the binary files in the INSTALLDIR
 
 Other options:
@@ -27,8 +27,8 @@ Other options:
   - will create symbolic links in INSTALLDIR for the binaries
 + make all
   - will make binary files using the debug optimization options
-  (for distributed versions there is a chance that 'make all'
-  runs 'make final' and 'make debug' runs this case)
+  (for distributed versions there is a chance that `make all`
+  runs `make final` and `make debug` runs this case)
 + make uninstall
   - removes binaries from INSTALLDIR (whether linked or copied)
 
@@ -59,17 +59,17 @@ in the help for the program (just call the binary without any arguments).
 They are also given below:
 
 All options below must be specified in the following order:
-	1.  Lattice parameter a (in Angstroms)
-	2.  Lattice parameter c (in Angstroms)
-	3.  Super cell length a'
-	4.  Super cell length a''
-	5.  Super cell length b'
-	6.  Super cell length b''
-	7.  Monolayer (T) or Bulk (F)
-	8.  1T (T) or 2H (F)
-	9.  Randomize coordinates (T/F)
-	10. Element M (use atomic number)
-	11. Element X (use atomic number)
+    	    1.  Lattice parameter a (in Angstroms)
+	    2.  Lattice parameter c (in Angstroms)
+	    3.  Super cell length a'
+	    4.  Super cell length a''
+	    5.  Super cell length b'
+	    6.  Super cell length b''
+	    7.  Monolayer (T) or Bulk (F)
+	    8.  1T (T) or 2H (F)
+	    9.  Randomize coordinates (T/F)
+	    10. Element M (use atomic number)
+	    11. Element X (use atomic number)
 
 The a', a'', b', and b'' parameters are the two-vectors that specify the
 super-cell size. These describe how the super-cell is constructed in terms
@@ -107,12 +107,12 @@ State University High Performance Computing Center)
 Dependencies:
 
 + GNU g++ 4.6.4 
-+ GNU Make 3.81 (again, this is what I've run it with but I suspect
++ GNU Make 3.81 (again, this is what I have run it with but I suspect
 it would work with an earlier version)
-+GNU bash 4.1.2 (same as above)
++ GNU bash 4.1.2 (same as above)
 
 Also, this does compile with the C++98 ISO standards. This includes
-using the g++ '-ansi' option. If you wish to compile without this
+using the g++ `-ansi` option. If you wish to compile without this
 dependency there should be no problems. This is mostly to ensure
 better portability.
 
@@ -131,24 +131,24 @@ To install:
 	    program without using the default settings on a system
 	    that it has been tested on.
 
-	(b) Run 'make'
+	(b) Run `make`
 
-	(c) Assuming everything went smoothly run 'make install'
+	(c) Assuming everything went smoothly run `make install`
 	    (you may need to run this as root or use sudo depen-
 	    ding on the installation directory). I was also ver-
 	    ify that there is nothing in the install directory
 	    with an identical name to one of the binaries being
 	    added. The makefile *will* overwrite it.
 
-	 -  To uninstall simply run 'make uninstall'
+	 -  To uninstall simply run `make uninstall`
 	 -  The install script only makes a link from the binary
 	    directory to the bin/ directory for the local compi-
 	    lation. Thus, if you recompile, there is no need to
 	    reinstall. If you would rather the binary files are
-	    copied, use 'make final'
+	    copied, use `make final`
 
-	Other: 'make clean' will delete any extraneous files.
-	       'make reset' will delete the binary files.
+	Other: `make clean` will delete any extraneous files.
+	       `make reset` will delete the binary files.
 
 6. Git repository
 
@@ -159,7 +159,7 @@ https://github.com/david-c-miller/cdw-unit-cell-generator.git
 
 I wrote this to be a useful program for computational work 
 done with VASP. There are other tools out there as well and
-I can't promise compatability with them or that my code will
+I cannot promise compatability with them or that my code will
 produce identical results. Please verify the results and 
 output on your own.
 
