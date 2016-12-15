@@ -49,26 +49,35 @@ const double PI = 4*atan(1.0);
 /* defines a minimum value for double comparision */
 const double EPS = 10E-5;
 
-void makeMSite(vector<Location>& atomsM, unsigned num, vector<double> & orig_lattice,\
+/* need to add __attribute__ ((deprecated)) to applicable functions */
+
+/* make sites */
+void makeMSite(vector<Location>& atomsM, unsigned num, vector<double> & orig_lattice, \
 	       vector< vector<int> > & supercell, bool randomize, bool inversion, bool monolayer);
 void makeXSite(vector<Location>& atomsX, unsigned num, vector<double> & orig_lattice,\
 	       vector< vector<int> > & supercell, bool inversion, bool monolayer);
 
-double dtor(double deg);
-
+/* output */
 void printVASP(vector<Location>& locTa, vector<Location> & locS, unsigned n,\
 	       vector< vector<double> > & lattice, string name);
 void printVASP(vector<Location> & locTa, vector<Location> & locS, unsigned n,\
 	       vector< vector<double> > & lattice, string name, string elemM, string elemX);
 
 void printXYZ(vector<Location>& LocTa, vector<Location>& locS, unsigned n);
-double getLatticeVectorAngle(int a, int b);
+
+/* fractional coordinate generation */
 void generateFracCoord(vector< vector<double> > &frac_loc, unsigned num,\
 		       vector< vector<int> > &supercell);
+
+/* structure generation functions */
 
 int makeStructure(vector<double> & orig_lattice, vector< vector<int> > & supercell,\
 		  bool inversion, bool randomize, bool monolayer, Elements::AtomicSymbol elemM,\
 		  Elements::AtomicSymbol elemX);
-void printHelp();
 
+double getLatticeVectorAngle(int a, int b);
+void printHelp();
+double dtor(double deg);
+bool atob(char a);
+ 
 #endif

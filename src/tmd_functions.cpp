@@ -311,3 +311,10 @@ void printHelp()
   cout << "\t(11) Element X (use atomic number)"
        << endl;  
 }
+
+bool atob(char a)
+{
+  if ( (a == 't') || (a == 'T') ) return true;
+  else if ( (a == 'f') || (a == 'F') ) return false;
+  else exit(-1);
+}

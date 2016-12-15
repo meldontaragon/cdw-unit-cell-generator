@@ -6,19 +6,18 @@
 #     Compilers      #
 ######################
 #change these to match your system settings
-CXX=g++
+CC=gcc
 
 #general flags for all compilers
 #debug flags are used by default
 #use make final to use the final flags
-FLAGS_BASE=-I$(IDIR) -I$(SDIR) -std=c++98 -Wall -Wextra -Wpedantic -Werror
+FLAGS_BASE=-I$(IDIR) -I$(SDIR) -ansi -Wall -Wextra -Wpedantic -Werror
 OFLAG_DEBUG=-O0 -g3 -pg $(WARN_FLAG)
 #-fpack-struct=4
 OFLAG_FINAL=-O3
 WARN_FLAG=\
 -Wfloat-equal\
 -Wnarrowing\
--Wc++11-compat\
 -Wunused\
 -Wunknown-pragmas\
 -Wwrite-strings\
@@ -33,17 +32,11 @@ WARN_FLAG=\
 -Wuninitialized\
 -Wcast-align\
 -Wcast-qual\
--Wctor-dtor-privacy\
 -Wdisabled-optimization\
 -Wformat=2\
 -Wlogical-op\
--Wnoexcept\
--Wold-style-cast\
--Woverloaded-virtual\
 -Wredundant-decls\
 -Wshadow\
--Wsign-promo\
--Wstrict-null-sentinel\
 -Wstrict-overflow=4\
 -Wswitch-default\
 -Wundef\
@@ -62,6 +55,15 @@ WARN_FLAG=\
 -Wno-multichar\
 -Winline
 
+CXX_WARN_FLAG=\
+-Wc++11-compat\
+-Wctor-dtor-privacy\
+-Wnoexcept\
+-Wold-style-cast\
+-Woverloaded-virtual\
+-Wstrict-null-sentinel\
+-Wsign-promo\
+
 #library include flags
 LDFLAGS=
 
@@ -73,10 +75,10 @@ _BIN = tmd_sc_generator
 
 #all future definitions SHOULD include file suffix
 #header files and object files
-_DEPS = elements.h Location.h header.h
+_DEPS = elements.h Location.h header_c.h
 
 #object (.o) files to be built
-_CXXOBJ = tmd_functions.o
+_COBJ = tmd_arr_functions.o
 
 #change to the local of desired installation (default is /usr/local/bin)
 INSTALLDIR:=/usr/local/bin
