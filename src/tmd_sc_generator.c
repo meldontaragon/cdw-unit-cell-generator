@@ -16,7 +16,7 @@
   <http://www.gnu.org/licenses/>.
 */
 /* ******************************************************************
-   tmd_sc_generator.cpp
+   tmd_sc_generator.c
    code written by David Miller
    mill2723 at msu dot edu
 
@@ -29,8 +29,6 @@
 #endif
 
 #include "header_c.h"
-
-using namespace std;
 
 int main(int argc, char* argv[])
 {
@@ -55,10 +53,9 @@ int main(int argc, char* argv[])
   */
   /* (1-2) */
   double orig_lattice[3];
-  //vector<double> orig_lattice(3,0.0);
+
   /* (3-6) */
   int supercell[2][2];
-  //vector< vector<int> > supercell(2,vector<int>(2,0));
 
   /* (7) */
   /* generates bulk if 0, monolayer if 1, and nothing else is implemented */
@@ -66,23 +63,23 @@ int main(int argc, char* argv[])
   
   /* (8) */
   /* 1T has inversion symmetry, 1H has only reflection through xy plane */
-  bool inversion;
+  int inversion;
 
   /* (9) */
   /* Choice of whether to randomize the coordinates for CDW searches */
-  bool randomize;
+  int randomize;
 
   /* (10-11) */
-  Elements::AtomicSymbol elemM = Elements::Ta, elemX = Elements::S;
+  AtomicSymbol elemM = Ta, elemX = S;
 
   /* (12) */
-  bool strained;
+  int strained;
 
   /* (13-15) */
-  bool strain_axis[3];
+  int strain_axis[3];
   if (argc <= 11)
     {
-      cerr << "Not the correct number of parameters" << endl;
+      printf("Not the correct number of parameters\n");
       printHelp();
       return -1;
     }  
@@ -98,14 +95,14 @@ int main(int argc, char* argv[])
       supercell[1][0] = atoi(argv[5]);
       supercell[1][1] = atoi(argv[6]);
 
-      layers = static_cast<unsigned>(atoi(argv[7]));
+      layers = (unsigned) (atoi(argv[7]));
 
       inversion = atob(argv[8][0]);
       randomize = atob(argv[9][0]);
 
-      elemM = Elements::AtomicSymbol(atoi(argv[10])-1);
-      elemX = Elements::AtomicSymbol(atoi(argv[11])-1);
-    }
+      elemM = atoi(argv[10])-1;
+      elemX = atoi(argv[11])-1;
+	}
   if (argc > 15)
     {
       strained = atob(argv[12][0]);
@@ -116,12 +113,13 @@ int main(int argc, char* argv[])
    
   makeStructure(orig_lattice, supercell, inversion, randomize, layers,\
 		elemM, elemX, strained, strain_axis);
+  return 1;
 }
 
 int makeStructure
-(double orig_lattice[3], int supercell[2][2], bool inversion, bool randomize,\
- unsigned layers, Elements::AtomicSymbol elemM, Elements::AtomicSymbol elemX,\
- bool strained, bool strain_axis[3])
+(double orig_lattice[3], int supercell[2][2], int inversion, int randomize,\
+ unsigned layers, AtomicSymbol elemM, AtomicSymbol elemX,\
+ int strained, int strain_axis[3])
 {
   /* ******************************************
      NEEDED INFORMATION AND FORMAT
@@ -146,16 +144,14 @@ int makeStructure
   unsigned num = 0;
   Location *atomsM, *atomsX;
 
-  double lattice[3][3] = { 0 };
+  double lattice[3][3];
   double angle[3];
 
-  char name[100], sym_type[20], inv_type[20], s_elM[5], s_elX[5], layer_type[40];
+  char name[100], sym_type[20], inv_type[20], s_elM[5], s_elX[5], layer_type[40], buffer[200];
 
   angle[0] = 90.;
   angle[1] = angle[0];
   angle[2] = 120.;
-
-  char buffer[200];
 
   /*
     num = sqrt(a' * a') * sqrt(b' * b') / sqrt(a*a)
@@ -168,86 +164,84 @@ int makeStructure
     since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
     (x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
   */
-  num = static_cast<unsigned>(\
-			      ceil(sqrt(supercell[0][0]*supercell[0][0]\
-					+ supercell[0][1]*supercell[0][1]\
-					- supercell[0][0]*supercell[0][1])\
-				   *sqrt(supercell[1][0]*supercell[1][0]\
-					 + supercell[1][1]*supercell[1][1]\
-					 - supercell[1][0]*supercell[1][1])));
+  num = (unsigned) ceil(sqrt(supercell[0][0]*supercell[0][0]	\
+			     + supercell[0][1]*supercell[0][1]		\
+			     - supercell[0][0]*supercell[0][1])		\
+			*sqrt(supercell[1][0]*supercell[1][0]		\
+			      + supercell[1][1]*supercell[1][1]		\
+			      - supercell[1][0]*supercell[1][1]));
 
-  /* if 2H is used for a bilayer or bulk system then num is effectively doubled */
-  if (!(inversion) && !(layers == 1))
-    {
-      atomsM = new Location[num*2]();
-      atomsX = new Location[num*4]();      
-    }
-  else
-    {
-      atomsM = new Location[num]();
-      atomsX = new Location[num*2]();      
-    }
+/* if 2H is used for a bilayer or bulk system then num is effectively doubled */
+if (!(inversion) && !(layers == 1))
+  {
+    atomsM = malloc(sizeof(Location)*num*2);
+    atomsX = malloc(sizeof(Location)*num*4);
+  }
+ else
+   {
+     atomsM = malloc(sizeof(Location)*num);
+     atomsX = malloc(sizeof(Location)*num*2);
+   }
 
-  /* make the M and X sites */
-  makeMSite(atomsM, num, orig_lattice, supercell, randomize, inversion, layers);
+/* make the M and X sites */
+makeMSite(atomsM, num, orig_lattice, supercell, randomize, inversion, layers);
 
-  makeXSite(atomsX, num, orig_lattice, supercell, inversion, layers);
+makeXSite(atomsX, num, orig_lattice, supercell, inversion, layers);
 
-  /* get the new lattice parameters */
-  lattice[0][0] = supercell[0][0]*orig_lattice[0]\
-    - 0.5*supercell[0][1]*orig_lattice[0];
-  lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
+/* get the new lattice parameters */
+lattice[0][0] = supercell[0][0]*orig_lattice[0]\
+  - 0.5*supercell[0][1]*orig_lattice[0];
+lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
 
-  lattice[1][0] = supercell[1][0]*orig_lattice[0]\
-    - 0.5*supercell[1][1]*orig_lattice[0];
-  lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
+lattice[1][0] = supercell[1][0]*orig_lattice[0]\
+  - 0.5*supercell[1][1]*orig_lattice[0];
+lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
 
-  if (layers == 1)
-    {
-      lattice[2][2] = MONOLAYER_C_LAT;
-    }
-  else if (layers == 0)
-    {
-      if (inversion)
-	{
-	  lattice[2][2] = orig_lattice[2];
-	}
-      else
-	{
-	  lattice[2][2] = orig_lattice[2];
-	  num *= 2;
-	}
-    }
-  else
-    {
-      exit(-1);
-    }
+if (layers == 1)
+  {
+    lattice[2][2] = MONOLAYER_C_LAT;
+  }
+ else if (layers == 0)
+   {
+     if (inversion)
+       {
+	 lattice[2][2] = orig_lattice[2];
+       }
+     else
+       {
+	 lattice[2][2] = orig_lattice[2];
+	 num *= 2;
+       }
+   }
+ else
+   {
+     exit(-1);
+   }
     
-  if (randomize) sym_type = "Randomized";
-  else sym_type = "High Symmetry";
+ if (randomize) strcpy(sym_type,"Randomized");
+ else strcpy(sym_type, "High Symmetry");
 
-  if (inversion) inv_type = "1T";
-  else inv_type = "2H";
+ if (inversion) strcpy(inv_type, "1T");
+ else strcpy(inv_type, "2H");
 
-  s_elM = Elements::Symbol[elemM];
-  s_elX = Elements::Symbol[elemX];
+ strcpy(s_elM, Symbol[elemM]);
+ strcpy(s_elX, Symbol[elemX]);
 
-  if (layers == 1) layer_type = static_cast<char *>("monolayer");
-  else if (layers == 2) layer_type = "bilayer";
-  else if (layers == 0) layer_type = "bulk";
-  else layer_type = "unknown";
+ if (layers == 1) strcpy(layer_type,"monolayer");
+ else if (layers == 2) strcpy(layer_type,"bilayer");
+ else if (layers == 0) strcpy(layer_type, "bulk");
+ else strcpy(layer_type,"unknown");
 
-  sprintf(buffer,"%s-%s%s2-%s %s (%d,%d)x(%d,%d)", inv_type, s_elM, s_elX, layer_type,\
-	  sym_type, supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
-  name = string(buffer);
-  printVASP(atomsM, atomsX, num, lattice, name, s_elM, s_elX);
+ sprintf(buffer,"%s-%s%s2-%s %s (%d,%d)x(%d,%d)", inv_type, s_elM, s_elX, layer_type, \
+	 sym_type, supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
+ strcpy(name, buffer);
+ printVASP(atomsM, atomsX, num, lattice, name, s_elM, s_elX);
 
-
-  /* clean up memory */
-  delete atomsM;
-  delete atomsX;
+ /* clean up memory */
+ free (atomsM);
+ free (atomsX);
   
-  return 1;
-} //int makeStructure(arrays...)
+ return 1;
+} /* int makeStructure(arrays...) */
 
 

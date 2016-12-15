@@ -17,7 +17,7 @@
 */
 
 /* ************************************************************************
-   header.h
+   header_c.h
    code written by David Miller
    mill2723 at msu dot edu
 
@@ -26,58 +26,63 @@
 
 ***************************************************************************/
   
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef HEADER_C_H
+#define HEADER_C_H
 
-#include <fstream>
-#include <cstdlib>
-#include <cstdio>
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-#include <string>
-#include <vector>
-#include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
 
 #include "elements.h"
+
+struct Location_S
+{
+  double x, y, z;
+  AtomicSymbol elem;
+};
+
+typedef struct Location_S Location;
+
+/* location functions */
+void setCoord(Location *loc, const double ix, const double iy, const double iz);
+char* getElementSymbol(unsigned elem);
+void setElement(Location *loc, const AtomicSymbol ielem);
+
 #include "Location.h"
 
-using namespace std;
-
 /* defines pi for future use */
-const double PI = 4*atan(1.0);
+static const double PI = 3.1415926535;
 /* defines a minimum value for double comparision */
-const double EPS = 10E-5;
+static const double EPS = 10E-5;
 
 /* need to add __attribute__ ((deprecated)) to applicable functions */
 
 /* make sites */
-void makeMSite(vector<Location>& atomsM, unsigned num, vector<double> & orig_lattice, \
-	       vector< vector<int> > & supercell, bool randomize, bool inversion, bool monolayer);
-void makeXSite(vector<Location>& atomsX, unsigned num, vector<double> & orig_lattice,\
-	       vector< vector<int> > & supercell, bool inversion, bool monolayer);
+void makeMSite(Location atomsM[], unsigned num, double orig_lattice[3],\
+	       int supercell[2][2], int randomize, int inversion, unsigned layers);
+void makeXSite(Location atomsX[], unsigned num, double orig_lattice[3],\
+	       int supercell[2][2], int inversion, unsigned layers);
+
 
 /* output */
-void printVASP(vector<Location>& locTa, vector<Location> & locS, unsigned n,\
-	       vector< vector<double> > & lattice, string name);
-void printVASP(vector<Location> & locTa, vector<Location> & locS, unsigned n,\
-	       vector< vector<double> > & lattice, string name, string elemM, string elemX);
+void printVASP(Location locTa[], Location locS[], unsigned n,\
+	       double lattice[3][3], char * name, char * elemM, char * elemX);
 
-void printXYZ(vector<Location>& LocTa, vector<Location>& locS, unsigned n);
+void printXYZ(Location LocTa[], Location locS[], unsigned n);
 
 /* fractional coordinate generation */
-void generateFracCoord(vector< vector<double> > &frac_loc, unsigned num,\
-		       vector< vector<int> > &supercell);
+void generateFracCoord(double frac_loc[][3], unsigned num,	\
+		       int supercell[2][2]);
 
 /* structure generation functions */
-
-int makeStructure(vector<double> & orig_lattice, vector< vector<int> > & supercell,\
-		  bool inversion, bool randomize, bool monolayer, Elements::AtomicSymbol elemM,\
-		  Elements::AtomicSymbol elemX);
+int makeStructure(double orig_lattice[3], int supercell[2][2],\
+		  int inversion, int randomize, unsigned layers, AtomicSymbol elemM,\
+		  AtomicSymbol elemX, int strained, int strain_axis[3]);
 
 double getLatticeVectorAngle(int a, int b);
 void printHelp();
 double dtor(double deg);
-bool atob(char a);
+int atob(char a);
  
 #endif

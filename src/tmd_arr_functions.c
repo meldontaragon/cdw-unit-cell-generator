@@ -16,7 +16,7 @@
   <http://www.gnu.org/licenses/>.
 */
 /* ********************************************************************
-   tmd_arr_functions.cpp
+   tmd_arr_functions.c
    code written by David Miller
    mill2723 at msu dot edu
 
