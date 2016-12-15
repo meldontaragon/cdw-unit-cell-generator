@@ -92,12 +92,12 @@ you with a fix or a patch.
 
 ### Compiling and Installing
 
-This program was designed to be compiled with the GNU C++ Compiler
-(g++) and GNU Make. It also uses some simple bash commands. It *should*
+This program was designed to be compiled with the GNU C Compiler
+(gcc) and GNU Make. It also uses some simple bash commands. It *should*
 work on any Linux/UNIX system that can meet these requirements but I can
 offer no guarantees. I suspect (but have not tested) that this could be
-compiled on Cygwin or any other system with a C++ compiler if one so
-desired. If another C++ compiler is used it is very likely that the current
+compiled on Cygwin or any other system with a C compiler if one so
+desired. If another C compiler is used it is very likely that the current
 compiler options will need to be changed. This program does not use
 any special libraries so it should suffice to pass the include and source
 directories (`./src` and `./inc`).
@@ -106,15 +106,16 @@ Currently I have used this on Ubuntu 16.04, and CentOS 6.6.
 
 Dependencies:
 
-+ GNU g++ 4.4.7
++ GNU gcc 4.4.7
 + GNU Make 3.81 (again, this is what I have run it with but I suspect
 it would work with an earlier version)
 + GNU bash 4.1.2 (same as above)
 
-Also, this does compile with the C++98 ISO standards. This includes
-using the g++ `-ansi` option. If you wish to compile without this
+Also, this does compile with the C90 ISO standards. This includes
+using the gcc `-ansi` option. If you wish to compile without this
 dependency there should be no problems. This is mostly to ensure
-better portability.
+better portability. Additionally, one may wish to remove the `WARN_FLAG`
+variable from the makefile or at least turnoff `-Werror`.
 
 Also, the code was written on an x64 system but there shouldn't be
 many dependencies if any. If you do compile and run this code 
@@ -124,31 +125,31 @@ this document.
 
 To install:
 
-	(a) Modify the makefile.include file to match your desired
-	    settings. This may include changing the compiler, flags,
-	    install directory, or programs to be compiled. Again,
-	    I can make no guareentees about the operation of the
-	    program without using the default settings on a system
-	    that it has been tested on.
+(a) Modify the makefile.include file to match your desired
+settings. This may include changing the compiler, flags,
+install directory, or programs to be compiled. Again,
+I can make no guareentees about the operation of the
+program without using the default settings on a system
+that it has been tested on.
 
-	(b) Run `make`
+(b) Run `make`
 
-	(c) Assuming everything went smoothly run `make install`
-	    (you may need to run this as root or use sudo depen-
-	    ding on the installation directory). I was also ver-
-	    ify that there is nothing in the install directory
-	    with an identical name to one of the binaries being
-	    added. The makefile *will* overwrite it.
+(c) Assuming everything went smoothly run `make install`
+(you may need to run this as root or use sudo depen-
+ding on the installation directory). I was also ver-
+ify that there is nothing in the install directory
+with an identical name to one of the binaries being
+added. The makefile *will* overwrite it.
 
-	 -  To uninstall simply run `make uninstall`
-	 -  The install script only makes a link from the binary
-	    directory to the bin/ directory for the local compi-
-	    lation. Thus, if you recompile, there is no need to
-	    reinstall. If you would rather the binary files are
-	    copied, use `make final`
+-  To uninstall simply run `make uninstall`
+-  The install script only makes a link from the binary
+directory to the bin/ directory for the local compi-
+lation. Thus, if you recompile, there is no need to
+reinstall. If you would rather the binary files are
+copied, use `make final`
 
-	Other: `make clean` will delete any extraneous files.
-	       `make reset` will delete the binary files.
+Other: `make clean` will delete any extraneous files.
+`make reset` will delete the binary files.
 
 ### Git repository
 
