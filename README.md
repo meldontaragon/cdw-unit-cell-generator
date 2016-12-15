@@ -27,7 +27,7 @@ Other options:
   - will create symbolic links in INSTALLDIR for the binaries
 + make all
   - will make binary files using the debug optimization options
-  (for distributed versions there is a chance that 'make all'
+  (for distributed versions there is a chance that make all'
   runs 'make final' and 'make debug' runs this case)
 + make uninstall
   - removes binaries from INSTALLDIR (whether linked or copied)
@@ -37,28 +37,26 @@ local folder privileges.
 
 ## Information
 
-1. Description:
-
+### Description
 This project is developed to generate a VASP coordinate file for a
 transition metal dichalcogenide (TMD) structure. Given a choice of
 metal and chalcogen atoms, the lattice parameters, and the super cell
 size in additional to information regarding the phase and layers of
 the material.
 
-2. Current Functionality
-
+### Current Functionality
 Currently the only options for layers are bulk and monolayer systems.
 In the future I hope to add functionallity to have an arbitrary number
 of layer (i.e. 0 = bulk, 1 = monolayer, 2 = bilayer, etc.).
 
-3. Use
-
+### Use
 Use of this program involves calling the binary and giving it all the
 arguments necessary for output. The order and style of inputs is given
 in the help for the program (just call the binary without any arguments).
 They are also given below:
 
 All options below must be specified in the following order:
+
 	1.  Lattice parameter a (in Angstroms)
 	2.  Lattice parameter c (in Angstroms)
 	3.  Super cell length a'
@@ -80,7 +78,7 @@ cells like the Star of David distortion in TaS2 are also possible where the
 Sqrt(13)xSqrt(13) cell is given by (4,1) x (-1,3) which results in the proper
 angle between the super cell and the primitive cell.
 
-4. Bugs
+### Bugs
 
 Please report bugs to me (mill2723 at msu dot edu) with the subject
 "TMD CDW Coordinate Generator - Bug" and a description of the relevant
@@ -92,7 +90,7 @@ you expected.
 I will try to take a look at it as soon as possible and get back to
 you with a fix or a patch.
 
-5. Compiling and Installing
+### Compiling and Installing
 
 This program was designed to be compiled with the GNU C++ Compiler
 (g++) and GNU Make. It also uses some simple bash commands. It *should*
@@ -108,8 +106,8 @@ Dependencies:
 
 + GNU g++ 4.6.4 
 + GNU Make 3.81 (again, this is what I've run it with but I suspect
-it would work with an earlier version)
-+GNU bash 4.1.2 (same as above)
+	it would work with an earlier version)
++ GNU bash 4.1.2 (same as above)
 
 Also, this does compile with the C++98 ISO standards. This includes
 using the g++ '-ansi' option. If you wish to compile without this
@@ -117,10 +115,10 @@ dependency there should be no problems. This is mostly to ensure
 better portability.
 
 Also, the code was written on an x64 system but there shouldn't be
-many dependencies if any. If you do compile and run this code (co-
-mpleting the tests properly) on a widely different system than wh-
-at has been described (or perhaps just a very popular system) ple-
-ase let me know so I can add it to this document.
+many dependencies if any. If you do compile and run this code 
+(completing the tests properly) on a widely different system than 
+what has been described (or perhaps just a very popular system) 
+please let me know so I can add it to this document.
 
 To install:
 
@@ -150,12 +148,12 @@ To install:
 	Other: 'make clean' will delete any extraneous files.
 	       'make reset' will delete the binary files.
 
-6. Git repository
+### Git repository
 
 This code is available at:
 https://github.com/david-c-miller/cdw-unit-cell-generator.git
 
-7. Disclaimer
+### Disclaimer
 
 I wrote this to be a useful program for computational work 
 done with VASP. There are other tools out there as well and
@@ -163,6 +161,6 @@ I can't promise compatability with them or that my code will
 produce identical results. Please verify the results and 
 output on your own.
 
-8. License
+### License
 
 This code is licensed under LGPLv3. See LICENSE for details.
