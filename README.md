@@ -1,37 +1,39 @@
 # CDW Unit Cell Generator
 
 Code written by David C. Miller (mill2723 at msu dot edu)
+
 Michigan State University
+
 Department of Physics and Astronomy
 
 ## Quick Install:
  
- Try the following:
-     + change INSTALLDIR (typically a folder in PATH like
-     /usr/local/bin)
-       - this is defined in makefile.include or can be passed
-       through make
-     + make install
-       - this will run 'make reset', 'make all', and then
-       install the binary files in the INSTALLDIR
+Try the following:
++ change INSTALLDIR (typically a folder in PATH like
+  /usr/local/bin)
+  - this is defined in makefile.include or can be passed
+    through make
++ make install
+  - this will run 'make reset', 'make all', and then
+  install the binary files in the INSTALLDIR
 
- Other options:
-     + make dir
-       - run this or manually make the necessary directories (./bin,
-       	 ./obj)
-     + make final
-       - final binary files will be in ./bin
-     + make link
-       - will create symbolic links in INSTALLDIR for the binaries
-     + make all
-       - will make binary files using the debug optimization options
-       (for distributed versions there is a chance that 'make all'
-       runs 'make final' and 'make debug' runs this case)
-     + make uninstall
-       - removes binaries from INSTALLDIR (whether linked or copied)
+Other options:
++ make dir
+  - run this or manually make the necessary directories (./bin,
+  ./obj)
++ make final
+  - final binary files will be in ./bin
++ make link
+  - will create symbolic links in INSTALLDIR for the binaries
++ make all
+  - will make binary files using the debug optimization options
+  (for distributed versions there is a chance that 'make all'
+  runs 'make final' and 'make debug' runs this case)
++ make uninstall
+  - removes binaries from INSTALLDIR (whether linked or copied)
 
- You may need to run any of the above as root depending on 
- local folder privileges.
+You may need to run any of the above as root depending on 
+local folder privileges.
 
 ## Information
 
@@ -104,12 +106,10 @@ State University High Performance Computing Center)
 
 Dependencies:
 
-GNU g++ 4.6.4 
-
-GNU Make 3.81 (again, this is what I've run it with but I suspect
++ GNU g++ 4.6.4 
++ GNU Make 3.81 (again, this is what I've run it with but I suspect
 it would work with an earlier version)
-
-GNU bash 4.1.2 (same as above)
++GNU bash 4.1.2 (same as above)
 
 Also, this does compile with the C++98 ISO standards. This includes
 using the g++ '-ansi' option. If you wish to compile without this
