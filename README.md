@@ -63,11 +63,18 @@ All options below must be specified in the following order:
 	4.  Super cell length a''
 	5.  Super cell length b'
 	6.  Super cell length b''
-	7.  Monolayer (T) or Bulk (F)
+	7.  Layers (Bulk = 0, Monolayer = 1)
 	8.  1T (T) or 2H (F)
 	9.  Randomize coordinates (T/F)
 	10. Element M (use atomic number)
 	11. Element X (use atomic number)
+
+The following options are optional and can be given after the options above:
+
+	12. Logical for Strain (T/F)
+	13. Strain a axis (T/F)
+	14. Strain b axis (T/F)
+	15. Strain c axis (T/F)
 
 The a', a'', b', and b'' parameters are the two-vectors that specify the
 super-cell size. These describe how the super-cell is constructed in terms
