@@ -78,4 +78,4 @@ _DEPS = elements.h header.h
 _COBJ = tmd_functions.o printing.o fractional.o atomic_sites.o structure.o
 
 #change to the local of desired installation (default is /usr/local/bin)
-INSTALLDIR:=/usr/local/bin
+INSTALLDIR:=/mnt/home/mill2723/local/bin

@@ -113,77 +113,88 @@ int makeStructure
     }
   
   for (i = strain_start; i <= strain_end; ++i)
-  {
-    if (strain_axis[0])
-      delta_x = (0.95) + i*0.05;
-    if (strain_axis[1])
-      delta_y = (0.95) + i*0.05;
-    if (strain_axis[2])
-      delta_z = (0.95) + i*0.05;
+    {
+      if (strain_axis[0])
+	delta_x = (1.0) + i*0.01;
+      if (strain_axis[1])
+	delta_y = (1.0) + i*0.01;
+      if (strain_axis[2])
+	delta_z = (1.0) + i*0.01;
 
-    orig_lattice[0] = orig_lattice[0] * delta_x;
-    orig_lattice[1] = orig_lattice[1] * delta_y;
-    orig_lattice[2] = orig_lattice[2] * delta_z;
-    /* make the M and X sites */
-    makeMSite(atomsM, num, orig_lattice, supercell, randomize, inversion, layers);
-    makeXSite(atomsX, num, orig_lattice, supercell, inversion, layers);
+      orig_lattice[0] = orig_lattice[0] * delta_x;
+      orig_lattice[1] = orig_lattice[1] * delta_y;
+      orig_lattice[2] = orig_lattice[2] * delta_z;
+      /* make the M and X sites */
+      makeMSite(atomsM, num, orig_lattice, supercell, randomize, inversion, layers);
+      makeXSite(atomsX, num, orig_lattice, supercell, inversion, layers);
 
-    /* get the new lattice parameters */
-    lattice[0][0] = supercell[0][0]*orig_lattice[0]\
-      - 0.5*supercell[0][1]*orig_lattice[0];
-    lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
+      /* get the new lattice parameters */
+      lattice[0][0] = supercell[0][0]*orig_lattice[0]\
+	- 0.5*supercell[0][1]*orig_lattice[0];
+      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
 
-    lattice[1][0] = supercell[1][0]*orig_lattice[0]\
-      - 0.5*supercell[1][1]*orig_lattice[0];
-    lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
+      lattice[1][0] = supercell[1][0]*orig_lattice[0]\
+	- 0.5*supercell[1][1]*orig_lattice[0];
+      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
 
-    if (layers == 1)
-      {
-	lattice[2][2] = MONOLAYER_C_LAT;
-      }
-    else if (layers == 0)
-      {
-	if (inversion)
-	  {
-	    lattice[2][2] = orig_lattice[2];
-	  }
-	else
-	  {
-	    lattice[2][2] = orig_lattice[2];
-	    num *= 2;
-	  }
-      }
-    else
-      {
-	exit(-1);
-      }
+      if (layers == 1)
+	{
+	  lattice[2][2] = MONOLAYER_C_LAT;
+	}
+      else if (layers == 0)
+	{
+	  if (inversion)
+	    {
+	      lattice[2][2] = orig_lattice[2];
+	    }
+	  else
+	    {
+	      lattice[2][2] = orig_lattice[2];
+	      num *= 2;
+	    }
+	}
+      else
+	{
+	  exit(-1);
+	}
+
+      if (randomize) strcpy(sym_type,"Randomized");
+      else strcpy(sym_type, "High Symmetry");
+
+      if (inversion) strcpy(inv_type, "1T");
+      else strcpy(inv_type, "2H");
+
+      strcpy(s_elM, Symbol[elemM]);
+      strcpy(s_elX, Symbol[elemX]);
+
+      if (layers == 1) strcpy(layer_type,"monolayer");
+      else if (layers == 2) strcpy(layer_type,"bilayer");
+      else if (layers == 0) strcpy(layer_type, "bulk");
+      else strcpy(layer_type,"unknown");
+
+      if (i != 0)
+	sprintf(buffer,"strain_%d--%s-%s%s2-%s %s (%d,%d)x(%d,%d)",i,inv_type, s_elM, s_elX, layer_type, \
+		sym_type, supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
+      else
+	sprintf(buffer,"%s-%s%s2-%s %s (%d,%d)x(%d,%d)", inv_type, s_elM, s_elX, layer_type, \
+		sym_type, supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
+      strcpy(name, buffer);
     
-    if (randomize) strcpy(sym_type,"Randomized");
-    else strcpy(sym_type, "High Symmetry");
+      if (i != 0)
+	sprintf(buffer,"strain_%d--%s-%s%s2-%s-%s_%d-%d_%d-%d.vasp",i,inv_type,	\
+		s_elM, s_elX, layer_type, sym_type, supercell[0][0], supercell[0][1], supercell[1][0], supercell[1][1]);
+      else
+	sprintf(buffer,"%s-%s%s2-%s-%s_%d-%d_%d-%d.vasp",inv_type, s_elM, s_elX,\
+		layer_type, sym_type, supercell[0][0], supercell[0][1], supercell[1][0], supercell[1][1]);
 
-    if (inversion) strcpy(inv_type, "1T");
-    else strcpy(inv_type, "2H");
-
-    strcpy(s_elM, Symbol[elemM]);
-    strcpy(s_elX, Symbol[elemX]);
-
-    if (layers == 1) strcpy(layer_type,"monolayer");
-    else if (layers == 2) strcpy(layer_type,"bilayer");
-    else if (layers == 0) strcpy(layer_type, "bulk");
-    else strcpy(layer_type,"unknown");
-
-    sprintf(buffer,"%s-%s%s2-%s %s (%d,%d)x(%d,%d)", inv_type, s_elM, s_elX, layer_type, \
-	    sym_type, supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
-    strcpy(name, buffer);
-    printVASP(atomsM, atomsX, num, lattice, name, s_elM, s_elX);
-  } /* end of structure generation */
-
+      print_VASP_to_file(atomsM, atomsX, num, lattice, name, s_elM, s_elX, buffer);
+    }  
+  /* clean up memory */
+  free (atomsM);
+  free (atomsX);
   
- /* clean up memory */
- free (atomsM);
- free (atomsX);
-  
- return 1;
+  return 1;
 } /* int makeStructure(arrays...) */
+
 
 

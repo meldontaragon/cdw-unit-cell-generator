@@ -61,6 +61,9 @@ void makeXSite(Location atomsX[], unsigned num, double orig_lattice[3],\
 /* output */
 void printVASP(Location locTa[], Location locS[], unsigned n,\
 	       double lattice[3][3], char * name, char * elemM, char * elemX);
+void print_VASP_to_file(Location locTa[], Location locS[], unsigned n,\
+			double lattice[3][3], char * name, char * elemM,\
+			char * elemX, char * file_name);
 
 void printXYZ(Location LocTa[], Location locS[], unsigned n);
 void printHelp();
@@ -71,8 +74,9 @@ void generateFracCoord(double frac_loc[][3], unsigned num,\
 
 /* structure generation functions */
 int makeStructure(double orig_lattice[3], int supercell[2][2],\
-		  int inversion, int randomize, unsigned layers, AtomicSymbol elemM,\
-		  AtomicSymbol elemX, int strained, int strain_axis[3]);
+		  int inversion, int randomize, unsigned layers,\
+		  AtomicSymbol elemM, AtomicSymbol elemX, int strained,\
+		  int strain_axis[3]);
 
 double getLatticeVectorAngle(int a, int b);
 
