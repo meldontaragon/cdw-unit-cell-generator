@@ -29,10 +29,11 @@ void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
   unsigned xmax = 0, ymax = 0, count = 0, ii = 0, jj = 0, kk = 0;
   double min_angle;
   
-  xmax = (unsigned)(abs(supercell[0][0]) + abs(supercell[1][0]));
-  ymax = (unsigned)(abs(supercell[0][1]) + abs(supercell[1][1]));
+  /* maximum x and y coordinates */
+  xmax = (unsigned) ( abs(supercell[0][0]) + abs(supercell[1][0]) );
+  ymax = (unsigned) ( abs(supercell[0][1]) + abs(supercell[1][1]) );
 
-  count = 0;
+  /* minimum angle of vector */
   min_angle = getLatticeVectorAngle(supercell[0][0], supercell[0][1]);
 
   for (ii = 0; ii < xmax; ++ii)
@@ -43,6 +44,7 @@ void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
 	  
 	  if ( (ii == 0) && (jj == 0) )
 	    {
+	      /* first fraction coordinates are always at (0,0,0) */
 	      for (kk = 0; kk < 3; ++kk)
 		{
 		  frac_loc[0][kk] = 0;
@@ -51,7 +53,14 @@ void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
 	    }
 	  else
 	    {
-	      if( ( getLatticeVectorAngle((int)(ii),(int)(jj)) - min_angle ) > -EPS )
+	      /*
+		checks if the angle of the new fractional location lies in the region
+		where atoms are being added
+		 
+		this is determined by a minimum angle for the vector (there is no
+		distance requirement imposed, this is managed by xmax and ymax)
+	      */
+	      if( ( getLatticeVectorAngle((int) ii,(int) jj) - min_angle ) > -EPS )
 		{
 		  frac_loc[count][0] = ii; 
 		  frac_loc[count][1] = jj; 

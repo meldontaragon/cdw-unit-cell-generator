@@ -34,7 +34,7 @@
 int makeStructure
 (double orig_lattice[3], int supercell[2][2], int inversion, int randomize,\
  unsigned layers, AtomicSymbol elemM, AtomicSymbol elemX,\
- int strained, int strain_axis[3])
+ int strained, int strain_axis[3], int strain_min_max[2])
 {
   /* ******************************************
      NEEDED INFORMATION AND FORMAT
@@ -53,6 +53,8 @@ int makeStructure
      - require length contractions
      (F) Strain and whether it is applied to
      - a given axis
+     (G) Amount of strain to put on the system
+     - with a minimum and maximum percentage
   ****************************************/
 
   /* number of M atoms, number of X atoms = 2*num */
@@ -103,8 +105,8 @@ int makeStructure
   /* actual structure generation contained here */
   if (strained)
     {
-      strain_end = 5;
-      strain_start = -5;
+      strain_end = strain_min_max[1];
+      strain_start = strain_min_max[0];
     }
   else
     {
@@ -158,8 +160,8 @@ int makeStructure
 	  exit(-1);
 	}
 
-      if (randomize) strcpy(sym_type,"Randomized");
-      else strcpy(sym_type, "High Symmetry");
+      if (randomize) strcpy(sym_type,"rand");
+      else strcpy(sym_type, "hsym");
 
       if (inversion) strcpy(inv_type, "1T");
       else strcpy(inv_type, "2H");

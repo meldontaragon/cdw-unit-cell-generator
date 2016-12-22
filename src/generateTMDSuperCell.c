@@ -45,6 +45,9 @@ int main(int argc, char* argv[])
     13 Strain axis a T/F
     14 Strain axis b T/F
     15 Strain axis c T/F
+	
+    16 Max Compressive Strain (%)
+    17 Max Expansive Strain (%)
   */
   /* (1-2) */
   double orig_lattice[3];
@@ -72,6 +75,10 @@ int main(int argc, char* argv[])
 
   /* (13-15) */
   int strain_axis[3] = {0, 0, 0};
+
+  /* (16-17) */
+  int strain_min_max[2] = {-5, 5};
+
   if (argc <= 11)
     {
       printf("Not the correct number of parameters\n");
@@ -105,9 +112,15 @@ int main(int argc, char* argv[])
       strain_axis[1] = atob(argv[14][0]);
       strain_axis[2] = atob(argv[15][0]);
     }
+
+  if (argc > 17)
+    {
+      strain_min_max[0] = atoi(argv[16]);
+      strain_min_max[1] = atoi(argv[17]);
+    }
    
   makeStructure(orig_lattice, supercell, inversion, randomize, layers,\
-		elemM, elemX, strained, strain_axis);
+		elemM, elemX, strained, strain_axis, strain_min_max);
   return 1;
 }
 
