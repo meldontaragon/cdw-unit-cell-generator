@@ -78,7 +78,7 @@ int makeStructure(double orig_lattice[3], int supercell[2][2],\
 		  AtomicSymbol elemM, AtomicSymbol elemX, int strained,\
 		  int strain_axis[3]);
 
-double getLatticeVectorAngle(int a, int b);
+double getLatticeVectorAngle(const int a, const int b);
 
 double dtor(double deg) __attribute__ ((const));
 int atob(char a) __attribute__ ((pure));

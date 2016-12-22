@@ -26,7 +26,7 @@
 
 void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
 {
-  unsigned xmax, ymax, count, ii, jj, kk;
+  unsigned xmax = 0, ymax = 0, count = 0, ii = 0, jj = 0, kk = 0;
   double min_angle;
   
   xmax = (unsigned)(abs(supercell[0][0]) + abs(supercell[1][0]));
@@ -35,15 +35,15 @@ void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
   count = 0;
   min_angle = getLatticeVectorAngle(supercell[0][0], supercell[0][1]);
 
-  for (ii = 0; ii < xmax; ii++)
+  for (ii = 0; ii < xmax; ++ii)
     {
-      for (jj = 0; jj < ymax; jj++)
+      for (jj = 0; jj < ymax; ++jj)
 	{
 	  if (count >= num) { break; }	  
 	  
 	  if ( (ii == 0) && (jj == 0) )
 	    {
-	      for (kk = 0; kk < 3; kk++)
+	      for (kk = 0; kk < 3; ++kk)
 		{
 		  frac_loc[0][kk] = 0;
 		}

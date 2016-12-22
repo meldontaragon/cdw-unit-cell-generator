@@ -31,7 +31,7 @@ double dtor(double deg)
   return deg*PI/180.0;
 }
 
-double getLatticeVectorAngle(int n, int m)
+double getLatticeVectorAngle(const int n, const int m)
 {
   /* angle = arccos(a*b)/|a|*|b| */
   return acos((n - 0.5*m)/(sqrt(n*n + m*m - n*m*1.0))); 
