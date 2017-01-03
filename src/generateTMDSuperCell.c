@@ -54,15 +54,15 @@ int main(int argc, char* argv[])
 
   /* (7) */
   /* generates bulk if 0, monolayer if 1, and nothing else is implemented */
-  unsigned layers;
+  unsigned layers = 0;
   
   /* (8) */
   /* 1T has inversion symmetry, 1H has only reflection through xy plane */
-  int inversion;
+  int inversion = 1;
 
   /* (9) */
   /* Choice of whether to randomize the coordinates for CDW searches */
-  int randomize;
+  int randomize = 0;
 
   /* (10-11) */
   AtomicSymbol elemM = Ta, elemX = S;
@@ -95,8 +95,8 @@ int main(int argc, char* argv[])
       inversion = atob(argv[8][0]);
       randomize = atob(argv[9][0]);
 
-      elemM = atoi(argv[10])-1;
-      elemX = atoi(argv[11])-1;
+      elemM = (AtomicSymbol) (atoi(argv[10])-1);
+      elemX = (AtomicSymbol) (atoi(argv[11])-1);
 	}
   if (argc > 15)
     {

@@ -7,17 +7,18 @@
 ######################
 #change these to match your system settings
 CC=gcc
+#CC=clang
 
 #general flags for all compilers
 #debug flags are used by default
 #use make final to use the final flags
-FLAGS_BASE=-I$(IDIR) -I$(SDIR) -ansi -Wall -Wextra -pedantic\
+FLAGS_BASE=-I$(IDIR) -I$(SDIR) -Wall -Wextra -pedantic\
 	-Werror -Wno-error=unused-parameter -Wno-error=unused-variable
+#-ansi
 OFLAG_DEBUG=-O0 -g3 -pg $(WARN_FLAG)
 #-fpack-struct=4
 OFLAG_FINAL=-O3 $(WARN_FLAG)
 WARN_FLAG=\
--Wmaybe-uninitialized\
 -Wfloat-equal\
 -Wnarrowing\
 -Wunused\
@@ -36,7 +37,6 @@ WARN_FLAG=\
 -Wcast-qual\
 -Wdisabled-optimization\
 -Wformat=2\
--Wlogical-op\
 -Wredundant-decls\
 -Wshadow\
 -Wstrict-overflow=4\
@@ -44,18 +44,22 @@ WARN_FLAG=\
 -Wundef\
 -Wno-unused\
 -Wsign-conversion\
--Wsuggest-attribute=pure\
--Wsuggest-attribute=const\
--Wsuggest-attribute=noreturn\
--Wsuggest-attribute=format\
 -Wmissing-format-attribute\
 -Wtype-limits\
 -Wconversion\
 -Wsign-compare\
--Wlogical-op\
 -Wmissing-field-initializers\
 -Wno-multichar\
--Winline
+-Winline\
+$(GCC_FLAGS)
+
+GCC_FLAGS=\
+-Wsuggest-attribute=pure\
+-Wsuggest-attribute=const\
+-Wsuggest-attribute=noreturn\
+-Wsuggest-attribute=format\
+-Wmaybe-uninitialized\
+-Wlogical-op\
 
 #library include flags
 LDFLAGS= -lm

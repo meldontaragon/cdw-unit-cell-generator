@@ -52,7 +52,7 @@ all: $(BIN)
 
 #prog
 $(ODIR)/%$(CSUFFIX).o: $(SDIR)/%$(CSUFFIX) $(DEPS) $(CLASS)
-	$(CC) -c -o $@ $< $(FLAGS_BASE) $(OFLAG) $(LDFLAGS) $(CFLAGS)
+	$(CC) -c -o $@ $< $(FLAGS_BASE) $(OFLAG) $(CFLAGS)
 
 $(BDIR)/%: $(OBJ) $(ODIR)/%$(BINSUFFIX).o
 	$(BINC) $^ $(FLAGS_BASE) $(OFLAG) $(LDFLAGS) $(BINFLAGS) -o $@
@@ -75,10 +75,10 @@ dir:
 
 #force specific flags
 .PHONY: debug final install uninstall link
-debug: reset
+debug: dir reset
 	make all CFLAGS="$(CFLAGS_DEBUG)" OFLAG="$(OFLAG_DEBUG)"
 
-final: reset
+final: dir reset
 	make all CFLAGS="$(CFLAGS_FINAL)" OFLAG="$(OFLAG_FINAL)"
 
 #install and make links in default bin directory
