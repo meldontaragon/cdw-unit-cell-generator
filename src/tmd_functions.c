@@ -15,13 +15,13 @@
   License along with TMD CDW Unit Cell Generator.  If not, see
   <http://www.gnu.org/licenses/>.
 */
+
 /* ********************************************************************
    tmd_arr_functions.c
    code written by David Miller
    mill2723 at msu dot edu
 
    Additional functions to generate the coordinates for TMD trilayers.
-
 ***********************************************************************/
 
 #include "header.h"

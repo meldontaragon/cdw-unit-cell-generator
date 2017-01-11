@@ -15,6 +15,7 @@
   License along with TMD CDW Unit Cell Generator.  If not, see
   <http://www.gnu.org/licenses/>.
 */
+
 /* ********************************************************************
    printing.c
    code written by David Miller
@@ -22,7 +23,6 @@
 
    Contains all functions for output including the VASP and xyz format
    as well as the help printed to terminal.
-
 ***********************************************************************/
 
 #include "header.h"

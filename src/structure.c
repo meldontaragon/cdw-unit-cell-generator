@@ -66,7 +66,7 @@ int makeStructure
   int strain_start, strain_end, i;
   double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
   
-  char name[100], sym_type[20], inv_type[20], s_elM[5], s_elX[5], layer_type[40], buffer[200];
+  char name[100], sym_type[20], inv_type[20], s_elM[5], s_elX[5], layer_type[40], filename[100], cdw_type[40];
 
   angle[0] = 90.;
   angle[1] = angle[0];
@@ -83,11 +83,11 @@ int makeStructure
     since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
     (x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
   */
-  num = (unsigned) ceil(sqrt(supercell[0][0]*supercell[0][0]	\
-			     + supercell[0][1]*supercell[0][1]		\
-			     - supercell[0][0]*supercell[0][1])		\
-			*sqrt(supercell[1][0]*supercell[1][0]		\
-			      + supercell[1][1]*supercell[1][1]		\
+  num = (unsigned) ceil(sqrt(supercell[0][0]*supercell[0][0] \
+			     + supercell[0][1]*supercell[0][1] \
+			     - supercell[0][0]*supercell[0][1])	\
+			*sqrt(supercell[1][0]*supercell[1][0] \
+			      + supercell[1][1]*supercell[1][1]	\
 			      - supercell[1][0]*supercell[1][1]));
 
   /* if 2H is used for a bilayer or bulk system then num is effectively doubled */
@@ -160,36 +160,65 @@ int makeStructure
 	  exit(-1);
 	}
 
-      if (randomize) strcpy(sym_type,"rand");
-      else strcpy(sym_type, "hsym");
+      if (randomize) strcpy(sym_type,"Rand");
+      else strcpy(sym_type, "HS");
 
+      /*
+	this program uses the naming convention that
+	even monolayer 2H structures use 2H as opposed
+	to 1H
+      */
       if (inversion) strcpy(inv_type, "1T");
       else strcpy(inv_type, "2H");
 
       strcpy(s_elM, Symbol[elemM]);
       strcpy(s_elX, Symbol[elemX]);
 
-      if (layers == 1) strcpy(layer_type,"monolayer");
-      else if (layers == 2) strcpy(layer_type,"bilayer");
-      else if (layers == 0) strcpy(layer_type, "bulk");
-      else strcpy(layer_type,"unknown");
+      if (layers == 1) strcpy(layer_type,"Monolayer");
+      else if (layers == 2) strcpy(layer_type,"Bilayer");
+      else if (layers == 3) strcpy(layer_type,"Trilayer");
+      else if (layers == 0) strcpy(layer_type,"Bulk");
+      else strcpy(layer_type,"Other");
 
-      if (i != 0)
-	sprintf(buffer,"strain_%d--%s-%s%s2-%s %s (%d,%d)x(%d,%d)",i,inv_type, s_elM, s_elX, layer_type, \
-		sym_type, supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
+      /*
+	the file name should match up with the standard I've started using:
+	name = $INV_TYPE-$ELM$ELM2-Monolayer/Bulk/Bilayer-HS/Rand-$CDW_TYPE.vasp
+	strain_name = Strain_PERC--$NAME
+	
+	IMPORTANT
+	Here CDW_TYPE is *not* as easily defined from the input parameters
+	i.e. (3,0),(0,3) is 3x3 while the Star of David CDW is more complex
+	taking the form (4,1),(-1,3)
+
+	My current (and poor) method is to hard code the cases I need in but
+	this explicitly requires the code to be modified for any new cases.
+	Any (a,0),(0,b) cases should work fine (since these are just axb)
+	but special cases will result in a different file naming format.	
+      */
+
+      if ( (supercell[0][1] == 0) && (supercell[1][0] == 0) )
+	sprintf(cdw_type,"%dx%d",supercell[0][0],supercell[1][1]);
+      else if ( (supercell[0][0] == 4 ) && (supercell[0][1] == 1) && (supercell[1][0] == -1) && (supercell[1][1] == 3) )
+	sprintf(cdw_type,"SoD");
       else
-	sprintf(buffer,"%s-%s%s2-%s %s (%d,%d)x(%d,%d)", inv_type, s_elM, s_elX, layer_type, \
-		sym_type, supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
-      strcpy(name, buffer);
+	sprintf(cdw_type,"(%d,%d)x(%d,%d)",supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
+	
+      if (i != 0)
+	sprintf(name,"strain_%d--%s-%s%s2-%s %s %s",i,inv_type, s_elM, s_elX, layer_type, \
+		sym_type, cdw_type);
+      else
+	sprintf(name,"%s-%s%s2-%s %s %s", inv_type, s_elM, s_elX, layer_type, \
+		sym_type, cdw_type);
     
       if (i != 0)
-	sprintf(buffer,"strain_%d--%s-%s%s2-%s-%s_%d-%d_%d-%d.vasp",i,inv_type,	\
-		s_elM, s_elX, layer_type, sym_type, supercell[0][0], supercell[0][1], supercell[1][0], supercell[1][1]);
+	sprintf(filename,"Strain_%d--%s-%s%s2-%s-%s_%s.vasp",i,inv_type,	\
+		s_elM, s_elX, layer_type, sym_type, cdw_type);
       else
-	sprintf(buffer,"%s-%s%s2-%s-%s_%d-%d_%d-%d.vasp",inv_type, s_elM, s_elX,\
-		layer_type, sym_type, supercell[0][0], supercell[0][1], supercell[1][0], supercell[1][1]);
+	sprintf(filename,"%s-%s%s2-%s-%s_%s.vasp",inv_type, s_elM, s_elX,\
+		layer_type, sym_type, cdw_type);
 
-      print_VASP_to_file(atomsM, atomsX, num, lattice, name, s_elM, s_elX, buffer);
+      /* print to file filename */
+      print_VASP_to_file(atomsM, atomsX, num, lattice, name, s_elM, s_elX, filename);
     }  
   /* clean up memory */
   free (atomsM);
