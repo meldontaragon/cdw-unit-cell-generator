@@ -17,7 +17,7 @@ FLAGS_BASE=-I$(IDIR) -I$(SDIR) -Wall -Wextra -pedantic\
 #-ansi
 OFLAG_DEBUG=-O0 -g3 -pg $(WARN_FLAG)
 #-fpack-struct=4
-OFLAG_FINAL=-O3 $(WARN_FLAG)
+OFLAG_FINAL=-O3 $(WARN_FLAG) -Wno-error=strict-overflow
 WARN_FLAG=\
 -Wfloat-equal\
 -Wnarrowing\

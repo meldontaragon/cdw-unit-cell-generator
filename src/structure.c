@@ -182,7 +182,7 @@ int makeStructure
 
       /*
 	the file name should match up with the standard I've started using:
-	name = $INV_TYPE-$ELM$ELM2-Monolayer/Bulk/Bilayer-HS/Rand-$CDW_TYPE.vasp
+	name = $INV_TYPE-$ELM$ELX2-$CDW_TYPE-Monolayer/Bulk/Bilayer-HS/Rand.vasp
 	strain_name = Strain_PERC--$NAME
 	
 	IMPORTANT
@@ -204,18 +204,18 @@ int makeStructure
 	sprintf(cdw_type,"(%d,%d)x(%d,%d)",supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
 	
       if (i != 0)
-	sprintf(name,"strain_%d--%s-%s%s2-%s %s %s",i,inv_type, s_elM, s_elX, layer_type, \
+	sprintf(name,"strain_%+d--%s-%s%s2-%s %s %s",i,inv_type, s_elM, s_elX, layer_type, \
 		sym_type, cdw_type);
       else
 	sprintf(name,"%s-%s%s2-%s %s %s", inv_type, s_elM, s_elX, layer_type, \
 		sym_type, cdw_type);
     
       if (i != 0)
-	sprintf(filename,"Strain_%d--%s-%s%s2-%s-%s_%s.vasp",i,inv_type,	\
-		s_elM, s_elX, layer_type, sym_type, cdw_type);
+	sprintf(filename,"Strain_%+d--%s-%s%s2-%s-%s-%s.vasp",i,inv_type,	\
+		s_elM, s_elX, cdw_type, layer_type, sym_type);
       else
-	sprintf(filename,"%s-%s%s2-%s-%s_%s.vasp",inv_type, s_elM, s_elX,\
-		layer_type, sym_type, cdw_type);
+	sprintf(filename,"%s-%s%s2-%s-%s-%s.vasp",inv_type, s_elM, s_elX,\
+		cdw_type, layer_type, sym_type);
 
       /* print to file filename */
       print_VASP_to_file(atomsM, atomsX, num, lattice, name, s_elM, s_elX, filename);
