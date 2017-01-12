@@ -34,7 +34,7 @@
 int makeStructure
 (double orig_lattice[3], int supercell[2][2], int inversion, int randomize,\
  unsigned layers, AtomicSymbol elemM, AtomicSymbol elemX,\
- int strained, int strain_axis[3], int strain_min_max[2])
+ int strained, int strain_axis[3], int strain_min, int strain_max)
 {
   /* ******************************************
      NEEDED INFORMATION AND FORMAT
@@ -105,8 +105,8 @@ int makeStructure
   /* actual structure generation contained here */
   if (strained)
     {
-      strain_end = strain_min_max[1];
-      strain_start = strain_min_max[0];
+      strain_end = strain_min;
+      strain_start = strain_max;
     }
   else
     {

@@ -76,7 +76,7 @@ void generateFracCoord(double frac_loc[][3], unsigned num,\
 int makeStructure(double orig_lattice[3], int supercell[2][2],\
 		  int inversion, int randomize, unsigned layers,\
 		  AtomicSymbol elemM, AtomicSymbol elemX, int strained,\
-		  int strain_axis[3], int strain_min_max[2]);
+		  int strain_axis[3], int strain_min, int strain_max);
 
 double getLatticeVectorAngle(const int a, const int b);
 

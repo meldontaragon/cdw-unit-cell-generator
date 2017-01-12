@@ -77,7 +77,8 @@ int main(int argc, char* argv[])
   int strain_axis[3] = {0, 0, 0};
 
   /* (16-17) */
-  int strain_min_max[2] = {-5, 5};
+  int strain_min = -5;
+  int strain_max =  5;
 
   if (argc <= 11)
     {
@@ -115,12 +116,12 @@ int main(int argc, char* argv[])
 
   if (argc > 17)
     {
-      strain_min_max[0] = atoi(argv[16]);
-      strain_min_max[1] = atoi(argv[17]);
+      strain_min = atoi(argv[16]);
+      strain_max = atoi(argv[17]);
     }
    
   makeStructure(orig_lattice, supercell, inversion, randomize, layers,\
-		elemM, elemX, strained, strain_axis, strain_min_max);
+		elemM, elemX, strained, strain_axis, strain_min, strain_max);
   return 1;
 }
 
