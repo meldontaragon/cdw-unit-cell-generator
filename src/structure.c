@@ -65,6 +65,7 @@ int makeStructure
   double angle[3];
   int strain_start, strain_end, i;
   double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
+  double unstrained_lattice[3];
   
   char name[100], sym_type[20], inv_type[20], s_elM[5], s_elX[5], layer_type[40], filename[100], cdw_type[40];
 
@@ -102,20 +103,27 @@ int makeStructure
       atomsX = malloc(sizeof(Location)*num*2);
     }
 
+  unstrained_lattice[0] = orig_lattice[0];
+  unstrained_lattice[1] = orig_lattice[1];
+  unstrained_lattice[2] = orig_lattice[2];
+
   /* actual structure generation contained here */
   if (strained)
     {
-      strain_end = strain_min;
-      strain_start = strain_max;
+      printf("Adding strain\n");
+      strain_end = strain_max;
+      strain_start = strain_min;
     }
   else
     {
+      printf("Not strained\n");
       strain_start = 0;
       strain_end = 0;
     }
   
   for (i = strain_start; i <= strain_end; ++i)
     {
+      printf("Current strain: %d percent\n",i);
       if (strain_axis[0])
 	delta_x = (1.0) + i*0.01;
       if (strain_axis[1])
@@ -123,21 +131,30 @@ int makeStructure
       if (strain_axis[2])
 	delta_z = (1.0) + i*0.01;
 
-      orig_lattice[0] = orig_lattice[0] * delta_x;
-      orig_lattice[1] = orig_lattice[1] * delta_y;
-      orig_lattice[2] = orig_lattice[2] * delta_z;
+      /* printf("orig_lattice[0]: %f\n", unstrained_lattice[0]); */
+      orig_lattice[0] = unstrained_lattice[0] * delta_x; 
+      orig_lattice[1] = unstrained_lattice[1] * delta_y; 
+      orig_lattice[2] = unstrained_lattice[2] * delta_z; 
+
+      /* printf(" new_lattice[0]: %f\n\n\n", orig_lattice[0]); */
       /* make the M and X sites */
       makeMSite(atomsM, num, orig_lattice, supercell, randomize, inversion, layers);
       makeXSite(atomsX, num, orig_lattice, supercell, inversion, layers);
 
       /* get the new lattice parameters */
-      lattice[0][0] = supercell[0][0]*orig_lattice[0]\
-	- 0.5*supercell[0][1]*orig_lattice[0];
-      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
+      lattice[0][0] = supercell[0][0]*unstrained_lattice[0]\
+	- 0.5*supercell[0][1]*unstrained_lattice[0];
+      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*unstrained_lattice[1];
 
-      lattice[1][0] = supercell[1][0]*orig_lattice[0]\
-	- 0.5*supercell[1][1]*orig_lattice[0];
-      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
+      lattice[1][0] = supercell[1][0]*unstrained_lattice[0]\
+	- 0.5*supercell[1][1]*unstrained_lattice[0];
+      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*unstrained_lattice[1];
+
+      lattice[0][0] *= delta_x;
+      lattice[0][1] *= delta_x;
+
+      lattice[1][0] *= delta_y;
+      lattice[1][1] *= delta_y;
 
       if (layers == 1)
 	{
@@ -147,11 +164,13 @@ int makeStructure
 	{
 	  if (inversion)
 	    {
-	      lattice[2][2] = orig_lattice[2];
+	      lattice[2][2] = unstrained_lattice[2];
+	      lattice[2][2] *= delta_z;
 	    }
 	  else
 	    {
-	      lattice[2][2] = orig_lattice[2];
+	      lattice[2][2] = unstrained_lattice[2];
+	      lattice[2][2] *= delta_z;
 	      num *= 2;
 	    }
 	}

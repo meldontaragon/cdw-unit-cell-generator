@@ -119,7 +119,8 @@ int main(int argc, char* argv[])
       strain_min = atoi(argv[16]);
       strain_max = atoi(argv[17]);
     }
-   
+  printf("Running...\n");
+  printf("Strain: %d\n",strained);
   makeStructure(orig_lattice, supercell, inversion, randomize, layers,\
 		elemM, elemX, strained, strain_axis, strain_min, strain_max);
   return 1;
