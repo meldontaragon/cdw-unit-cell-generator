@@ -55,24 +55,31 @@ void makeMSite\
 	}
       
       /* location is n1*a1 + n2*a2 but a2=|a2|*0.5*x -sqrt(3)*0.5*|a2| */
+      /* r1 and r2 are the randomization values in the a and b directions */
 
       if (!(inversion) && !(layers == 1))
 	{
 	  atomsM[n].x = (frac_loc[n][0] * orig_lattice[0])\
 	    - (frac_loc[n][1]*0.5*orig_lattice[0]) + r1;
-	  atomsM[n].y = (sqrt(3)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
+
+	  atomsM[n].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
+
 	  atomsM[n].z = 0.25 * orig_lattice[2];
 
 	  atomsM[n+num].x = (frac_loc[n][0] * orig_lattice[0])\
 	    - (frac_loc[n][1]*0.5*orig_lattice[0]) + r1;
-	  atomsM[n+num].y = (sqrt(3)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2; 
+
+	  atomsM[n+num].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2; 
+
 	  atomsM[n+num].z = 0.75 * orig_lattice[2];
 	}
       else
 	{
-	  atomsM[n].x =  (frac_loc[n][0] * orig_lattice[0])		\
+	  atomsM[n].x =  (frac_loc[n][0] * orig_lattice[0])\
 	    - (frac_loc[n][1]*0.5*orig_lattice[0]) + r1;
-	  atomsM[n].y = (sqrt(3)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
+
+	  atomsM[n].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
+
 	  atomsM[n].z = 0.5 * orig_lattice[2];
 	}
     }
@@ -116,33 +123,51 @@ void makeXSite
       
       if (!(inversion) && !(layers == 1))
 	{
+	  /* itr = 0 */
 	  atomsX[n].x =	((frac_loc[n][0] + correction[0][0]) * orig_lattice[0])\
 	    - ((frac_loc[n][1] + correction[0][1])*0.5*orig_lattice[0]);
-	  atomsX[n].y = (frac_loc[n][1] + correction[0][1]) * sqrt(3)*0.5*orig_lattice[1];
+
+	  atomsX[n].y = (frac_loc[n][1] + correction[0][1])\
+	    *sqrt(3)*0.5*orig_lattice[1];
+
 	  atomsX[n].z = 0.125 * orig_lattice[2];
       
+	  /* itr = 1 */
 	  atomsX[n+num].x = ((frac_loc[n][0] + correction[1][0]) * orig_lattice[0]) \
 	    - ((frac_loc[n][1] + correction[1][1])*0.5*orig_lattice[0]);
-	  atomsX[n+num].x = (frac_loc[n][1] + correction[1][1]) * sqrt(3)*0.5*orig_lattice[1];
-	  atomsX[n+num].x = 0.375 * orig_lattice[2];
+
+	  atomsX[n+num].y = (frac_loc[n][1] + correction[1][1])\
+	    *sqrt(3)*0.5*orig_lattice[1];
+
+	  atomsX[n+num].z = 0.375 * orig_lattice[2];
 	  
+	  /* itr = 2 */
 	  atomsX[n+2*num].x = ((frac_loc[n][0] - correction[0][0]) * orig_lattice[0])\
 	    - ((frac_loc[n][1] - correction[0][1])*0.5*orig_lattice[0]);
-	  atomsX[n+2*num].y = (frac_loc[n][1] - correction[0][1]) * sqrt(3)*0.5*orig_lattice[1];
+
+	  atomsX[n+2*num].y = (frac_loc[n][1] - correction[0][1])\
+	    *sqrt(3)*0.5*orig_lattice[1];
+
 	  atomsX[n+2*num].z = 0.625 * orig_lattice[2];
 	    
-	  atomsX[n+3*num].x  = ((frac_loc[n][0] - correction[1][0]) * orig_lattice[0]) \
+	  /* itr = 3 */
+	  atomsX[n+3*num].x  = ((frac_loc[n][0] - correction[1][0]) * orig_lattice[0])\
 	    - ((frac_loc[n][1] - correction[1][1])*0.5*orig_lattice[0]);
-	  atomsX[n+3*num].y = (frac_loc[n][1] - correction[1][1]) * sqrt(3)*0.5*orig_lattice[1];
+
+	  atomsX[n+3*num].y = (frac_loc[n][1] - correction[1][1])\
+	    *sqrt(3)*0.5*orig_lattice[1];
+
 	  atomsX[n+3*num].z = 0.875 * orig_lattice[2];
 	}
       else
 	{
+	  /* itr = 0 */
 	  atomsX[n].x = ((frac_loc[n][0] + correction[0][0]) * orig_lattice[0])\
 	    - ((frac_loc[n][1] + correction[0][1])*0.5*orig_lattice[0]);
 	  atomsX[n].y = (frac_loc[n][1] + correction[0][1]) * sqrt(3)*0.5*orig_lattice[1];
 	  atomsX[n].z = 0.75 * orig_lattice[2];
       
+	  /* itr = 1 */
 	  atomsX[n+num].x = ((frac_loc[n][0] + correction[1][0]) * orig_lattice[0]) \
 	    - ((frac_loc[n][1] + correction[1][1])*0.5*orig_lattice[0]);
 	  atomsX[n+num].y = (frac_loc[n][1] + correction[1][1]) * sqrt(3)*0.5*orig_lattice[1];

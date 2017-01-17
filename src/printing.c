@@ -43,9 +43,6 @@ void printXYZ(Location locM[], Location locX[], unsigned n)
     }
 }
 
-
-
-
 void print_VASP_to_file(Location locM[], Location locX[], unsigned n,\
 		   double lattice[3][3], char * name, char * elemM,\
 		   char * elemX, char * file_name) 
@@ -62,15 +59,18 @@ void print_VASP_to_file(Location locM[], Location locX[], unsigned n,\
     fprintf(fp,"   %.9f                %.9f                %.9f\n",	\
 	   lattice[i][0], lattice[i][1], lattice[i][2]);
 
-  fprintf(fp,"     %s         %s\n",elemM,elemX);
+  /* print Element types and number of each element */
+  fprintf(fp,"      %s         %s\n",elemM,elemX);
   fprintf(fp,"      %d         %d\n",n,2*n);
   fprintf(fp,"Cartesian\n");
   
-  for (i = 0; i < n; i++) fprintf(fp,"        %.9f                %.9f                %.9f\n", \
-				 locM[i].x,locM[i].y,locM[i].z);
+  /* print coordinates for metal ions followed by coordinates for the 
+     chalcogen ions */
+  for (i = 0; i < n; i++)   fprintf(fp,"        %.9f                %.9f                %.9f\n",\
+				    locM[i].x,locM[i].y,locM[i].z);
   
-  for (i = 0; i < 2*n; i++) fprintf(fp,"        %.9f                %.9f                %.9f\n",	\
-				   locX[i].x,locX[i].y,locX[i].x);
+  for (i = 0; i < 2*n; i++) fprintf(fp,"        %.9f                %.9f                %.9f\n",\
+				    locX[i].x,locX[i].y,locX[i].z);
 
   fclose(fp);
 }
@@ -128,8 +128,6 @@ void printHelp()
   printf("\n");  
   printf("\t(15) Strain c axis (T/F)");
   printf("\n");  
-
-
 }
 
 /*
@@ -160,7 +158,7 @@ void printVASP\
 				 locTa[i].x,locTa[i].y,locTa[i].z);
   
   for (i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",\
-				   locS[i].x,locS[i].y,locS[i].x);
+				   locS[i].x,locS[i].y,locS[i].z);
 }
 
 #endif
