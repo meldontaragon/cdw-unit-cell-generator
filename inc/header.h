@@ -60,7 +60,7 @@ void makeXSite(Location atomsX[], unsigned num, double orig_lattice[3],\
 
 /* output */
 void printVASP(Location locTa[], Location locS[], unsigned n,\
-	       double lattice[3][3], char * name, char * elemM, char * elemX);
+	       double lattice[3][3], char * name, char * elemM, char * elemX) __attribute((deprecated));
 void print_VASP_to_file(Location locTa[], Location locS[], unsigned n,\
 			double lattice[3][3], char * name, char * elemM,\
 			char * elemX, char * file_name);

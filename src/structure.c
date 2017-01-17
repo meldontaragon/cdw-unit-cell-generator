@@ -63,9 +63,9 @@ int makeStructure
 
   double lattice[3][3];
   double angle[3];
-  int strain_start, strain_end, i;
+  int strain_start, strain_end, i, kk;
   double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
-  double unstrained_lattice[3];
+  double unstrained_lattice[3] = {0,0,0};
   
   char name[100], sym_type[20], inv_type[20], s_elM[5], s_elX[5], layer_type[40], filename[100], cdw_type[40];
 
@@ -103,9 +103,13 @@ int makeStructure
       atomsX = malloc(sizeof(Location)*num*2);
     }
 
+printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lattice[1],orig_lattice[2]);
+  /*  copy the orig lattice input to the unstrained_lattice variable */
   unstrained_lattice[0] = orig_lattice[0];
   unstrained_lattice[1] = orig_lattice[1];
   unstrained_lattice[2] = orig_lattice[2];
+
+  printf("Unstrained lattice vectors: (%.4f, %.4f, %.4f)\n",unstrained_lattice[0],unstrained_lattice[1],unstrained_lattice[2]);
 
   /* actual structure generation contained here */
   if (strained)
@@ -124,17 +128,34 @@ int makeStructure
   for (i = strain_start; i <= strain_end; ++i)
     {
       printf("Current strain: %d percent\n",i);
+      /* delta value is 1.0 by default */
+      delta_x = 1.0;
+      delta_y = 1.0;
+      delta_z = 1.0;
+
       if (strain_axis[0])
-	delta_x = (1.0) + i*0.01;
+	{
+	  printf("Straining in a\n");
+	  delta_x = (1.0) + i*0.01;
+	}
       if (strain_axis[1])
-	delta_y = (1.0) + i*0.01;
+	{
+	  printf("Straining in b\n");
+	  delta_y = (1.0) + i*0.01;
+	}
       if (strain_axis[2])
-	delta_z = (1.0) + i*0.01;
+	{
+	  printf("Straining in c\n");
+	  delta_z = (1.0) + i*0.01;
+	}
 
       /* printf("orig_lattice[0]: %f\n", unstrained_lattice[0]); */
+      /* calculate strained lattice parameters */
       orig_lattice[0] = unstrained_lattice[0] * delta_x; 
       orig_lattice[1] = unstrained_lattice[1] * delta_y; 
       orig_lattice[2] = unstrained_lattice[2] * delta_z; 
+
+      printf("Current lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lattice[1],orig_lattice[2]);
 
       /* printf(" new_lattice[0]: %f\n\n\n", orig_lattice[0]); */
       /* make the M and X sites */
@@ -150,6 +171,7 @@ int makeStructure
 	- 0.5*supercell[1][1]*unstrained_lattice[0];
       lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*unstrained_lattice[1];
 
+      /* strain the super cell lattice parameters */
       lattice[0][0] *= delta_x;
       lattice[0][1] *= delta_x;
 
@@ -178,6 +200,9 @@ int makeStructure
 	{
 	  exit(-1);
 	}
+
+      printf("Supercell lattice:\n");
+      for (kk = 0; kk < 3; kk++) printf("%+.4f, %+.4f, %+.4f\n", lattice[kk][0],lattice[kk][1], lattice[kk][2]);
 
       if (randomize) strcpy(sym_type,"Rand");
       else strcpy(sym_type, "HS");

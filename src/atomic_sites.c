@@ -66,7 +66,7 @@ void makeMSite\
 	  atomsM[n+num].x = (frac_loc[n][0] * orig_lattice[0])\
 	    - (frac_loc[n][1]*0.5*orig_lattice[0]) + r1;
 	  atomsM[n+num].y = (sqrt(3)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2; 
-	  atomsM[n+num].z =	      0.75 * orig_lattice[2];
+	  atomsM[n+num].z = 0.75 * orig_lattice[2];
 	}
       else
 	{

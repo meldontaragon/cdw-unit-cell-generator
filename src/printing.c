@@ -43,28 +43,7 @@ void printXYZ(Location locM[], Location locX[], unsigned n)
     }
 }
 
-void printVASP\
-(Location locTa[], Location locS[], unsigned n,\
- double lattice[3][3], char* name, char* elemM, char* elemX)
-{
-  unsigned i;
-  printf("%s\n",name);
-  printf("%.1f\n",1.0);
 
-  for (i = 0; i < 3; i++)
-    printf("   %.9f                %.9f                %.9f\n",\
-	   lattice[i][0], lattice[i][1], lattice[i][2]);
-
-  printf("     %s         %s\n",elemM,elemX);
-  printf("      %d         %d\n",n,2*n);
-  printf("Cartesian\n");
-  
-  for (i = 0; i < n; i++) printf("        %.9f                %.9f                %.9f\n",\
-				 locTa[i].x,locTa[i].y,locTa[i].z);
-  
-  for (i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",\
-				   locS[i].x,locS[i].y,locS[i].x);
-}
 
 
 void print_VASP_to_file(Location locM[], Location locX[], unsigned n,\
@@ -152,3 +131,36 @@ void printHelp()
 
 
 }
+
+/*
+  deprecated function so precompiler statements to ignore
+  comment or remove these if this function is needed
+*/
+  
+#if 0
+
+void printVASP\
+(Location locTa[], Location locS[], unsigned n,\
+ double lattice[3][3], char* name, char* elemM, char* elemX)
+{
+  unsigned i;
+  printf("%s\n",name);
+  printf("%.1f\n",1.0);
+
+  /* the following output is formatted with spaces rather than tabs */
+  for (i = 0; i < 3; ++i)
+    printf("   %.9f                %.9f                %.9f\n",\
+	   lattice[i][0], lattice[i][1], lattice[i][2]);
+
+  printf("     %s         %s\n",elemM,elemX);
+  printf("      %d         %d\n",n,2*n);
+  printf("Cartesian\n");
+  
+  for (i = 0; i < n; i++) printf("        %.9f                %.9f                %.9f\n",\
+				 locTa[i].x,locTa[i].y,locTa[i].z);
+  
+  for (i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",\
+				   locS[i].x,locS[i].y,locS[i].x);
+}
+
+#endif
