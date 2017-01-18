@@ -15,6 +15,7 @@
   License along with TMD CDW Unit Cell Generator.  If not, see
   <http://www.gnu.org/licenses/>.
 */
+
 /* ********************************************************************
    atomic_sites.c
    code written by David Miller
@@ -29,11 +30,28 @@
 
 #include "header.h"
 
-void makeMSite\
-(Location atomsM[], unsigned num, double orig_lattice[3],\
+/*
+  Input: 
+  num - number of sites to create
+  orig_lattice - original lattice of the high symmetry primitive unit cell
+  supercell - super cell to use for new unit cell
+  randomize - 1 to slightly randomize metal ion location and 0 to use high
+  symmetry locations
+  inversion - 1 to use inversion symmetry (1T) and 0 to use reflection symmetry
+  (2H) 
+  layers - number of layers (0 for bulk, 1 for monolayer, etc.)
+
+  Output:
+  atoms_m - Cartesian coordinates for metal ion sites (array of Location struct
+  which holds an x, y, and z coordinate along with the atomic symbol) size num
+ */
+void make_m_site\
+(Location atoms_m[], unsigned num, double orig_lattice[3],\
  int supercell[2][2], int randomize, int inversion, unsigned layers)
 {
+  /* used for randomization of coordinates */
   double r1 = 0, r2 = 0;
+  /* scale of randomization (default is 3%) */
   double scale = orig_lattice[0] * 0.03;
 
   unsigned n;
@@ -43,49 +61,59 @@ void makeMSite\
   
   frac_loc = malloc(sizeof(double[3])*num);
   
-  generateFracCoord(frac_loc, num, supercell);
+  generate_frac_coord(frac_loc, num, supercell);
 
   srand((unsigned)(time(NULL)));
   for (n = 0; n < num; n++)
     {
       if (randomize)
 	{
+	  /* 
+	     generates are random double between -1.0 and 1.0 and scales it
+	     using the scale variable (default 3%
+	  */
 	  r1 = (((1.0*rand()/RAND_MAX)*2.0)-1.0)*scale;
 	  r2 = (((1.0*rand()/RAND_MAX)*2.0)-1.0)*scale;
 	}
       
-      /* location is n1*a1 + n2*a2 but a2=|a2|*0.5*x -sqrt(3)*0.5*|a2| */
-      /* r1 and r2 are the randomization values in the a and b directions */
+      /* 
+	 location is n1*a1 + n2*a2 but a2=|a2|*0.5*x -sqrt(3)*0.5*|a2| 
+	 r1 and r2 are the randomization values in the a and b directions 
+      */
 
       if (!(inversion) && !(layers == 1))
 	{
-	  atomsM[n].x = (frac_loc[n][0] * orig_lattice[0])\
+	  /* itr 0 */
+	  atoms_m[n].x = (frac_loc[n][0] * orig_lattice[0])\
 	    - (frac_loc[n][1]*0.5*orig_lattice[0]) + r1;
 
-	  atomsM[n].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
+	  atoms_m[n].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
 
-	  atomsM[n].z = 0.25 * orig_lattice[2];
+	  atoms_m[n].z = 0.25 * orig_lattice[2];
 
-	  atomsM[n+num].x = (frac_loc[n][0] * orig_lattice[0])\
+	  /* itr 1 */
+	  atoms_m[n+num].x = (frac_loc[n][0] * orig_lattice[0])\
 	    - (frac_loc[n][1]*0.5*orig_lattice[0]) + r1;
 
-	  atomsM[n+num].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2; 
+	  atoms_m[n+num].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2; 
 
-	  atomsM[n+num].z = 0.75 * orig_lattice[2];
+	  atoms_m[n+num].z = 0.75 * orig_lattice[2];
 	}
       else
 	{
-	  atomsM[n].x =  (frac_loc[n][0] * orig_lattice[0])\
+	  atoms_m[n].x =  (frac_loc[n][0] * orig_lattice[0])\
 	    - (frac_loc[n][1]*0.5*orig_lattice[0]) + r1;
 
-	  atomsM[n].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
+	  atoms_m[n].y = (sqrt(3.0)*0.5*frac_loc[n][1] * orig_lattice[1]) +r2;
 
-	  atomsM[n].z = 0.5 * orig_lattice[2];
+	  atoms_m[n].z = 0.5 * orig_lattice[2];
 	}
     }
+
+  free (frac_loc);
 }/* end of makeMSite(...) */
 
-void makeXSite
+void make_x_site
 (Location atomsX[], unsigned num, double orig_lattice[3],\
  int supercell[2][2], int inversion, unsigned layers)
 {
@@ -97,15 +125,11 @@ void makeXSite
   double (*frac_loc)[3];
   
   frac_loc = malloc(sizeof(double[3])*num);
-  /*
-  frac_loc = (double**) malloc(sizeof(double*)*num);
-  for (i = 0; i < num; ++i)
-    frac_loc[i] = (double*) malloc(sizeof(double)*3);
-  */
-  generateFracCoord(frac_loc, num, supercell);
+  generate_frac_coord(frac_loc, num, supercell);
   
   for (n = 0; n < num; n++)
     {
+      /* generates the correction vectors for 1T and 2H phases */
       if (inversion)
 	{
 	  correction[0][0] = 1.0/3.0;

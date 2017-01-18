@@ -26,17 +26,20 @@
 
 #include "header.h"
 
+/* converts degrees to radians */
 double dtor(double deg)
 {
   return deg*PI/180.0;
 }
 
-double getLatticeVectorAngle(const int n, const int m)
+/* gets the angle between two vectors in a hexagonal unit cell */
+double get_lattice_vector_angle(const int n, const int m)
 {
   /* angle = arccos(a*b)/|a|*|b| */
   return acos((n - 0.5*m)/(sqrt(n*n + m*m - n*m*1.0))); 
 }
 
+/* converts a char to a boolean (stored as 1 for true and 0 for false) */
 int atob(char a)
 {
   if ( (a == 't') || (a == 'T') ) return 1;

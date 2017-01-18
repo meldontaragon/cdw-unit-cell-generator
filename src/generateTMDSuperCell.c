@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
   if (argc <= 11)
     {
       printf("Not the correct number of parameters\n");
-      printHelp();
+      print_help();
       return -1;
     }  
 
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
   printf("Running...\n");
   /* printf("Strain: %d\n",strained); */
   printf("Lattice: (%.4f, %.4f, %.4f)\n",orig_lattice[0], orig_lattice[1], orig_lattice[2]);
-  makeStructure(orig_lattice, supercell, inversion, randomize, layers,\
+  make_structure(orig_lattice, supercell, inversion, randomize, layers,\
 		elemM, elemX, strained, strain_axis, strain_min, strain_max);
   return 1;
 }

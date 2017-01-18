@@ -31,9 +31,26 @@
 #define MONOLAYER_C_LAT 23.6000
 #endif
 
-int makeStructure
+/*
+  Input:
+  orig_lattice - original lattice of high symmetry primitive unit cell
+  supercell - super cell vectors for new unit cell
+  inversion - 1 for 1T phase and 0 for 2H phase
+  randomize - 1 to slightly randomize metal ion sites and 0 for high symmetry
+  sites 
+  layers - number of layers (0 for bulk, 1 for monolayer, etc)
+  elem_m - metal ion atomic symbol
+  elem_x - chalcogen ion atomic symbol
+  strained - 1 to output unit cells with modified lattice parameters to simulate
+  strain
+  strain_axis - boolean for which axises to apply strain to (i.e. {1,1,0} would
+  be biaxial strain in plane)
+  strain_min - minimum percent strain (typically negative for compression)
+  strain_max - maximum percent strain (typically positive for expansion)
+ */
+int make_structure
 (double orig_lattice[3], int supercell[2][2], int inversion, int randomize,\
- unsigned layers, AtomicSymbol elemM, AtomicSymbol elemX,\
+ unsigned layers, AtomicSymbol elem_m, AtomicSymbol elem_x,\
  int strained, int strain_axis[3], int strain_min, int strain_max)
 {
   /* ******************************************
@@ -59,16 +76,19 @@ int makeStructure
 
   /* number of M atoms, number of X atoms = 2*num */
   unsigned num = 0;
-  Location *atomsM, *atomsX;
+  Location *atoms_m, *atoms_x;
 
   double lattice[3][3];
   double angle[3];
   int strain_start, strain_end, i, kk;
   double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
   double unstrained_lattice[3] = {0,0,0};
-  
-  char name[100], sym_type[20], inv_type[20], s_elM[5], s_elX[5], layer_type[40], filename[100], cdw_type[40];
 
+  /* various strings used for naming and file output */
+  char name[100], sym_type[20], inv_type[20], s_el_m[5], s_el_x[5],\
+    layer_type[40], filename[100], cdw_type[40];
+
+  /* forces hexagonal unit cell */
   angle[0] = 90.;
   angle[1] = angle[0];
   angle[2] = 120.;
@@ -94,22 +114,25 @@ int makeStructure
   /* if 2H is used for a bilayer or bulk system then num is effectively doubled */
   if (!(inversion) && !(layers == 1))
     {
-      atomsM = malloc(sizeof(Location)*num*2);
-      atomsX = malloc(sizeof(Location)*num*4);
+      atoms_m = malloc(sizeof(Location)*num*2);
+      atoms_x = malloc(sizeof(Location)*num*4);
     }
   else
     {
-      atomsM = malloc(sizeof(Location)*num);
-      atomsX = malloc(sizeof(Location)*num*2);
+      atoms_m = malloc(sizeof(Location)*num);
+      atoms_x = malloc(sizeof(Location)*num*2);
     }
 
-printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lattice[1],orig_lattice[2]);
+printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
+       orig_lattice[0],orig_lattice[1],orig_lattice[2]);
+ 
   /*  copy the orig lattice input to the unstrained_lattice variable */
   unstrained_lattice[0] = orig_lattice[0];
   unstrained_lattice[1] = orig_lattice[1];
   unstrained_lattice[2] = orig_lattice[2];
 
-  printf("Unstrained lattice vectors: (%.4f, %.4f, %.4f)\n",unstrained_lattice[0],unstrained_lattice[1],unstrained_lattice[2]);
+  printf("Unstrained lattice vectors: (%.4f, %.4f, %.4f)\n",\
+	 unstrained_lattice[0],unstrained_lattice[1],unstrained_lattice[2]);
 
   /* actual structure generation contained here */
   if (strained)
@@ -155,12 +178,13 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lat
       orig_lattice[1] = unstrained_lattice[1] * delta_y; 
       orig_lattice[2] = unstrained_lattice[2] * delta_z; 
 
-      printf("Current lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lattice[1],orig_lattice[2]);
+      printf("Current lattice vectors: (%.4f, %.4f, %.4f)\n",\
+	     orig_lattice[0],orig_lattice[1],orig_lattice[2]);
 
       /* printf(" new_lattice[0]: %f\n\n\n", orig_lattice[0]); */
       /* make the M and X sites */
-      makeMSite(atomsM, num, orig_lattice, supercell, randomize, inversion, layers);
-      makeXSite(atomsX, num, orig_lattice, supercell, inversion, layers);
+      make_m_site(atoms_m, num, orig_lattice, supercell, randomize, inversion, layers);
+      make_x_site(atoms_x, num, orig_lattice, supercell, inversion, layers);
 
       /* get the new lattice parameters */
       lattice[0][0] = supercell[0][0]*unstrained_lattice[0]\
@@ -201,8 +225,12 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lat
 	  exit(-1);
 	}
 
+      /* debugging output
       printf("Supercell lattice:\n");
-      for (kk = 0; kk < 3; kk++) printf("%+.4f, %+.4f, %+.4f\n", lattice[kk][0],lattice[kk][1], lattice[kk][2]);
+      for (kk = 0; kk < 3; kk++)
+	printf("%+.4f, %+.4f, %+.4f\n",\
+	       lattice[kk][0],lattice[kk][1], lattice[kk][2]);
+      */
 
       if (randomize) strcpy(sym_type,"Rand");
       else strcpy(sym_type, "HS");
@@ -215,8 +243,8 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lat
       if (inversion) strcpy(inv_type, "1T");
       else strcpy(inv_type, "2H");
 
-      strcpy(s_elM, Symbol[elemM]);
-      strcpy(s_elX, Symbol[elemX]);
+      strcpy(s_el_m, Symbol[elem_m]);
+      strcpy(s_el_x, Symbol[elem_x]);
 
       if (layers == 1) strcpy(layer_type,"Monolayer");
       else if (layers == 2) strcpy(layer_type,"Bilayer");
@@ -245,28 +273,31 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",orig_lattice[0],orig_lat
       else if ( (supercell[0][0] == 4 ) && (supercell[0][1] == 1) && (supercell[1][0] == -1) && (supercell[1][1] == 3) )
 	sprintf(cdw_type,"SoD");
       else
-	sprintf(cdw_type,"(%d,%d)x(%d,%d)",supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
-	
+	sprintf(cdw_type,"__%d,%d_x_%d,%d__",\
+		supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
+
+      /* create structure names and file names */
       if (i != 0)
-	sprintf(name,"strain_%+d--%s-%s%s2-%s %s %s",i,inv_type, s_elM, s_elX, layer_type, \
-		sym_type, cdw_type);
+	sprintf(name,"strain_%+d--%s-%s%s2-%s %s %s",\
+		i,inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
       else
-	sprintf(name,"%s-%s%s2-%s %s %s", inv_type, s_elM, s_elX, layer_type, \
-		sym_type, cdw_type);
+	sprintf(name,"%s-%s%s2-%s %s %s",
+		inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
     
       if (i != 0)
-	sprintf(filename,"Strain_%+d--%s-%s%s2-%s-%s-%s.vasp",i,inv_type,	\
-		s_elM, s_elX, cdw_type, layer_type, sym_type);
+	sprintf(filename,"Strain_%+d--%s-%s%s2-%s-%s-%s.vasp",i,inv_type,\
+		s_el_m, s_el_x, cdw_type, layer_type, sym_type);
       else
-	sprintf(filename,"%s-%s%s2-%s-%s-%s.vasp",inv_type, s_elM, s_elX,\
+	sprintf(filename,"%s-%s%s2-%s-%s-%s.vasp",inv_type, s_el_m, s_el_x,\
 		cdw_type, layer_type, sym_type);
 
       /* print to file filename */
-      print_VASP_to_file(atomsM, atomsX, num, lattice, name, s_elM, s_elX, filename);
-    }  
+      print_vasp_to_file(atoms_m, atoms_x, num, lattice, name, s_el_m, s_el_x, filename);
+    }
+  
   /* clean up memory */
-  free (atomsM);
-  free (atomsX);
+  free (atoms_m);
+  free (atoms_x);
   
   return 1;
 } /* int makeStructure(arrays...) */

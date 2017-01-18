@@ -50,35 +50,35 @@ static const double PI = 3.1415926535;
 /* defines a minimum value for double comparision */
 static const double EPS = 10E-5;
 
-/* need to add __attribute__ ((deprecated)) to applicable functions */
-
 /* make sites */
-void makeMSite(Location atomsM[], unsigned num, double orig_lattice[3],\
+void make_m_site(Location atoms_m[], unsigned num, double orig_lattice[3],\
 	       int supercell[2][2], int randomize, int inversion, unsigned layers);
-void makeXSite(Location atomsX[], unsigned num, double orig_lattice[3],\
+void make_x_site(Location atomsX[], unsigned num, double orig_lattice[3],\
 	       int supercell[2][2], int inversion, unsigned layers);
 
 /* output */
-void printVASP(Location locTa[], Location locS[], unsigned n,\
-	       double lattice[3][3], char * name, char * elemM, char * elemX) __attribute((deprecated));
-void print_VASP_to_file(Location locTa[], Location locS[], unsigned n,\
-			double lattice[3][3], char * name, char * elemM,\
-			char * elemX, char * file_name);
+void print_vasp(Location loc_m[], Location loc_x[], unsigned n,\
+	       double lattice[3][3], char * name, char * elem_m, char * elem_x)\
+  __attribute((deprecated)); /* this function should not be used anymore */
 
-void printXYZ(Location LocTa[], Location locS[], unsigned n);
-void printHelp();
+void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
+			double lattice[3][3], char * name, char * elem_m,\
+			char * elem_x, char * file_name);
+
+void print_xyz(Location loc_m[], Location loc_x[], unsigned n);
+void print_help();
 
 /* fractional coordinate generation */
-void generateFracCoord(double frac_loc[][3], unsigned num,\
+void generate_frac_coord(double frac_loc[][3], unsigned num,\
 		       int supercell[2][2]);
 
 /* structure generation functions */
-int makeStructure(double orig_lattice[3], int supercell[2][2],\
+int make_structure(double orig_lattice[3], int supercell[2][2],\
 		  int inversion, int randomize, unsigned layers,\
-		  AtomicSymbol elemM, AtomicSymbol elemX, int strained,\
+		  AtomicSymbol elem_m, AtomicSymbol elem_x, int strained,\
 		  int strain_axis[3], int strain_min, int strain_max);
 
-double getLatticeVectorAngle(const int a, const int b);
+double get_lattice_vector_angle(const int a, const int b);
 
 double dtor(double deg) __attribute__ ((const));
 int atob(char a) __attribute__ ((pure));
