@@ -53,6 +53,8 @@ int main(int argc, char* argv[])
     17 Max Expansive Strain (%)
   */
   /* (1-2) */
+  char options[100];
+
   double orig_lattice[3];
 
   /* (3-6) */
@@ -83,15 +85,17 @@ int main(int argc, char* argv[])
   int strain_min = -5;
   int strain_max =  5;
 
-  if (argc <= 11)
+  switch (argc)
     {
-      /* printf("Not the correct number of parameters\n"); */
-      print_help();
-      return -1;
-    }
-
-  if (argc > 11)
-    {
+    case (17+1):
+      strain_min = atoi(argv[16]);
+      strain_max = atoi(argv[17]);
+    case (15+1):
+      strained = atob(argv[12][0]);
+      strain_axis[0] = atob(argv[13][0]);
+      strain_axis[1] = atob(argv[14][0]);
+      strain_axis[2] = atob(argv[15][0]);
+    case (11+1):
       orig_lattice[0] = atof(argv[1]);
       orig_lattice[1] = orig_lattice[0];
       orig_lattice[2] = atof(argv[2]);
@@ -108,20 +112,23 @@ int main(int argc, char* argv[])
 
       elemM = (AtomicSymbol) (atoi(argv[10])-1);
       elemX = (AtomicSymbol) (atoi(argv[11])-1);
+      break;
+    
+    case 2:
+      if (argv[1][0] == '-')
+	{
+	  if (argv[1][1] == 'v') print_version();
+	  else if (argv[1][1] == 'h') print_help();
+	  else printf("Invalid option.\n");
 	}
-  if (argc > 15)
-    {
-      strained = atob(argv[12][0]);
-      strain_axis[0] = atob(argv[13][0]);
-      strain_axis[1] = atob(argv[14][0]);
-      strain_axis[2] = atob(argv[15][0]);
+      exit(0);
+
+    case 1:
+    default:
+      print_help();
+      exit(-1);
     }
 
-  if (argc > 17)
-    {
-      strain_min = atoi(argv[16]);
-      strain_max = atoi(argv[17]);
-    }
   printf("Running...\n");
   /* printf("Strain: %d\n",strained); */
   printf("Lattice: (%.4f, %.4f, %.4f)\n",orig_lattice[0], orig_lattice[1], orig_lattice[2]);

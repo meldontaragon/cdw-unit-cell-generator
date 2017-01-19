@@ -69,6 +69,7 @@ void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
 
 void print_xyz(Location loc_m[], Location loc_x[], unsigned n);
 void print_help();
+void print_version();
 
 /* fractional coordinate generation */
 void generate_frac_coord(double frac_loc[][3], unsigned num,\

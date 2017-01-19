@@ -84,15 +84,7 @@ void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
 
 void print_help()
 {
-  printf("TMD CDW Unit Cell Generator %s\n",VERSION);
-  printf("Copyright (C) 2016-2017 David C. Miller\n");
-  printf("Code written by David C. Miller (mill2723 at msu dot edu)\n");
-  printf("\n");
-  printf("This code is licensed under the GNU LGPL License\n");
-  printf("For details see <http://www.gnu.org/licenses/>\n");
-  printf("There is NO warranty; not even for MERCHANTABILITY or\n");
-  printf("FITNESS FOR A PARTICULAR PURPOSE.\n");
-  printf("\n");
+  print_version();
 
   printf("Used to generate various sized unit cells for\n");
   printf("1T and 2H trilayers of transition metal \n");
@@ -123,6 +115,19 @@ void print_help()
   printf("\t(15) Strain c axis (T/F)\n");
   printf("\t(16) Minimum strain (%%)\n");
   printf("\t(17) Maximum strain (%%)\n");
+  printf("\n");
+}
+
+void print_version()
+{
+  printf("TMD CDW Unit Cell Generator %s\n",VERSION);
+  printf("Copyright (C) 2016-2017 David C. Miller\n");
+  printf("Code written by David C. Miller (mill2723 at msu dot edu)\n");
+  printf("\n");
+  printf("This code is licensed under the GNU LGPL License\n");
+  printf("For details see <http://www.gnu.org/licenses/>\n");
+  printf("There is NO warranty; not even for MERCHANTABILITY or\n");
+  printf("FITNESS FOR A PARTICULAR PURPOSE.\n");
   printf("\n");
 }
 
