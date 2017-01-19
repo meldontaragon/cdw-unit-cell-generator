@@ -13,23 +13,23 @@ Try the following:
   /usr/local/bin)
   - this is defined in makefile.include or can be passed
     through make
-+ make install
++ `make install`
   - this will run `make reset`, `make all`, and then
   install the binary files in the INSTALLDIR
 
 Other options:
-+ make dir
-  - run this or manually make the necessary directories (`./bin`
-  and `./obj`)
-+ make final
-  - final binary files will be in `./bin`
-+ make link
++ `make dir`
+  - run this or manually make the necessary directories (./bin
+  and ./obj)
++ `make final`
+  - final binary files will be in ./bin
++ `make link`
   - will create symbolic links in INSTALLDIR for the binary files
-+ make all
++ `make all`
   - will make binary files using the debug optimization options
   (for distributed versions there is a chance that `make all`
   runs `make final` and `make debug` runs this case)
-+ make uninstall
++ `make uninstall`
   - removes binary files from INSTALLDIR (whether linked or copied)
 
 You may need to run any of the above as root depending on 
@@ -76,6 +76,12 @@ The following options are optional and can be given after the options above:
 	14. Strain b axis (T/F)
 	15. Strain c axis (T/F)
 
+In addition to those options above, the following two options can be added after
+to specify the amount of strain:
+
+       16. Minimum strain (%)
+       17. Maximum strain (%)
+
 The a', a'', b', and b'' parameters are the two-vectors that specify the
 super-cell size. These describe how the super-cell is constructed in terms
 of the original a and b lattice parameters (where b is at 120 degrees to
@@ -107,7 +113,7 @@ compiled on Cygwin or any other system with a C compiler if one so
 desired. If another C compiler is used it is very likely that the current
 compiler options will need to be changed. This program does not use
 any special libraries so it should suffice to pass the include and source
-directories (`./src` and `./inc`).
+directories (./src and ./inc).
 
 Currently I have used this on Ubuntu 16.04, and CentOS 6.6.
 
@@ -175,4 +181,6 @@ output on your own.
 
 Copyright (C) 2016-2017 David C. Miller
 
-This code is licensed under LGPLv3. See LICENSE for details. 
+This code is licensed under LGPLv3. There is NO warranty; not even for
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See LICENSE for details.
+
