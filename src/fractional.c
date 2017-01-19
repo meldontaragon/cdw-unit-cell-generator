@@ -1,4 +1,6 @@
 /*
+  Copyright (C) 2016-2017 David C. Miller
+
   This file is part of TMD CDW Unit Cell Generator
 
   TMD CDW Unit Cell Generatort is free software: you can redistribute it
@@ -45,7 +47,7 @@ void generate_frac_coord\
 {
   unsigned xmax = 0, ymax = 0, count = 0, ix, jy, kk;
   double min_angle;
-  
+
   /* maximum x and y coordinates */
   xmax = (unsigned) ( abs(supercell[0][0]) + abs(supercell[1][0]) );
   ymax = (unsigned) ( abs(supercell[0][1]) + abs(supercell[1][1]) );
@@ -72,20 +74,20 @@ void generate_frac_coord\
 	      /*
 		checks if the angle of the new fractional location lies in the region
 		where atoms are being added
-		 
+
 		this is determined by a minimum angle for the vector (there is no
 		distance requirement imposed, this is managed by xmax and ymax)
 	      */
 	      if( ( min_angle - get_lattice_vector_angle((int)ix, (int)jy) ) < EPS )
-		{
-		  frac_loc[count][0] = ix; 
-		  frac_loc[count][1] = jy; 
-		  frac_loc[count][2] = 0;
-  		  count++;
-		}
+		    {
+		      frac_loc[count][0] = ix; 
+		      frac_loc[count][1] = jy; 
+		      frac_loc[count][2] = 0;
+  		    count++;
+		    }
 	    } /* end of else */  
-	} /* end of for on jy */
-    } /* end of for on ix */
+	  } /* end of for on jy */
+  } /* end of for on ix */
   if (count < num)
     fprintf(stderr,"Not enough coordinates made...\n");
 } /* end of generate_frac_coord(...) */

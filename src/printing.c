@@ -1,4 +1,6 @@
 /*
+  Copyright (C) 2016-2017 David C. Miller
+
   This file is part of TMD CDW Unit Cell Generator
 
   TMD CDW Unit Cell Generatort is free software: you can redistribute it
@@ -25,13 +27,19 @@
    as well as the help printed to terminal.
 ***********************************************************************/
 
+/* VERSION DO NOT EDIT */
+#ifndef VERSION
+#define VERSION "0.0.0"
+#endif
+/* VERSION DO NOT EDIT */
+
 #include "header.h"
 void print_xyz(Location loc_m[], Location loc_x[], unsigned n)
 {
   unsigned j;
   printf("%d\n",3*n);
   printf("c-cdw-TaS2 super cell SQRT(13)xSQRT(13)x1 (in angstroms)\n");
-  
+
   for (j = 0; j < n; j++)
     {
       printf("Ta        %.4f        %.4f        %.4f\n",\
@@ -63,78 +71,66 @@ void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
   fprintf(fp,"      %s         %s\n",elemM,elemX);
   fprintf(fp,"      %d         %d\n",n,2*n);
   fprintf(fp,"Cartesian\n");
-  
+
   /* print coordinates for metal ions followed by coordinates for the 
      chalcogen ions */
   for (i = 0; i < n; i++)   fprintf(fp,"        %.9f                %.9f                %.9f\n",\
-				    loc_m[i].x,loc_m[i].y,loc_m[i].z);
-  
+				    loc_m[i].x, loc_m[i].y, loc_m[i].z);
   for (i = 0; i < 2*n; i++) fprintf(fp,"        %.9f                %.9f                %.9f\n",\
-				    loc_x[i].x,loc_x[i].y,loc_x[i].z);
+				    loc_x[i].x, loc_x[i].y, loc_x[i].z);
 
   fclose(fp);
 }
 
 void print_help()
 {
-  printf("TMD CDW Unit Cell Generator");
+  printf("TMD CDW Unit Cell Generator %s\n",VERSION);
+  printf("Copyright (C) 2016-2017 David C. Miller\n");
+  printf("Code written by David C. Miller (mill2723 at msu dot edu)\n");
   printf("\n");
-  printf("Code written by David Miller ");
-  printf("(mill2723 at msu dot edu)");
+  printf("This code is licensed under the GNU LGPL License\n");
+  printf("For details see <http://www.gnu.org/licenses/>\n");
+  printf("There is NO warranty; not even for MERCHANTABILITY or\n");
+  printf("FITNESS FOR A PARTICULAR PURPOSE.\n");
   printf("\n");
-  printf("This code is licensed under the GNU LGPL License");
-  printf("\n");
-  printf("For details see <http://www.gnu.org/licenses/>");
-  printf("\n");
-  printf("There is NO warranty; not even for MERCHANTABILITY or ");
-  printf("FITNESS FOR A PARTICULAR PURPOSE.");
-  printf("\n");
-  printf("\n");;
+
   printf("Used to generate various sized unit cells for\n");
   printf("1T and 2H trilayers of transition metal \n");
-  printf("dichalcogenides (TMD) with the MX2 structure.");
+  printf("dichalcogenides (TMD) with the MX2 structure.\n");
   printf("\n");
+
+  printf("All options below must be specified in the\n");
+  printf("following order:\n");
+  printf("\t(1)  Lattice parameter a\n");
+  printf("\t(2)  Lattice parameter c\n");
+  printf("\t(3)  Super cell length a\'\n");
+  printf("\t(4)  Super cell length a\'\'\n");
+  printf("\t(5)  Super cell length b\'\n");
+  printf("\t(6)  Super cell length b\'\'\n");
+  printf("\t(7)  Layers (0 for Bulk)\n");
+  printf("\t(8)  1T (T) or 2H (F)\n");
+  printf("\t(9)  Randomize coordinates (T/F)\n");
+  printf("\t(10) Element M (use atomic number)\n");
+  printf("\t(11) Element X (use atomic number)\n");
+
   printf("\n");
-  printf("\n");;
-  printf("All options below must be specified in the following order:");
-  printf("\n");;
-  printf("\t(1)  Lattice parameter a");
-  printf("\n");;
-  printf("\t(2)  Lattice parameter c");
-  printf("\n");;
-  printf("\t(3)  Super cell length a\'");
-  printf("\n");;
-  printf("\t(4)  Super cell length a\'\'");
-  printf("\n");;
-  printf("\t(5)  Super cell length b\'");
-  printf("\n");;
-  printf("\t(6)  Super cell length b\'\'");
-  printf("\n");;
-  printf("\t(7)  Layers (0 for Bulk)");
+  printf("The following options are optional, however\n");
+  printf("12-15 must be specified together and 16-17\n");
+  printf("must be specified together:\n");
+  printf("\t(12) Logical for Strain (T/F)\n");
+  printf("\t(13) Strain a axis (T/F)\n");
+  printf("\t(14) Strain b axis (T/F)\n");
+  printf("\t(15) Strain c axis (T/F)\n");
+  printf("\t(16) Minimum strain (%%)\n");
+  printf("\t(17) Maximum strain (%%)\n");
   printf("\n");
-  printf("\t(8)  1T (T) or 2H (F)");
-  printf("\n");
-  printf("\t(9)  Randomize coordinates (T/F)");
-  printf("\n");
-  printf("\t(10) Element M (use atomic number)");
-  printf("\n");
-  printf("\t(11) Element X (use atomic number)");
-  printf("\n");  
-  printf("\t(12) Logical for Strain (T/F)");
-  printf("\n");  
-  printf("\t(13) Strain a axis (T/F)");
-  printf("\n");  
-  printf("\t(14) Strain b axis (T/F)");
-  printf("\n");  
-  printf("\t(15) Strain c axis (T/F)");
-  printf("\n");  
 }
 
 /*
   deprecated function so precompiler statements to ignore
   comment or remove these if this function is needed
 */
-  
+
 #if 0
 
 void printVASP\
@@ -153,10 +149,10 @@ void printVASP\
   printf("     %s         %s\n",elemM,elemX);
   printf("      %d         %d\n",n,2*n);
   printf("Cartesian\n");
-  
+
   for (i = 0; i < n; i++) printf("        %.9f                %.9f                %.9f\n",\
 				 locTa[i].x,locTa[i].y,locTa[i].z);
-  
+
   for (i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",\
 				   locS[i].x,locS[i].y,locS[i].z);
 }

@@ -1,4 +1,6 @@
 /*
+  Copyright (C) 2016-2017 David C. Miller
+
   This file is part of TMD CDW Unit Cell Generator
 
   TMD CDW Unit Cell Generatort is free software: you can redistribute it
@@ -15,6 +17,7 @@
   License along with TMD CDW Unit Cell Generator.  If not, see
   <http://www.gnu.org/licenses/>.
 */
+
 /* ******************************************************************
    generateTMDSuperCell.c
    code written by David Miller
@@ -40,12 +43,12 @@ int main(int argc, char* argv[])
     9  Randomize T/F
     10 Elements M (Ta,Ti) ! use atomic number
     11 Elements X (S,Se,Te) ! use atomic number
-    
+
     12 Strain T/F
     13 Strain axis a T/F
     14 Strain axis b T/F
     15 Strain axis c T/F
-	
+
     16 Max Compressive Strain (%)
     17 Max Expansive Strain (%)
   */
@@ -58,7 +61,7 @@ int main(int argc, char* argv[])
   /* (7) */
   /* generates bulk if 0, monolayer if 1, and nothing else is implemented */
   unsigned layers = 0;
-  
+
   /* (8) */
   /* 1T has inversion symmetry, 1H has only reflection through xy plane */
   int inversion = 1;
@@ -82,10 +85,10 @@ int main(int argc, char* argv[])
 
   if (argc <= 11)
     {
-      printf("Not the correct number of parameters\n");
-      print_help();
+      /* printf("Not the correct number of parameters\n"); */
+      printHelp();
       return -1;
-    }  
+    }
 
   if (argc > 11)
     {

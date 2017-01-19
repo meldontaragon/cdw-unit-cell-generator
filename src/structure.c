@@ -1,4 +1,6 @@
 /*
+  Copyright (C) 2016-2017 David C. Miller
+
   This file is part of TMD CDW Unit Cell Generator
 
   TMD CDW Unit Cell Generatort is free software: you can redistribute it
@@ -78,7 +80,7 @@ int make_structure
   unsigned num = 0;
   Location *atoms_m, *atoms_x;
 
-  double lattice[3][3];
+  double lattice[3][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
   double angle[3];
   int strain_start, strain_end, i, kk;
   double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
