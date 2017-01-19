@@ -29,7 +29,7 @@
 
 /* VERSION DO NOT EDIT */
 #ifndef VERSION
-#define VERSION "0.0.0"
+#define VERSION "0.0.0-error"
 #endif
 /* VERSION DO NOT EDIT */
 
@@ -37,16 +37,16 @@
 void print_xyz(Location loc_m[], Location loc_x[], unsigned n)
 {
   unsigned j;
-  printf("%d\n",3*n);
-  printf("c-cdw-TaS2 super cell SQRT(13)xSQRT(13)x1 (in angstroms)\n");
+ fprintf(stdout,"%d\n",3*n);
+ fprintf(stdout,"c-cdw-TaS2 super cell SQRT(13)xSQRT(13)x1 (in angstroms)\n");
 
   for (j = 0; j < n; j++)
     {
-      printf("Ta        %.4f        %.4f        %.4f\n",\
+     fprintf(stdout,"Ta        %.4f        %.4f        %.4f\n",\
 	     loc_m[j].x, loc_m[j].y,loc_m[j].z);
-      printf("S        %.4f        %.4f        %.4f\n",\
+     fprintf(stdout,"S        %.4f        %.4f        %.4f\n",\
 	     loc_x[j].x, loc_x[j].y,loc_x[j].z);
-      printf("S        %.4f        %.4f        %.4f\n",\
+     fprintf(stdout,"S        %.4f        %.4f        %.4f\n",\
 	     loc_x[j+n].x, loc_x[j+n].y,loc_x[j+n].z);
     }
 }
@@ -86,49 +86,71 @@ void print_help()
 {
   print_version();
 
-  printf("Used to generate various sized unit cells for\n");
-  printf("1T and 2H trilayers of transition metal \n");
-  printf("dichalcogenides (TMD) with the MX2 structure.\n");
-  printf("\n");
+ fprintf(stdout,"Used to generate various sized unit cells for\n");
+ fprintf(stdout,"1T and 2H trilayers of transition metal \n");
+ fprintf(stdout,"dichalcogenides (TMD) with the MX2 structure.\n");
+ fprintf(stdout,"\n");
 
-  printf("All options below must be specified in the\n");
-  printf("following order:\n");
-  printf("\t(1)  Lattice parameter a\n");
-  printf("\t(2)  Lattice parameter c\n");
-  printf("\t(3)  Super cell length a\'\n");
-  printf("\t(4)  Super cell length a\'\'\n");
-  printf("\t(5)  Super cell length b\'\n");
-  printf("\t(6)  Super cell length b\'\'\n");
-  printf("\t(7)  Layers (0 for Bulk)\n");
-  printf("\t(8)  1T (T) or 2H (F)\n");
-  printf("\t(9)  Randomize coordinates (T/F)\n");
-  printf("\t(10) Element M (use atomic number)\n");
-  printf("\t(11) Element X (use atomic number)\n");
+ fprintf(stdout,"All options below must be specified in the\n");
+ fprintf(stdout,"following order:\n");
+ fprintf(stdout,"\t(1)  Lattice parameter a\n");
+ fprintf(stdout,"\t(2)  Lattice parameter c\n");
+ fprintf(stdout,"\t(3)  Super cell length a\'\n");
+ fprintf(stdout,"\t(4)  Super cell length a\'\'\n");
+ fprintf(stdout,"\t(5)  Super cell length b\'\n");
+ fprintf(stdout,"\t(6)  Super cell length b\'\'\n");
+ fprintf(stdout,"\t(7)  Layers (0 for Bulk)\n");
+ fprintf(stdout,"\t(8)  1T (T) or 2H (F)\n");
+ fprintf(stdout,"\t(9)  Randomize coordinates (T/F)\n");
+ fprintf(stdout,"\t(10) Element M (use atomic number)\n");
+ fprintf(stdout,"\t(11) Element X (use atomic number)\n");
 
-  printf("\n");
-  printf("The following options are optional, however\n");
-  printf("12-15 must be specified together and 16-17\n");
-  printf("must be specified together:\n");
-  printf("\t(12) Logical for Strain (T/F)\n");
-  printf("\t(13) Strain a axis (T/F)\n");
-  printf("\t(14) Strain b axis (T/F)\n");
-  printf("\t(15) Strain c axis (T/F)\n");
-  printf("\t(16) Minimum strain (%%)\n");
-  printf("\t(17) Maximum strain (%%)\n");
-  printf("\n");
+ fprintf(stdout,"\n");
+ fprintf(stdout,"The following options are optional, however\n");
+ fprintf(stdout,"12-15 must be specified together and 16-17\n");
+ fprintf(stdout,"must be specified together:\n");
+ fprintf(stdout,"\t(12) Logical for Strain (T/F)\n");
+ fprintf(stdout,"\t(13) Strain a axis (T/F)\n");
+ fprintf(stdout,"\t(14) Strain b axis (T/F)\n");
+ fprintf(stdout,"\t(15) Strain c axis (T/F)\n");
+ fprintf(stdout,"\t(16) Minimum strain (%%)\n");
+ fprintf(stdout,"\t(17) Maximum strain (%%)\n");
+ fprintf(stdout,"\n");
 }
 
 void print_version()
 {
-  printf("TMD CDW Unit Cell Generator %s\n",VERSION);
-  printf("Copyright (C) 2016-2017 David C. Miller\n");
-  printf("Code written by David C. Miller (mill2723 at msu dot edu)\n");
-  printf("\n");
-  printf("This code is licensed under the GNU LGPL License\n");
-  printf("For details see <http://www.gnu.org/licenses/>\n");
-  printf("There is NO warranty; not even for MERCHANTABILITY or\n");
-  printf("FITNESS FOR A PARTICULAR PURPOSE.\n");
-  printf("\n");
+ fprintf(stdout,"TMD CDW Unit Cell Generator %s\n",VERSION);
+ fprintf(stdout,"Copyright (C) 2016-2017 David C. Miller\n");
+ fprintf(stdout,"\n");
+ fprintf(stdout,"Code written by David C. Miller (mill2723 at msu dot edu)\n");
+ fprintf(stdout,"\n");
+ fprintf(stdout,"This code is licensed under the GNU LGPL License\n");
+ fprintf(stdout,"For details see <http://www.gnu.org/licenses/>\n");
+ fprintf(stdout,"There is NO warranty; not even for MERCHANTABILITY or\n");
+ fprintf(stdout,"FITNESS FOR A PARTICULAR PURPOSE.\n");
+ fprintf(stdout,"\n");
+}
+
+void print_test_start()
+{
+  print_version();
+
+  /*fprintf(stdout,"\n\n"); */
+ fprintf(stdout,"---------------------------------------------------\n");
+ fprintf(stdout,"Test Suite Output for TMD CDW Unit Cell Generator\n");
+ fprintf(stdout,"---------------------------------------------------\n");
+ fprintf(stdout,"Test Output Starting...\n");
+ fprintf(stdout,"\n");
+ fprintf(stdout,"Starting VASP Monolayer Test\n");
+  test_print_vasp_monolayer();
+ fprintf(stdout,"VASP Monolayer Test Output Complete (Comparison Pending...)\n");
+
+ fprintf(stdout,"Starting VASP Bulk Test\n");
+  test_print_vasp_bulk();
+ fprintf(stdout,"VASP Bulk Test Output Complete (Comparison Pending...)\n");
+
+
 }
 
 /*
@@ -136,30 +158,30 @@ void print_version()
   comment or remove these if this function is needed
 */
 
-#if 0
+#if 0 
 
-void printVASP\
+void print_vasp\
 (Location locTa[], Location locS[], unsigned n,\
  double lattice[3][3], char* name, char* elemM, char* elemX)
 {
   unsigned i;
-  printf("%s\n",name);
-  printf("%.1f\n",1.0);
+  fprintf(stdout,"%s\n",name);
+  fprintf(stdout,"%.1f\n",1.0);
 
   /* the following output is formatted with spaces rather than tabs */
   for (i = 0; i < 3; ++i)
-    printf("   %.9f                %.9f                %.9f\n",\
-	   lattice[i][0], lattice[i][1], lattice[i][2]);
+    fprintf(stdout,"   %.9f                %.9f                %.9f\n",	\
+	    lattice[i][0], lattice[i][1], lattice[i][2]);
 
-  printf("     %s         %s\n",elemM,elemX);
-  printf("      %d         %d\n",n,2*n);
-  printf("Cartesian\n");
+  fprintf(stdout,"     %s         %s\n",elemM,elemX);
+  fprintf(stdout,"      %d         %d\n",n,2*n);
+  fprintf(stdout,"Cartesian\n");
 
-  for (i = 0; i < n; i++) printf("        %.9f                %.9f                %.9f\n",\
-				 locTa[i].x,locTa[i].y,locTa[i].z);
+  for (i = 0; i < n; i++) fprintf(stdout,"        %.9f                %.9f                %.9f\n", \
+				  locTa[i].x,locTa[i].y,locTa[i].z);
 
-  for (i = 0; i < 2*n; i++) printf("        %.9f                %.9f                %.9f\n",\
-				   locS[i].x,locS[i].y,locS[i].z);
+  for (i = 0; i < 2*n; i++) fprintf(stdout,"        %.9f                %.9f                %.9f\n", \
+				    locS[i].x,locS[i].y,locS[i].z);
 }
 
-#endif
+#endif 

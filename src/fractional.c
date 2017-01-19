@@ -43,7 +43,7 @@
  */
 
 void generate_frac_coord\
-(double frac_loc[][3], unsigned num, int supercell[2][2])
+(double frac_loc[][3], const unsigned num, const int supercell[2][2])
 {
   unsigned xmax = 0, ymax = 0, count = 0, ix, jy, kk;
   double min_angle;

@@ -98,7 +98,7 @@ _BIN = generateTMDSuperCell
 _DEPS = elements.h header.h
 
 #object (.o) files to be built
-_COBJ = tmd_functions.o printing.o fractional.o atomic_sites.o structure.o
+_COBJ = tmd_functions.o printing.o fractional.o atomic_sites.o structure.o testing.o
 
 #change to the local of desired installation (default is /usr/local/bin)
 INSTALLDIR:=/mnt/home/mill2723/local/bin

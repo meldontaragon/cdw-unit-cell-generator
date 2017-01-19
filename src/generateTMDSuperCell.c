@@ -53,8 +53,6 @@ int main(int argc, char* argv[])
     17 Max Expansive Strain (%)
   */
   /* (1-2) */
-  char options[100];
-
   double orig_lattice[3];
 
   /* (3-6) */
@@ -73,7 +71,7 @@ int main(int argc, char* argv[])
   int randomize = 0;
 
   /* (10-11) */
-  AtomicSymbol elemM = Ta, elemX = S;
+  AtomicSymbol elem_m = Ta, elem_x = S;
 
   /* (12) */
   int strained = 0;
@@ -110,8 +108,8 @@ int main(int argc, char* argv[])
       inversion = atob(argv[8][0]);
       randomize = atob(argv[9][0]);
 
-      elemM = (AtomicSymbol) (atoi(argv[10])-1);
-      elemX = (AtomicSymbol) (atoi(argv[11])-1);
+      elem_m = (AtomicSymbol) (atoi(argv[10])-1);
+      elem_x = (AtomicSymbol) (atoi(argv[11])-1);
       break;
     
     case 2:
@@ -119,7 +117,8 @@ int main(int argc, char* argv[])
 	{
 	  if (argv[1][1] == 'v') print_version();
 	  else if (argv[1][1] == 'h') print_help();
-	  else printf("Invalid option.\n");
+	  else if (argv[1][1] == 't') print_test_start();
+	  else fprintf(stderr,"Invalid option.\n");
 	}
       exit(0);
 
@@ -129,11 +128,9 @@ int main(int argc, char* argv[])
       exit(-1);
     }
 
-  printf("Running...\n");
-  /* printf("Strain: %d\n",strained); */
-  printf("Lattice: (%.4f, %.4f, %.4f)\n",orig_lattice[0], orig_lattice[1], orig_lattice[2]);
+  fprintf(stdout,"Starting normal operation...\n");
   make_structure(orig_lattice, supercell, inversion, randomize, layers,\
-		elemM, elemX, strained, strain_axis, strain_min, strain_max);
+		elem_m, elem_x, strained, strain_axis, strain_min, strain_max);
   return 1;
 }
 

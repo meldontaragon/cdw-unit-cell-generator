@@ -53,37 +53,52 @@ static const double PI = 3.1415926535;
 static const double EPS = 10E-5;
 
 /* make sites */
-void make_m_site(Location atoms_m[], unsigned num, double orig_lattice[3],\
-	       int supercell[2][2], int randomize, int inversion, unsigned layers);
-void make_x_site(Location atomsX[], unsigned num, double orig_lattice[3],\
-	       int supercell[2][2], int inversion, unsigned layers);
+void make_m_site(Location atoms_m[], const unsigned num, const double orig_lattice[3],\
+		 const int supercell[2][2], const int randomize, const int inversion,\
+		 const unsigned layers);
+void make_x_site(Location atomsX[], const unsigned num, const double orig_lattice[3],\
+		 const int supercell[2][2], const int inversion, const unsigned layers);
 
 /* output */
-void print_vasp(Location loc_m[], Location loc_x[], unsigned n,\
-	       double lattice[3][3], char * name, char * elem_m, char * elem_x)\
-  __attribute((deprecated)); /* this function should not be used anymore */
-
 void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
 			double lattice[3][3], char * name, char * elem_m,\
 			char * elem_x, char * file_name);
 
-void print_xyz(Location loc_m[], Location loc_x[], unsigned n);
+void print_xyz_to_file(Location loc_m[], Location loc_x[], unsigned n,\
+		       char * filename) __attribute__((deprecated));
+
+/* these functions should not be used anymore */
+void print_vasp(Location loc_m[], Location loc_x[], unsigned n,\
+	       double lattice[3][3], char * name, char * elem_m, char * elem_x)\
+  __attribute__((deprecated)); 
+void print_xyz(Location loc_m[], Location loc_x[], unsigned n)\
+  __attribute__((deprecated));
+
 void print_help();
 void print_version();
+void print_test_start();
 
 /* fractional coordinate generation */
-void generate_frac_coord(double frac_loc[][3], unsigned num,\
-		       int supercell[2][2]);
+void generate_frac_coord(double frac_loc[][3], const unsigned num,\
+			 const int supercell[2][2]);
 
 /* structure generation functions */
-int make_structure(double orig_lattice[3], int supercell[2][2],\
-		  int inversion, int randomize, unsigned layers,\
-		  AtomicSymbol elem_m, AtomicSymbol elem_x, int strained,\
-		  int strain_axis[3], int strain_min, int strain_max);
+int make_structure(const double orig_lattice[3], const int supercell[2][2],\
+		   const int inversion, const int randomize, const unsigned layers, \
+		   const AtomicSymbol elem_m, const AtomicSymbol elem_x,\
+		   const int strained, const int strain_axis[3], const int strain_min,\
+		   const int strain_max);
 
+/* additional functions used throughout the code */
 double get_lattice_vector_angle(const int a, const int b);
 
 double dtor(double deg) __attribute__ ((const));
 int atob(char a) __attribute__ ((pure));
+
+/* test suite related functions */
+void test_print_vasp_monolayer();
+void test_print_vasp_bulk();
+void test_print_xyz_monolayer();
+void test_print_xyz_bulk();
  
 #endif

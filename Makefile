@@ -24,6 +24,14 @@
 
 include makefile.include
 
+#############################################
+#            VERSION (DO NOT EDIT)          #
+#############################################
+#                                           #
+FLAGS_BASE += -DVERSION='"0.1.0-devel"'     #
+#                                           #
+#############################################
+
 #########################
 #   Local Directories   #
 #########################
@@ -44,14 +52,6 @@ CSUFFIX=.c
 BINC=$(CC)
 BINSUFFIX=$(CSUFFIX)
 BINFLAGS=$(CFLAGS)
-
-####################################
-#       VERSION (DO NOT EDIT)      #
-####################################
-#                                  #
-FLAGS_BASE += -DVERSION='"0.1.0"'  #
-#                                  #
-####################################
 
 OFLAG=$(OFLAG_DEBUG)
 #specific flags

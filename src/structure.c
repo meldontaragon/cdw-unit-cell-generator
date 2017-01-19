@@ -50,10 +50,10 @@
   strain_min - minimum percent strain (typically negative for compression)
   strain_max - maximum percent strain (typically positive for expansion)
  */
-int make_structure
-(double orig_lattice[3], int supercell[2][2], int inversion, int randomize,\
- unsigned layers, AtomicSymbol elem_m, AtomicSymbol elem_x,\
- int strained, int strain_axis[3], int strain_min, int strain_max)
+int make_structure\
+(const double orig_lattice[3], const int supercell[2][2], const int inversion,\
+ const int randomize, const unsigned layers, const AtomicSymbol elem_m, const AtomicSymbol elem_x,\
+ const int strained, const int strain_axis[3], const int strain_min, const int strain_max)
 {
   /* ******************************************
      NEEDED INFORMATION AND FORMAT
@@ -84,7 +84,7 @@ int make_structure
   double angle[3];
   int strain_start, strain_end, i, kk;
   double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
-  double unstrained_lattice[3] = {0,0,0};
+  double strained_lattice[3] = {0,0,0};
 
   /* various strings used for naming and file output */
   char name[100], sym_type[20], inv_type[20], s_el_m[5], s_el_x[5],\
@@ -95,14 +95,15 @@ int make_structure
   angle[1] = angle[0];
   angle[2] = 120.;
 
+  fprintf(stderr,"Supercell: (%d, %d), (%d, %d)\n",supercell[0][0],\
+	  supercell[0][1], supercell[1][0], supercell[1][1]);
+
   /*
     num = sqrt(a' * a') * sqrt(b' * b') / sqrt(a*a)
     where the a' and b' vectors are the supervectors
     defined by (xa, xb), (ya, yb) where a' = xa*a + xb*b
     and b' = ya*a + yb*b and sqrt(a*a)=sqrt(b*b)
-  */
 
-  /*
     since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
     (x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
   */
@@ -125,77 +126,56 @@ int make_structure
       atoms_x = malloc(sizeof(Location)*num*2);
     }
 
-printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
-       orig_lattice[0],orig_lattice[1],orig_lattice[2]);
- 
   /*  copy the orig lattice input to the unstrained_lattice variable */
-  unstrained_lattice[0] = orig_lattice[0];
-  unstrained_lattice[1] = orig_lattice[1];
-  unstrained_lattice[2] = orig_lattice[2];
-
-  printf("Unstrained lattice vectors: (%.4f, %.4f, %.4f)\n",\
-	 unstrained_lattice[0],unstrained_lattice[1],unstrained_lattice[2]);
+  strained_lattice[0] = orig_lattice[0];
+  strained_lattice[1] = orig_lattice[1];
+  strained_lattice[2] = orig_lattice[2];
 
   /* actual structure generation contained here */
   if (strained)
     {
-      printf("Adding strain\n");
       strain_end = strain_max;
       strain_start = strain_min;
     }
   else
     {
-      printf("Not strained\n");
       strain_start = 0;
       strain_end = 0;
     }
   
   for (i = strain_start; i <= strain_end; ++i)
     {
-      printf("Current strain: %d percent\n",i);
       /* delta value is 1.0 by default */
       delta_x = 1.0;
       delta_y = 1.0;
       delta_z = 1.0;
 
       if (strain_axis[0])
-	{
-	  printf("Straining in a\n");
 	  delta_x = (1.0) + i*0.01;
-	}
       if (strain_axis[1])
-	{
-	  printf("Straining in b\n");
 	  delta_y = (1.0) + i*0.01;
-	}
       if (strain_axis[2])
-	{
-	  printf("Straining in c\n");
 	  delta_z = (1.0) + i*0.01;
-	}
 
-      /* printf("orig_lattice[0]: %f\n", unstrained_lattice[0]); */
       /* calculate strained lattice parameters */
-      orig_lattice[0] = unstrained_lattice[0] * delta_x; 
-      orig_lattice[1] = unstrained_lattice[1] * delta_y; 
-      orig_lattice[2] = unstrained_lattice[2] * delta_z; 
+      strained_lattice[0] = orig_lattice[0] * delta_x; 
+      strained_lattice[1] = orig_lattice[1] * delta_y; 
+      strained_lattice[2] = orig_lattice[2] * delta_z; 
 
-      printf("Current lattice vectors: (%.4f, %.4f, %.4f)\n",\
-	     orig_lattice[0],orig_lattice[1],orig_lattice[2]);
-
-      /* printf(" new_lattice[0]: %f\n\n\n", orig_lattice[0]); */
       /* make the M and X sites */
-      make_m_site(atoms_m, num, orig_lattice, supercell, randomize, inversion, layers);
-      make_x_site(atoms_x, num, orig_lattice, supercell, inversion, layers);
+
+      fprintf(stderr, "num = %d\n", num);
+      make_m_site(atoms_m, num, strained_lattice, supercell, randomize, inversion, layers);
+      make_x_site(atoms_x, num, strained_lattice, supercell, inversion, layers);
 
       /* get the new lattice parameters */
-      lattice[0][0] = supercell[0][0]*unstrained_lattice[0]\
-	- 0.5*supercell[0][1]*unstrained_lattice[0];
-      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*unstrained_lattice[1];
+      lattice[0][0] = supercell[0][0]*orig_lattice[0]\
+	- 0.5*supercell[0][1]*orig_lattice[0];
+      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
 
-      lattice[1][0] = supercell[1][0]*unstrained_lattice[0]\
-	- 0.5*supercell[1][1]*unstrained_lattice[0];
-      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*unstrained_lattice[1];
+      lattice[1][0] = supercell[1][0]*orig_lattice[0]\
+	- 0.5*supercell[1][1]*orig_lattice[0];
+      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
 
       /* strain the super cell lattice parameters */
       lattice[0][0] *= delta_x;
@@ -212,12 +192,12 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
 	{
 	  if (inversion)
 	    {
-	      lattice[2][2] = unstrained_lattice[2];
+	      lattice[2][2] = orig_lattice[2];
 	      lattice[2][2] *= delta_z;
 	    }
 	  else
 	    {
-	      lattice[2][2] = unstrained_lattice[2];
+	      lattice[2][2] = orig_lattice[2];
 	      lattice[2][2] *= delta_z;
 	      num *= 2;
 	    }
@@ -228,7 +208,7 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
 	}
 
       /* debugging output
-      printf("Supercell lattice:\n");
+     fprintf(stderr"Supercell lattice:\n");
       for (kk = 0; kk < 3; kk++)
 	printf("%+.4f, %+.4f, %+.4f\n",\
 	       lattice[kk][0],lattice[kk][1], lattice[kk][2]);
