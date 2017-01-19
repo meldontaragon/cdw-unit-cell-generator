@@ -27,6 +27,12 @@
    as well as the help printed to terminal.
 ***********************************************************************/
 
+/* VERSION DO NOT EDIT */
+#ifndef VERSION
+#define VERSION "0.0.0"
+#endif
+/* VERSION DO NOT EDIT */
+
 #include "header.h"
 void printXYZ(Location locM[], Location locX[], unsigned n)
 {
@@ -79,7 +85,8 @@ void print_VASP_to_file(Location locM[], Location locX[], unsigned n,\
 
 void printHelp()
 {
-  printf("TMD CDW Unit Cell Generator Copyright (C) 2016-2017 David C. Miller\n");
+  printf("TMD CDW Unit Cell Generator %s\n",VERSION);
+  printf("Copyright (C) 2016-2017 David C. Miller\n");
   printf("Code written by David C. Miller (mill2723 at msu dot edu)\n");
   printf("\n");
   printf("This code is licensed under the GNU LGPL License\n");

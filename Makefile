@@ -45,6 +45,14 @@ BINC=$(CC)
 BINSUFFIX=$(CSUFFIX)
 BINFLAGS=$(CFLAGS)
 
+####################################
+#       VERSION (DO NOT EDIT)      #
+####################################
+#                                  #
+FLAGS_BASE += -DVERSION='"0.1.0"'  #
+#                                  #
+####################################
+
 OFLAG=$(OFLAG_DEBUG)
 #specific flags
 CFLAGS=$(CFLAGS_DEBUG)
