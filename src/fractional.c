@@ -1,4 +1,6 @@
 /*
+  Copyright (C) 2016-2017 David C. Miller
+
   This file is part of TMD CDW Unit Cell Generator
 
   TMD CDW Unit Cell Generatort is free software: you can redistribute it
@@ -29,7 +31,7 @@ void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
 {
   unsigned xmax = 0, ymax = 0, count = 0, ii = 0, jj = 0, kk = 0;
   double min_angle;
-  
+
   /* maximum x and y coordinates */
   xmax = (unsigned) ( abs(supercell[0][0]) + abs(supercell[1][0]) );
   ymax = (unsigned) ( abs(supercell[0][1]) + abs(supercell[1][1]) );
@@ -41,8 +43,8 @@ void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
     {
       for (jj = 0; jj < ymax; ++jj)
 	{
-	  if (count >= num) { break; }	  
-	  
+	  if (count >= num) { break; }
+
 	  if ( (ii == 0) && (jj == 0) )
 	    {
 	      /* first fraction coordinates are always at (0,0,0) */
@@ -57,18 +59,18 @@ void generateFracCoord(double frac_loc[][3], unsigned num, int supercell[2][2])
 	      /*
 		checks if the angle of the new fractional location lies in the region
 		where atoms are being added
-		 
+
 		this is determined by a minimum angle for the vector (there is no
 		distance requirement imposed, this is managed by xmax and ymax)
 	      */
 	      if( ( getLatticeVectorAngle((int) ii,(int) jj) - min_angle ) > -EPS )
 		{
-		  frac_loc[count][0] = ii; 
-		  frac_loc[count][1] = jj; 
+		  frac_loc[count][0] = ii;
+		  frac_loc[count][1] = jj;
 		  frac_loc[count][2] = 0;
   		  count++;
 		}
-	    }	  
+	    }
 	}
     }
   if (count < num)

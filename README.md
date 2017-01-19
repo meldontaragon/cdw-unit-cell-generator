@@ -173,4 +173,6 @@ output on your own.
 
 ### License
 
-This code is licensed under LGPLv3. See LICENSE for details.
+Copyright (C) 2016-2017 David C. Miller
+
+This code is licensed under LGPLv3. See LICENSE for details. 
