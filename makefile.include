@@ -32,7 +32,8 @@ CC=gcc
 #debug flags are used by default
 #use make final to use the final flags
 FLAGS_BASE=-I$(IDIR) -I$(SDIR) -Wall -Wextra -pedantic\
-	-Werror -Wno-error=unused-parameter -Wno-error=unused-variable
+	-Werror -Wno-error=unused-parameter -Wno-error=unused-variable\
+	-Wno-error=pedantic
 #-ansi
 OFLAG_DEBUG=-O0 -g3 -pg $(WARN_FLAG)
 #-fpack-struct=4

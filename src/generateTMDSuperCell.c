@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
     }
 
   fprintf(stdout,"Starting normal operation...\n");
-  make_structure(orig_lattice, supercell, inversion, randomize, layers,\
+  make_structure(orig_lattice, supercell, inversion, randomize, layers, \
 		elem_m, elem_x, strained, strain_axis, strain_min, strain_max);
   return 1;
 }

@@ -52,8 +52,9 @@
  */
 int make_structure\
 (const double orig_lattice[3], const int supercell[2][2], const int inversion,\
- const int randomize, const unsigned layers, const AtomicSymbol elem_m, const AtomicSymbol elem_x,\
- const int strained, const int strain_axis[3], const int strain_min, const int strain_max)
+ const int randomize, const unsigned layers, const AtomicSymbol elem_m,\
+ const AtomicSymbol elem_x, const int strained, const int strain_axis[3],\
+ const int strain_min, const int strain_max)
 {
   /* ******************************************
      NEEDED INFORMATION AND FORMAT
@@ -95,42 +96,6 @@ int make_structure\
   angle[1] = angle[0];
   angle[2] = 120.;
 
-  fprintf(stderr,"Supercell: (%d, %d), (%d, %d)\n",supercell[0][0],\
-	  supercell[0][1], supercell[1][0], supercell[1][1]);
-
-  /*
-    num = sqrt(a' * a') * sqrt(b' * b') / sqrt(a*a)
-    where the a' and b' vectors are the supervectors
-    defined by (xa, xb), (ya, yb) where a' = xa*a + xb*b
-    and b' = ya*a + yb*b and sqrt(a*a)=sqrt(b*b)
-
-    since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
-    (x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
-  */
-  num = (unsigned) ceil(sqrt(supercell[0][0]*supercell[0][0] \
-			     + supercell[0][1]*supercell[0][1] \
-			     - supercell[0][0]*supercell[0][1])	\
-			*sqrt(supercell[1][0]*supercell[1][0] \
-			      + supercell[1][1]*supercell[1][1]	\
-			      - supercell[1][0]*supercell[1][1]));
-
-  /* if 2H is used for a bilayer or bulk system then num is effectively doubled */
-  if (!(inversion) && !(layers == 1))
-    {
-      atoms_m = malloc(sizeof(Location)*num*2);
-      atoms_x = malloc(sizeof(Location)*num*4);
-    }
-  else
-    {
-      atoms_m = malloc(sizeof(Location)*num);
-      atoms_x = malloc(sizeof(Location)*num*2);
-    }
-
-  /*  copy the orig lattice input to the unstrained_lattice variable */
-  strained_lattice[0] = orig_lattice[0];
-  strained_lattice[1] = orig_lattice[1];
-  strained_lattice[2] = orig_lattice[2];
-
   /* actual structure generation contained here */
   if (strained)
     {
@@ -160,10 +125,37 @@ int make_structure\
       /* calculate strained lattice parameters */
       strained_lattice[0] = orig_lattice[0] * delta_x; 
       strained_lattice[1] = orig_lattice[1] * delta_y; 
-      strained_lattice[2] = orig_lattice[2] * delta_z; 
+      strained_lattice[2] = orig_lattice[2] * delta_z;
+      
+      /*
+	num = sqrt(a' * a') * sqrt(b' * b') / sqrt(a*a)
+	where the a' and b' vectors are the supervectors
+	defined by (xa, xb), (ya, yb) where a' = xa*a + xb*b
+	and b' = ya*a + yb*b and sqrt(a*a)=sqrt(b*b)
 
-      /* make the M and X sites */
+	since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
+	(x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
+      */
+      num = (unsigned) ceil(sqrt(supercell[0][0]*supercell[0][0] \
+				 + supercell[0][1]*supercell[0][1] \
+				 - supercell[0][0]*supercell[0][1])	\
+			    *sqrt(supercell[1][0]*supercell[1][0] \
+				  + supercell[1][1]*supercell[1][1]	\
+				  - supercell[1][0]*supercell[1][1]));
 
+      /* if 2H is used for a bilayer or bulk system then num is effectively doubled */
+      if (!(inversion) && !(layers == 1))
+	{
+	  atoms_m = malloc(sizeof(Location)*num*2);
+	  atoms_x = malloc(sizeof(Location)*num*4);
+	}
+      else
+	{
+	  atoms_m = malloc(sizeof(Location)*num);
+	  atoms_x = malloc(sizeof(Location)*num*2);
+	}
+
+      /* make the M and X sites (call the fractional sites internally) */
       fprintf(stderr, "num = %d\n", num);
       make_m_site(atoms_m, num, strained_lattice, supercell, randomize, inversion, layers);
       make_x_site(atoms_x, num, strained_lattice, supercell, inversion, layers);
@@ -184,6 +176,8 @@ int make_structure\
       lattice[1][0] *= delta_y;
       lattice[1][1] *= delta_y;
 
+      /* **AFTER THIS NUM IS NO LONGER REPRESENTATIVE OF 
+	 THE NUMBER OF FRACTIONAL SITES TO BE GENERATED** */
       if (layers == 1)
 	{
 	  lattice[2][2] = MONOLAYER_C_LAT;
@@ -275,11 +269,11 @@ int make_structure\
 
       /* print to file filename */
       print_vasp_to_file(atoms_m, atoms_x, num, lattice, name, s_el_m, s_el_x, filename);
+
+      /* clean up memory */
+      free (atoms_m);
+      free (atoms_x);
     }
-  
-  /* clean up memory */
-  free (atoms_m);
-  free (atoms_x);
   
   return 1;
 } /* int makeStructure(arrays...) */
