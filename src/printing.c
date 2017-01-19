@@ -34,7 +34,7 @@
 /* VERSION DO NOT EDIT */
 
 #include "header.h"
-void printXYZ(Location locM[], Location locX[], unsigned n)
+void print_xyz(Location loc_m[], Location loc_x[], unsigned n)
 {
   unsigned j;
   printf("%d\n",3*n);
@@ -43,15 +43,15 @@ void printXYZ(Location locM[], Location locX[], unsigned n)
   for (j = 0; j < n; j++)
     {
       printf("Ta        %.4f        %.4f        %.4f\n",\
-	     locM[j].x, locM[j].y,locM[j].z);
+	     loc_m[j].x, loc_m[j].y,loc_m[j].z);
       printf("S        %.4f        %.4f        %.4f\n",\
-	     locX[j].x, locX[j].y,locX[j].z);
+	     loc_x[j].x, loc_x[j].y,loc_x[j].z);
       printf("S        %.4f        %.4f        %.4f\n",\
-	     locX[j+n].x, locX[j+n].y,locX[j+n].z);
+	     loc_x[j+n].x, loc_x[j+n].y,loc_x[j+n].z);
     }
 }
 
-void print_VASP_to_file(Location locM[], Location locX[], unsigned n,\
+void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
 		   double lattice[3][3], char * name, char * elemM,\
 		   char * elemX, char * file_name) 
 {
@@ -75,15 +75,14 @@ void print_VASP_to_file(Location locM[], Location locX[], unsigned n,\
   /* print coordinates for metal ions followed by coordinates for the 
      chalcogen ions */
   for (i = 0; i < n; i++)   fprintf(fp,"        %.9f                %.9f                %.9f\n",\
-				    locM[i].x,locM[i].y,locM[i].z);
-
+				    loc_m[i].x, loc_m[i].y, loc_m[i].z);
   for (i = 0; i < 2*n; i++) fprintf(fp,"        %.9f                %.9f                %.9f\n",\
-				    locX[i].x,locX[i].y,locX[i].z);
+				    loc_x[i].x, loc_x[i].y, loc_x[i].z);
 
   fclose(fp);
 }
 
-void printHelp()
+void print_help()
 {
   printf("TMD CDW Unit Cell Generator %s\n",VERSION);
   printf("Copyright (C) 2016-2017 David C. Miller\n");
