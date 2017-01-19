@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
   if (argc <= 11)
     {
       /* printf("Not the correct number of parameters\n"); */
-      printHelp();
+      print_help();
       return -1;
     }
 
