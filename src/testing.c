@@ -28,16 +28,16 @@
    working as expected and desired
 *********************************************************************/
 #include "header.h"
-void __test_print_vasp(unsigned layers);
+void __test_print_vasp(const unsigned layers);
 
 void __test_print_vasp(const unsigned layers)
 {
-  const double orig_lattice[3] = {5, 5, 10};
-  const int supercell[2][2] = { {1,0}, {0,1} };
+  double orig_lattice[3] = {5, 5, 10};
+  int supercell[2][2] = { {1,0}, {0,1} };
   const AtomicSymbol elem_m = Ca, elem_x = Ne;
 
   const int strain = 1;
-  const int strain_logic[3] = {1,1,0};
+  int strain_logic[3] = {1,1,0};
 
   /* test output for strain with -1% and 1% along with default unstrained file*/
   make_structure(orig_lattice, supercell, 1, 0, layers, elem_m, elem_x,\
