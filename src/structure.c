@@ -51,9 +51,9 @@
   strain_max - maximum percent strain (typically positive for expansion)
  */
 int make_structure\
-(const double orig_lattice[3], const int supercell[2][2], const int inversion,\
+(double orig_lattice[3], int supercell[2][2], const int inversion, \
  const int randomize, const unsigned layers, const AtomicSymbol elem_m,\
- const AtomicSymbol elem_x, const int strained, const int strain_axis[3],\
+ const AtomicSymbol elem_x, const int strained, int strain_axis[3],\
  const int strain_min, const int strain_max)
 {
   /* ******************************************

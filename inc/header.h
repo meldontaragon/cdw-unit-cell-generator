@@ -53,11 +53,11 @@ static const double PI = 3.1415926535;
 static const double EPS = 10E-5;
 
 /* make sites */
-void make_m_site(Location atoms_m[], const unsigned num, const double orig_lattice[3],\
-		 const int supercell[2][2], const int randomize, const int inversion,\
+void make_m_site(Location atoms_m[], const unsigned num, double orig_lattice[3],\
+		 int supercell[2][2], const int randomize, const int inversion,\
 		 const unsigned layers);
-void make_x_site(Location atomsX[], const unsigned num, const double orig_lattice[3],\
-		 const int supercell[2][2], const int inversion, const unsigned layers);
+void make_x_site(Location atomsX[], const unsigned num, double orig_lattice[3],\
+		 int supercell[2][2], const int inversion, const unsigned layers);
 
 /* output */
 void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
@@ -80,13 +80,13 @@ void print_test_start();
 
 /* fractional coordinate generation */
 void generate_frac_coord(double frac_loc[][3], const unsigned num,\
-			 const int supercell[2][2]);
+			 int supercell[2][2]);
 
 /* structure generation functions */
-int make_structure(const double orig_lattice[3], const int supercell[2][2],\
+int make_structure(double orig_lattice[3], int supercell[2][2],\
 		   const int inversion, const int randomize, const unsigned layers, \
 		   const AtomicSymbol elem_m, const AtomicSymbol elem_x,\
-		   const int strained, const int strain_axis[3], const int strain_min,\
+		   const int strained, int strain_axis[3], const int strain_min, \
 		   const int strain_max);
 
 /* additional functions used throughout the code */

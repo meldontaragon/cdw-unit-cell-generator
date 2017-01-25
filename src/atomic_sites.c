@@ -48,8 +48,8 @@
   which holds an x, y, and z coordinate along with the atomic symbol) size num
  */
 void make_m_site\
-(Location atoms_m[], const unsigned num, const double orig_lattice[3],\
- const int supercell[2][2], const int randomize, const int inversion,\
+(Location atoms_m[], const unsigned num, double orig_lattice[3],\
+ int supercell[2][2], const int randomize, const int inversion,\
  const unsigned layers)
 {
   /* used for randomization of coordinates */
@@ -117,8 +117,8 @@ void make_m_site\
 }/* end of makeMSite(...) */
 
 void make_x_site
-(Location atomsX[], const unsigned num, const double orig_lattice[3],\
- const int supercell[2][2], const int inversion, const unsigned layers)
+(Location atomsX[], const unsigned num, double orig_lattice[3],\
+ int supercell[2][2], const int inversion, const unsigned layers)
 {
   /* correction vector for displacement of X atoms relative to M sites */
   double correction[2][2];
