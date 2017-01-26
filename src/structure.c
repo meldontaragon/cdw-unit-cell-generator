@@ -89,7 +89,7 @@ int make_structure\
 
   /* various strings used for naming and file output */
   char name[100], sym_type[20], inv_type[20], s_el_m[5], s_el_x[5],\
-    layer_type[40], filename[100], cdw_type[40];
+    layer_type[40], filename[100], cdw_type[40], strain_name[20];
 
   /* forces hexagonal unit cell */
   angle[0] = 90.;
@@ -231,7 +231,7 @@ int make_structure\
       /*
 	the file name should match up with the standard I've started using:
 	name = $INV_TYPE-$ELM$ELX2-$CDW_TYPE-Monolayer/Bulk/Bilayer-HS/Rand.vasp
-	strain_name = Strain_PERC--$NAME
+	strain_name = Strain_PERC--Strain_TYPE-$NAME
 	
 	IMPORTANT
 	Here CDW_TYPE is *not* as easily defined from the input parameters
@@ -252,16 +252,34 @@ int make_structure\
 	sprintf(cdw_type,"__%d,%d_x_%d,%d__",\
 		supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
 
+      /* types of strain:
+	 - uniaxial (single axis being strained)
+	 - biaxial (two axes strained equally)
+	 - other (anything else) */
+
+      if (strain_axis[0]*strain_axis[1]*strain_axis[2] == 1)
+	strcpy(strain_name,"other");
+      else if (strain_axis[0]*strain_axis[1] == 1)
+	strcpy(strain_name,"biaxial");
+      else if (strain_axis[0]*strain_axis[2] == 1)
+	strcpy(strain_name,"biaxial");
+      else if (strain_axis[1]*strain_axis[2] == 1)
+	strcpy(strain_name,"biaxial");
+      else if ( (strain_axis[0]+strain_axis[1]+strain_axis[2]) > 0)
+	strcpy(strain_name,"uniaxial");
+      else
+	strcpy(strain_name,"none");
+      
       /* create structure names and file names */
       if (i != 0)
-	sprintf(name,"strain_%+d--%s-%s%s2-%s %s %s",\
-		i,inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
+	sprintf(name,"strain_%+d--%s-%s-%s%s2-%s %s %s",\
+		i,strain_name,inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
       else
 	sprintf(name,"%s-%s%s2-%s %s %s",
 		inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
     
       if (i != 0)
-	sprintf(filename,"Strain_%+d--%s-%s%s2-%s-%s-%s.vasp",i,inv_type,\
+	sprintf(filename,"Strain_%+d--%s-%s-%s%s2-%s-%s-%s.vasp",i,strain_name,inv_type, \
 		s_el_m, s_el_x, cdw_type, layer_type, sym_type);
       else
 	sprintf(filename,"%s-%s%s2-%s-%s-%s.vasp",inv_type, s_el_m, s_el_x,\
