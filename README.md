@@ -11,6 +11,7 @@ Department of Physics and Astronomy
 ## Quick Install:
  
 Try the following:
+
 + change INSTALLDIR (typically a folder in PATH like /usr/local/bin)
   - this is defined in makefile.include or can be passed through make 
 + `make install`
@@ -18,6 +19,7 @@ Try the following:
   the INSTALLDIR 
 
 Other options:
+
 + `make dir`
   - run this or manually make the necessary directories (./bin and ./obj) 
 + `make final`
@@ -31,8 +33,8 @@ Other options:
 + `make uninstall`
   - removes binary files from INSTALLDIR (whether linked or copied)
 
-You may need to run any of the above as root depending on 
-local folder privileges.
+You may need to run any of the above as root depending on local folder
+privileges.
 
 ## Information
 
@@ -157,7 +159,13 @@ delete all built files including the binary files.
 ### Git repository
 
 This code is available at:
-https://github.com/david-c-miller/cdw-unit-cell-generator.git
+[repository](https://github.com/david-c-miller/cdw-unit-cell-generator)
+
+For update to date releases see:
+[releases](https://github.com/david-c-miller/cdw-unit-cell-generator/releases)
+
+For other information go to:
+[cdw-unit-cell-generator](https://david-c-miller.github.io/cdw-unit-cell-generator/)
 
 ### Disclaimer
 

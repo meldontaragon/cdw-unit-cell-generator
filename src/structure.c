@@ -50,10 +50,11 @@
   strain_min - minimum percent strain (typically negative for compression)
   strain_max - maximum percent strain (typically positive for expansion)
  */
-int make_structure
-(double orig_lattice[3], int supercell[2][2], int inversion, int randomize,\
- unsigned layers, AtomicSymbol elem_m, AtomicSymbol elem_x,\
- int strained, int strain_axis[3], int strain_min, int strain_max)
+int make_structure\
+(double orig_lattice[3], int supercell[2][2], const int inversion, \
+ const int randomize, const unsigned layers, const AtomicSymbol elem_m,\
+ const AtomicSymbol elem_x, const int strained, int strain_axis[3],\
+ const int strain_min, const int strain_max)
 {
   /* ******************************************
      NEEDED INFORMATION AND FORMAT
@@ -84,118 +85,89 @@ int make_structure
   double angle[3];
   int strain_start, strain_end, i, kk;
   double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
-  double unstrained_lattice[3] = {0,0,0};
+  double strained_lattice[3] = {0,0,0};
 
   /* various strings used for naming and file output */
   char name[100], sym_type[20], inv_type[20], s_el_m[5], s_el_x[5],\
-    layer_type[40], filename[100], cdw_type[40];
+    layer_type[40], filename[100], cdw_type[40], strain_name[20];
 
   /* forces hexagonal unit cell */
   angle[0] = 90.;
   angle[1] = angle[0];
   angle[2] = 120.;
 
-  /*
-    num = sqrt(a' * a') * sqrt(b' * b') / sqrt(a*a)
-    where the a' and b' vectors are the supervectors
-    defined by (xa, xb), (ya, yb) where a' = xa*a + xb*b
-    and b' = ya*a + yb*b and sqrt(a*a)=sqrt(b*b)
-  */
-
-  /*
-    since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
-    (x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
-  */
-  num = (unsigned) ceil(sqrt(supercell[0][0]*supercell[0][0] \
-			     + supercell[0][1]*supercell[0][1] \
-			     - supercell[0][0]*supercell[0][1])	\
-			*sqrt(supercell[1][0]*supercell[1][0] \
-			      + supercell[1][1]*supercell[1][1]	\
-			      - supercell[1][0]*supercell[1][1]));
-
-  /* if 2H is used for a bilayer or bulk system then num is effectively doubled */
-  if (!(inversion) && !(layers == 1))
-    {
-      atoms_m = malloc(sizeof(Location)*num*2);
-      atoms_x = malloc(sizeof(Location)*num*4);
-    }
-  else
-    {
-      atoms_m = malloc(sizeof(Location)*num);
-      atoms_x = malloc(sizeof(Location)*num*2);
-    }
-
-printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
-       orig_lattice[0],orig_lattice[1],orig_lattice[2]);
- 
-  /*  copy the orig lattice input to the unstrained_lattice variable */
-  unstrained_lattice[0] = orig_lattice[0];
-  unstrained_lattice[1] = orig_lattice[1];
-  unstrained_lattice[2] = orig_lattice[2];
-
-  printf("Unstrained lattice vectors: (%.4f, %.4f, %.4f)\n",\
-	 unstrained_lattice[0],unstrained_lattice[1],unstrained_lattice[2]);
-
   /* actual structure generation contained here */
   if (strained)
     {
-      printf("Adding strain\n");
       strain_end = strain_max;
       strain_start = strain_min;
     }
   else
     {
-      printf("Not strained\n");
       strain_start = 0;
       strain_end = 0;
     }
   
   for (i = strain_start; i <= strain_end; ++i)
     {
-      printf("Current strain: %d percent\n",i);
       /* delta value is 1.0 by default */
       delta_x = 1.0;
       delta_y = 1.0;
       delta_z = 1.0;
 
       if (strain_axis[0])
-	{
-	  printf("Straining in a\n");
 	  delta_x = (1.0) + i*0.01;
-	}
       if (strain_axis[1])
-	{
-	  printf("Straining in b\n");
 	  delta_y = (1.0) + i*0.01;
-	}
       if (strain_axis[2])
-	{
-	  printf("Straining in c\n");
 	  delta_z = (1.0) + i*0.01;
+
+      /* calculate strained lattice parameters */
+      strained_lattice[0] = orig_lattice[0] * delta_x; 
+      strained_lattice[1] = orig_lattice[1] * delta_y; 
+      strained_lattice[2] = orig_lattice[2] * delta_z;
+      
+      /*
+	num = sqrt(a' * a') * sqrt(b' * b') / sqrt(a*a)
+	where the a' and b' vectors are the supervectors
+	defined by (xa, xb), (ya, yb) where a' = xa*a + xb*b
+	and b' = ya*a + yb*b and sqrt(a*a)=sqrt(b*b)
+
+	since a*b = (1/2)*|a|*2 for hexagonal unit cells the 
+	(x+y)^2 = x^2+y^2+2xy ---> x^2+y^2+|x||y| 
+      */
+      num = (unsigned) ceil(sqrt(supercell[0][0]*supercell[0][0] \
+				 + supercell[0][1]*supercell[0][1] \
+				 - supercell[0][0]*supercell[0][1])	\
+			    *sqrt(supercell[1][0]*supercell[1][0] \
+				  + supercell[1][1]*supercell[1][1]	\
+				  - supercell[1][0]*supercell[1][1]));
+
+      /* if 2H is used for a bilayer or bulk system then num is effectively doubled */
+      if (!(inversion) && !(layers == 1))
+	{
+	  atoms_m = malloc(sizeof(Location)*num*2);
+	  atoms_x = malloc(sizeof(Location)*num*4);
+	}
+      else
+	{
+	  atoms_m = malloc(sizeof(Location)*num);
+	  atoms_x = malloc(sizeof(Location)*num*2);
 	}
 
-      /* printf("orig_lattice[0]: %f\n", unstrained_lattice[0]); */
-      /* calculate strained lattice parameters */
-      orig_lattice[0] = unstrained_lattice[0] * delta_x; 
-      orig_lattice[1] = unstrained_lattice[1] * delta_y; 
-      orig_lattice[2] = unstrained_lattice[2] * delta_z; 
-
-      printf("Current lattice vectors: (%.4f, %.4f, %.4f)\n",\
-	     orig_lattice[0],orig_lattice[1],orig_lattice[2]);
-
-      /* printf(" new_lattice[0]: %f\n\n\n", orig_lattice[0]); */
-      /* make the M and X sites */
-      make_m_site(atoms_m, num, orig_lattice, supercell, randomize, inversion, layers);
-      make_x_site(atoms_x, num, orig_lattice, supercell, inversion, layers);
+      /* make the M and X sites (call the fractional sites internally) */
+      fprintf(stderr, "num = %d\n", num);
+      make_m_site(atoms_m, num, strained_lattice, supercell, randomize, inversion, layers);
+      make_x_site(atoms_x, num, strained_lattice, supercell, inversion, layers);
 
       /* get the new lattice parameters */
-      lattice[0][0] = supercell[0][0]*unstrained_lattice[0]\
-	- 0.5*supercell[0][1]*unstrained_lattice[0];
-      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*unstrained_lattice[1];
+      lattice[0][0] = supercell[0][0]*orig_lattice[0]\
+	- 0.5*supercell[0][1]*orig_lattice[0];
+      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
 
-      lattice[1][0] = supercell[1][0]*unstrained_lattice[0]\
-	- 0.5*supercell[1][1]*unstrained_lattice[0];
-      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*unstrained_lattice[1];
+      lattice[1][0] = supercell[1][0]*orig_lattice[0]\
+	- 0.5*supercell[1][1]*orig_lattice[0];
+      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
 
       /* strain the super cell lattice parameters */
       lattice[0][0] *= delta_x;
@@ -204,6 +176,8 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
       lattice[1][0] *= delta_y;
       lattice[1][1] *= delta_y;
 
+      /* **AFTER THIS NUM IS NO LONGER REPRESENTATIVE OF 
+	 THE NUMBER OF FRACTIONAL SITES TO BE GENERATED** */
       if (layers == 1)
 	{
 	  lattice[2][2] = MONOLAYER_C_LAT;
@@ -212,12 +186,12 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
 	{
 	  if (inversion)
 	    {
-	      lattice[2][2] = unstrained_lattice[2];
+	      lattice[2][2] = orig_lattice[2];
 	      lattice[2][2] *= delta_z;
 	    }
 	  else
 	    {
-	      lattice[2][2] = unstrained_lattice[2];
+	      lattice[2][2] = orig_lattice[2];
 	      lattice[2][2] *= delta_z;
 	      num *= 2;
 	    }
@@ -228,7 +202,7 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
 	}
 
       /* debugging output
-      printf("Supercell lattice:\n");
+     fprintf(stderr"Supercell lattice:\n");
       for (kk = 0; kk < 3; kk++)
 	printf("%+.4f, %+.4f, %+.4f\n",\
 	       lattice[kk][0],lattice[kk][1], lattice[kk][2]);
@@ -257,7 +231,7 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
       /*
 	the file name should match up with the standard I've started using:
 	name = $INV_TYPE-$ELM$ELX2-$CDW_TYPE-Monolayer/Bulk/Bilayer-HS/Rand.vasp
-	strain_name = Strain_PERC--$NAME
+	strain_name = Strain_PERC--Strain_TYPE-$NAME
 	
 	IMPORTANT
 	Here CDW_TYPE is *not* as easily defined from the input parameters
@@ -278,16 +252,34 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
 	sprintf(cdw_type,"__%d,%d_x_%d,%d__",\
 		supercell[0][0],supercell[0][1],supercell[1][0],supercell[1][1]);
 
+      /* types of strain:
+	 - uniaxial (single axis being strained)
+	 - biaxial (two axes strained equally)
+	 - other (anything else) */
+
+      if (strain_axis[0]*strain_axis[1]*strain_axis[2] == 1)
+	strcpy(strain_name,"other");
+      else if (strain_axis[0]*strain_axis[1] == 1)
+	strcpy(strain_name,"biaxial");
+      else if (strain_axis[0]*strain_axis[2] == 1)
+	strcpy(strain_name,"biaxial");
+      else if (strain_axis[1]*strain_axis[2] == 1)
+	strcpy(strain_name,"biaxial");
+      else if ( (strain_axis[0]+strain_axis[1]+strain_axis[2]) > 0)
+	strcpy(strain_name,"uniaxial");
+      else
+	strcpy(strain_name,"none");
+      
       /* create structure names and file names */
       if (i != 0)
-	sprintf(name,"strain_%+d--%s-%s%s2-%s %s %s",\
-		i,inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
+	sprintf(name,"strain_%+d--%s-%s-%s%s2-%s %s %s",\
+		i,strain_name,inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
       else
 	sprintf(name,"%s-%s%s2-%s %s %s",
 		inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type);
     
       if (i != 0)
-	sprintf(filename,"Strain_%+d--%s-%s%s2-%s-%s-%s.vasp",i,inv_type,\
+	sprintf(filename,"Strain_%+d--%s-%s-%s%s2-%s-%s-%s.vasp",i,strain_name,inv_type, \
 		s_el_m, s_el_x, cdw_type, layer_type, sym_type);
       else
 	sprintf(filename,"%s-%s%s2-%s-%s-%s.vasp",inv_type, s_el_m, s_el_x,\
@@ -295,11 +287,11 @@ printf("Original lattice vectors: (%.4f, %.4f, %.4f)\n",\
 
       /* print to file filename */
       print_vasp_to_file(atoms_m, atoms_x, num, lattice, name, s_el_m, s_el_x, filename);
+
+      /* clean up memory */
+      free (atoms_m);
+      free (atoms_x);
     }
-  
-  /* clean up memory */
-  free (atoms_m);
-  free (atoms_x);
   
   return 1;
 } /* int makeStructure(arrays...) */
