@@ -28,7 +28,7 @@ include makefile.include
 #            VERSION (DO NOT EDIT)          #
 #############################################
 #                                           #
-FLAGS_BASE += -DVERSION='"0.2.0"'           #
+FLAGS_BASE += -DVERSION='"0.3.0-devel"'           #
 #                                           #
 #############################################
 
