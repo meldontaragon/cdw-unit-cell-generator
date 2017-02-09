@@ -84,7 +84,7 @@ GCC_FLAGS=\
 #library include flags
 LDFLAGS= -lm
 
-CFLAGS_BASE=-std=c90
+CFLAGS_BASE=-std=c99
 CFLAGS_DEBUG=$(CFLAGS_BASE)
 CFLAGS_FINAL=$(CFLAGS_BASE)
 
