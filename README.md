@@ -80,20 +80,11 @@ super-cell size. These describe how the super-cell is constructed in terms of
 the original a and b lattice parameters (where b is at 120 degrees to a for the
 hexagonal primitive cell). This allows for not only typical super cells. For
 example a 3x3 super cell would be (3,0) x (0,3). More complex cells like the
-Star of David distortion in TaS2 are also possible where the \sqrt(13)x\sqrt(13)
+Star of David distortion in TaS2 are also possible where the $\sqrt{13}x\sqrt{13}$
 cell is given by (4,1) x (-1,3) which results in the proper angle between the
 super cell and the primitive cell.
 
-### Bugs
 
-Please report bugs to me (`mill2723 at msu dot edu`) with the subject "TMD CDW
-Coordinate Generator - Bug" and a description of the relevant information about
-how to replicate the bug. Please include: the program being run, version
-information, an attached input and output file (if possible), the results of
-stdout and stderr, and a description of what you expected. 
-
-I will try to take a look at it as soon as possible and get back to you with a
-fix or a patch. 
 
 ### Compiling and Installing
 
@@ -161,10 +152,16 @@ For other information go to:
 Please reports all bugs in the GitHub
 [Issues](https://github.com/david-c-miller/cdw-unit-cell-generator/issues)
 section. This way others can view the bugs. If there is no response there you
-can try sending me an email with the subject 'Bug - CDW Unit Cell Generator'
-along with a thorough description of the bug. Please attached the output files
-and the full output of sdtout and stderr along with any other potentially useful
-information.
+can try sending me an email with the subject "Bug - CDW Unit Cell Generator"
+along with a thorough description of the bug. Please include the following:
++ output files
++ full printout of stdout and stderr
++ version
++ any other potentially useful information
++ description of what you expected and what went wrong
+
+I will try to take a look at it as soon as possible and get back to you with a
+fix or a patch.
 
 ### Disclaimer
 
