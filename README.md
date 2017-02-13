@@ -12,29 +12,21 @@ Department of Physics and Astronomy
  
 Try the following:
 
-+ change INSTALLDIR (typically a folder in PATH like /usr/local/bin)
-  - this is defined in makefile.include or can be passed through make 
++ `./configure`
++ `make`
 + `make install`
-  - this will run `make reset`, `make all`, and then install the binary files in
-  the INSTALLDIR 
 
 Other options:
 
-+ `make dir`
-  - run this or manually make the necessary directories (./bin and ./obj) 
-+ `make final`
-  - final binary files will be in ./bin
-+ `make link`
-  - will create symbolic links in INSTALLDIR for the binary files
-+ `make all`
-  - will make binary files using the debug optimization options (for distributed
-  versions there is a chance that `make all` runs `make final` and `make debug`
-  runs this case) 
++ `make debug`
+  - runs make with '-O0' optimization flag and '-pg -g3' debug flags
++ `make optim`
+  - runs make with '-O3' optimization flag
 + `make uninstall`
-  - removes binary files from INSTALLDIR (whether linked or copied)
+  - removes binary files from install directory
 
 You may need to run any of the above as root depending on local folder
-privileges.
+privileges. Additonally, see `./configure --help` for more options.
 
 ## Information
 
@@ -54,32 +46,34 @@ Use of this program involves calling the binary and giving it all the arguments
 necessary for output. The order and style of inputs is given in the help for the
 program (just call the binary without any arguments). They are also given below:
 
-All options below must be specified in the following order:
+All of the options in the first section below must be specified in the following
+order: 
 
-	1.  Lattice parameter a (in Angstroms)
-	2.  Lattice parameter c (in Angstroms)
-	3.  Super cell length a'
-	4.  Super cell length a''
-	5.  Super cell length b'
-	6.  Super cell length b''
-	7.  Layers (Bulk = 0, Monolayer = 1)
-	8.  1T (T) or 2H (F)
-	9.  Randomize coordinates (T/F)
-	10. Element M (use atomic number)
-	11. Element X (use atomic number)
+       1. Lattice parameter a (in Angstroms)
+       2. Lattice parameter c (in Angstroms)
+       3. Super cell length a'
+       4. Super cell length a''
+       5. Super cell length b'
+       6. Super cell length b''
+       7. Layers (Bulk = 0, Monolayer = 1)
+       8. 1T (T) or 2H (F)
+       9. Randomize coordinates (T/F)
+       10. Element M (use atomic number)
+       11. Element X (use atomic number)
 
-The following options are optional and can be given after the options above:
+The following options are not required but allow generation of additional unit
+cells with strain added along different axes:
 
-	12. Logical for Strain (T/F)
-	13. Strain a axis (T/F)
-	14. Strain b axis (T/F)
-	15. Strain c axis (T/F)
+      12. Logical for Strain (T/F)
+      13. Strain a axis (T/F)
+      14. Strain b axis (T/F)
+      15. Strain c axis (T/F)
 
 In addition to those options above, the following two options can be added after
-to specify the amount of strain: 
-
-       16. Minimum strain (%)
-       17. Maximum strain (%)
+to specify the amount of strain:
+   
+      16. Minimum strain (%)
+      17. Maximum strain (%)
 
 The a', a'', b', and b'' parameters are the two-vectors that specify the
 super-cell size. These describe how the super-cell is constructed in terms of
@@ -104,7 +98,7 @@ fix or a patch.
 ### Compiling and Installing
 
 This program was designed to be compiled with the GNU C Compiler (gcc) and GNU
-Make. It can also use the clang processor. It also uses some simple bash
+Make. Additionally  It can also use the clang processor. It also uses some simple bash
 commands. It *should* work on any Linux/UNIX system that can meet these
 requirements but I can offer no guarantees. I suspect (but have not tested) that
 this could be compiled on Cygwin or any other system with a C compiler if one so
@@ -115,64 +109,72 @@ and ./inc).
 
 Currently I have used this on Ubuntu 16.04, and CentOS 6.6.
 
-Dependencies:
+Dependencies (with earliest tested version):
 
-+ GNU gcc 4.4.7 **or** Clang 3.5.2
-+ GNU Make 3.81 (again, this is what I have run it with but I suspect it would
-work with an earlier version) 
-+ GNU bash 4.1.2 (same as above)
++ GNU gcc 4.6.4
++ GNU Make 4.1
++ GNU bash 4.1.2 
++ GNU automake 1.15
++ GNU autoconf 2.69
 
-Also, this does compile with the C90 ISO standards. This includes using the gcc
-`-ansi` option. If you wish to compile without this dependency there should be
+Also, this does compile with the C99 ISO standards. This includes using the gcc
+`-std=c99` option. If you wish to compile without this dependency there should be
 no problems. This is mostly to ensure better portability. Additionally, one may
-wish to remove the `WARN_FLAG` variable from the makefile or at least turnoff
-`-Werror`. 
+wish to remove the `WARN_FLAG` variable from the makefile.
 
 Also, the code was written on an x64 system but there shouldn't be many
 dependencies if any. If you do compile and run this code on a widely different
 system (or perhaps just a very popular system) than what has been described
 please let me know so I can add it to this document.
 
+It should be possible to compile this code with older version of gcc or with
+Clang by removing certain warning flags.
+
 To install:
 
-(a) Modify the makefile.include file to match your desired settings. This may
-include changing the compiler, flags, install directory, or programs to be
-compiled. Again, I can make no guareentees about the operation of the program
-without using the default settings on a system that it has been tested on.
-
+(a) Run `./configure` with any additonal options (see `./configure --help` for
+details). Use `--prefix=/path/to/install/root` to change the root directory for
+the install. By default `make install` will install the binary file to
+'/usr/local/bin'.
 (b) Run `make`
-
 (c) Assuming everything went smoothly run `make install` (you may need to run
-this as root or use sudo depending on the installation directory). I was also
-verify that there is nothing in the install directory with an identical name to
-one of the binaries being added. The makefile *will* overwrite it.
+this as root or use sudo depending on the installation directory). 
 
 - To uninstall simply run `make uninstall`
-- The install script only makes a link from the binary directory to the bin/
-  directory for the local compilation. Thus, if you recompile, there is no need
-  to re-install. If you would rather the binary files are copied, use `make
-  final`  
 
-Other: `make clean` will delete any extraneous files and `make reset` will
-delete all built files including the binary files.
+Other: `make mostlyclean` will delete any extraneous files while `make clean`
+will remove all files generated by `make`
 
 ### Git repository
 
 This code is available at:
 [repository](https://github.com/david-c-miller/cdw-unit-cell-generator)
 
-For update to date releases see:
+For releases see:
 [releases](https://github.com/david-c-miller/cdw-unit-cell-generator/releases)
 
 For other information go to:
 [cdw-unit-cell-generator](https://david-c-miller.github.io/cdw-unit-cell-generator/)
+
+### Bug Reports
+
+Please reports all bugs in the GitHub
+[Issues](https://github.com/david-c-miller/cdw-unit-cell-generator/issues)
+section. This way others can view the bugs. If there is no response there you
+can try sending me an email with the subject 'Bug - CDW Unit Cell Generator'
+along with a thorough description of the bug. Please attached the output files
+and the full output of sdtout and stderr along with any other potentially useful
+information.
 
 ### Disclaimer
 
 I wrote this to be a useful program for computational work done with VASP. There
 are other tools out there as well and I cannot promise compatability with them
 or that my code will produce identical results. Please verify the results and
-output on your own. 
+output on your own. Additionally, this project is partially done in my free time
+so I make no guarantees about the time line for fixes or additional
+features. Likely the best way to fix something is to modify the code yourself
+and make a pull request.
 
 ### License
 
