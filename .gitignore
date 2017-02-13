@@ -1,32 +1,27 @@
+*~
+*.tar.gz
+
 # Compiled Object files
-*.slo
-*.lo
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
-
+# Binary related files
+gmon.out
 bin/*
-test-output/*
+
+# autoconf/automake files
+.deps
+.dirstamp
+aclocal.m4
+autom4te.cache
+config.log
+config.status
+compile
+configure
+depcomp
+install-sh
+INSTALL
+Makefile
+Makefile.in
+missing
+

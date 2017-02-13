@@ -95,6 +95,8 @@ double get_lattice_vector_angle(const int a, const int b);
 double dtor(double deg) __attribute__ ((const));
 int atob(char a) __attribute__ ((pure));
 
+int get_sign(const double value) __attribute__((const));
+
 /* test suite related functions */
 void test_print_vasp_monolayer();
 void test_print_vasp_bulk();

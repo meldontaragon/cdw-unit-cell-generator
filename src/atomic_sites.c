@@ -55,7 +55,9 @@ void make_m_site\
   /* used for randomization of coordinates */
   double r1 = 0, r2 = 0;
   /* scale of randomization (default is 3%) */
-  double scale = orig_lattice[0] * 0.03;
+  double min_scale = orig_lattice[0] * 0.01;
+  double max_scale = orig_lattice[0] * 0.04;
+  int sign = 1;
 
   unsigned ii;
 
@@ -72,11 +74,19 @@ void make_m_site\
       if (randomize)
 	{
 	  /* 
-	     generates are random double between -1.0 and 1.0 and scales it
-	     using the scale variable (default 3%
+	     generates a random value in [-b,-a] U [a,b] where a is a
+	     minimum scaling and b is a maximum scaling
 	  */
-	  r1 = (((1.0*rand()/RAND_MAX)*2.0)-1.0)*scale;
-	  r2 = (((1.0*rand()/RAND_MAX)*2.0)-1.0)*scale;
+
+	  /* first we get a value between min_scale and max_scale */
+	  r1 = ( (1.0*rand()/RAND_MAX)*(max_scale-min_scale) ) + min_scale;
+	  r2 = ( (1.0*rand()/RAND_MAX)*(max_scale-min_scale) ) + min_scale;
+
+	  /* gets a random value of either -1 or 1 to switch r1 and r2 */
+	  sign = get_sign(((1.0*rand()/RAND_MAX)-0.5));
+	  r1 = r1*sign;
+	  sign = get_sign(((1.0*rand()/RAND_MAX)-0.5));
+	  r2 = r2*sign;
 	}
       
       /* 

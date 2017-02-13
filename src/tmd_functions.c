@@ -48,3 +48,11 @@ int atob(char a)
   else if ( (a == 'f') || (a == 'F') ) return 0;
   else exit(-1);
 }
+
+int get_sign(const double value)
+{
+  if (value < 0)
+    return -1;
+  else
+    return 1;
+} 

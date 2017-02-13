@@ -27,33 +27,46 @@
    as well as the help printed to terminal.
 ***********************************************************************/
 
-/* VERSION DO NOT EDIT */
+/* DO NOT EDIT */
+/* VERSION */ 
 #ifndef VERSION
-#define VERSION "0.0.0-error"
+#define VERSION "version-error"
 #endif
-/* VERSION DO NOT EDIT */
+/* PACKAGE NAME */
+#ifndef PACKAGE_NAME
+#define PACKAGE_NAME "TMD Unit Cell Generator"
+#endif
+/* URL */
+#ifndef PACKAGE_URL
+#define PACKAGE_URL "https://github.com/david-c-miller/cdw-unit-cell-generator"
+#endif
+/* BUG REPORT */
+#ifndef PACKAGE_BUGREPORT
+#define PACKAGE_BUGREPORT "https://github.com/david-c-miller/cdw-unit-cell-generator/issues"
+#endif
+/* DO NOT EDIT */
 
 #include "header.h"
 void print_xyz(Location loc_m[], Location loc_x[], unsigned n)
 {
   unsigned j;
- fprintf(stdout,"%d\n",3*n);
- fprintf(stdout,"c-cdw-TaS2 super cell SQRT(13)xSQRT(13)x1 (in angstroms)\n");
+  fprintf(stdout,"%d\n",3*n);
+  fprintf(stdout,"c-cdw-TaS2 super cell SQRT(13)xSQRT(13)x1 (in angstroms)\n");
 
   for (j = 0; j < n; j++)
     {
-     fprintf(stdout,"Ta        %.4f        %.4f        %.4f\n",\
-	     loc_m[j].x, loc_m[j].y,loc_m[j].z);
-     fprintf(stdout,"S        %.4f        %.4f        %.4f\n",\
-	     loc_x[j].x, loc_x[j].y,loc_x[j].z);
-     fprintf(stdout,"S        %.4f        %.4f        %.4f\n",\
-	     loc_x[j+n].x, loc_x[j+n].y,loc_x[j+n].z);
+      fprintf(stdout,"Ta        %.4f        %.4f        %.4f\n",\
+	      loc_m[j].x, loc_m[j].y,loc_m[j].z);
+      fprintf(stdout,"S        %.4f        %.4f        %.4f\n",\
+	      loc_x[j].x, loc_x[j].y,loc_x[j].z);
+      fprintf(stdout,"S        %.4f        %.4f        %.4f\n",\
+	      loc_x[j+n].x, loc_x[j+n].y,loc_x[j+n].z);
     }
 }
 
 void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
-		   double lattice[3][3], char * name, char * elemM,\
-		   char * elemX, char * file_name) 
+			double lattice[3][3], char * name, char * elemM,\
+			char * elemX, char * file_name) 
 {
   FILE * fp;
   unsigned i;
@@ -65,7 +78,7 @@ void print_vasp_to_file(Location loc_m[], Location loc_x[], unsigned n,\
 
   for (i = 0; i < 3; i++)
     fprintf(fp,"   %.9f                %.9f                %.9f\n",	\
-	   lattice[i][0], lattice[i][1], lattice[i][2]);
+	    lattice[i][0], lattice[i][1], lattice[i][2]);
 
   /* print Element types and number of each element */
   fprintf(fp,"      %s         %s\n",elemM,elemX);
@@ -86,50 +99,52 @@ void print_help()
 {
   print_version();
 
- fprintf(stdout,"Used to generate various sized unit cells for\n");
- fprintf(stdout,"1T and 2H trilayers of transition metal \n");
- fprintf(stdout,"dichalcogenides (TMD) with the MX2 structure.\n");
- fprintf(stdout,"\n");
+  fprintf(stdout,"Used to generate various sized unit cells for\n");
+  fprintf(stdout,"1T and 2H trilayers of transition metal \n");
+  fprintf(stdout,"dichalcogenides (TMD) with the MX2 structure.\n");
+  fprintf(stdout,"\n");
 
- fprintf(stdout,"All options below must be specified in the\n");
- fprintf(stdout,"following order:\n");
- fprintf(stdout,"\t(1)  Lattice parameter a\n");
- fprintf(stdout,"\t(2)  Lattice parameter c\n");
- fprintf(stdout,"\t(3)  Super cell length a\'\n");
- fprintf(stdout,"\t(4)  Super cell length a\'\'\n");
- fprintf(stdout,"\t(5)  Super cell length b\'\n");
- fprintf(stdout,"\t(6)  Super cell length b\'\'\n");
- fprintf(stdout,"\t(7)  Layers (0 for Bulk)\n");
- fprintf(stdout,"\t(8)  1T (T) or 2H (F)\n");
- fprintf(stdout,"\t(9)  Randomize coordinates (T/F)\n");
- fprintf(stdout,"\t(10) Element M (use atomic number)\n");
- fprintf(stdout,"\t(11) Element X (use atomic number)\n");
+  fprintf(stdout,"All options below must be specified in the\n");
+  fprintf(stdout,"following order:\n");
+  fprintf(stdout,"\t(1)  Lattice parameter a\n");
+  fprintf(stdout,"\t(2)  Lattice parameter c\n");
+  fprintf(stdout,"\t(3)  Super cell length a\'\n");
+  fprintf(stdout,"\t(4)  Super cell length a\'\'\n");
+  fprintf(stdout,"\t(5)  Super cell length b\'\n");
+  fprintf(stdout,"\t(6)  Super cell length b\'\'\n");
+  fprintf(stdout,"\t(7)  Layers (0 for Bulk)\n");
+  fprintf(stdout,"\t(8)  1T (T) or 2H (F)\n");
+  fprintf(stdout,"\t(9)  Randomize coordinates (T/F)\n");
+  fprintf(stdout,"\t(10) Element M (use atomic number)\n");
+  fprintf(stdout,"\t(11) Element X (use atomic number)\n");
 
- fprintf(stdout,"\n");
- fprintf(stdout,"The following options are optional, however\n");
- fprintf(stdout,"12-15 must be specified together and 16-17\n");
- fprintf(stdout,"must be specified together:\n");
- fprintf(stdout,"\t(12) Logical for Strain (T/F)\n");
- fprintf(stdout,"\t(13) Strain a axis (T/F)\n");
- fprintf(stdout,"\t(14) Strain b axis (T/F)\n");
- fprintf(stdout,"\t(15) Strain c axis (T/F)\n");
- fprintf(stdout,"\t(16) Minimum strain (%%)\n");
- fprintf(stdout,"\t(17) Maximum strain (%%)\n");
- fprintf(stdout,"\n");
+  fprintf(stdout,"\n");
+  fprintf(stdout,"The following options are optional, however\n");
+  fprintf(stdout,"12-15 must be specified together and 16-17\n");
+  fprintf(stdout,"must be specified together:\n");
+  fprintf(stdout,"\t(12) Logical for Strain (T/F)\n");
+  fprintf(stdout,"\t(13) Strain a axis (T/F)\n");
+  fprintf(stdout,"\t(14) Strain b axis (T/F)\n");
+  fprintf(stdout,"\t(15) Strain c axis (T/F)\n");
+  fprintf(stdout,"\t(16) Minimum strain (%%)\n");
+  fprintf(stdout,"\t(17) Maximum strain (%%)\n");
+  fprintf(stdout,"\n");
 }
 
 void print_version()
 {
- fprintf(stdout,"TMD CDW Unit Cell Generator %s\n",VERSION);
- fprintf(stdout,"Copyright (C) 2016-2017 David C. Miller\n");
- fprintf(stdout,"\n");
- fprintf(stdout,"Code written by David C. Miller (mill2723 at msu dot edu)\n");
- fprintf(stdout,"\n");
- fprintf(stdout,"This code is licensed under the GNU LGPL License\n");
- fprintf(stdout,"For details see <http://www.gnu.org/licenses/>\n");
- fprintf(stdout,"There is NO warranty; not even for MERCHANTABILITY or\n");
- fprintf(stdout,"FITNESS FOR A PARTICULAR PURPOSE.\n");
- fprintf(stdout,"\n");
+  fprintf(stdout,"%s %s\n",PACKAGE_NAME, VERSION);
+  fprintf(stdout,"Copyright (C) 2016-2017 David C. Miller\n");
+  fprintf(stdout,"\n");
+  fprintf(stdout,"Code written by David C. Miller (mill2723 at msu dot edu)\n");
+  fprintf(stdout,"Available at: <%s>\n",PACKAGE_URL);
+  fprintf(stdout,"Send bug reports to: <%s>\n",PACKAGE_BUGREPORT);
+  fprintf(stdout,"\n");
+  fprintf(stdout,"This code is licensed under the GNU LGPL License\n");
+  fprintf(stdout,"For details see <http://www.gnu.org/licenses/>\n");
+  fprintf(stdout,"There is NO warranty; not even for MERCHANTABILITY or\n");
+  fprintf(stdout,"FITNESS FOR A PARTICULAR PURPOSE.\n");
+  fprintf(stdout,"\n");
 }
 
 void print_test_start()
@@ -137,18 +152,18 @@ void print_test_start()
   print_version();
 
   /*fprintf(stdout,"\n\n"); */
- fprintf(stdout,"---------------------------------------------------\n");
- fprintf(stdout,"Test Suite Output for TMD CDW Unit Cell Generator\n");
- fprintf(stdout,"---------------------------------------------------\n");
- fprintf(stdout,"Test Output Starting...\n");
- fprintf(stdout,"\n");
- fprintf(stdout,"Starting VASP Monolayer Test\n");
+  fprintf(stdout,"---------------------------------------------------\n");
+  fprintf(stdout,"Test Suite Output for %s\n",PACKAGE_NAME);
+  fprintf(stdout,"---------------------------------------------------\n");
+  fprintf(stdout,"Test Output Starting...\n");
+  fprintf(stdout,"\n");
+  fprintf(stdout,"Starting VASP Monolayer Test\n");
   test_print_vasp_monolayer();
- fprintf(stdout,"VASP Monolayer Test Output Complete (Comparison Pending...)\n");
+  fprintf(stdout,"VASP Monolayer Test Output Complete (Comparison Pending...)\n");
 
- fprintf(stdout,"Starting VASP Bulk Test\n");
+  fprintf(stdout,"Starting VASP Bulk Test\n");
   test_print_vasp_bulk();
- fprintf(stdout,"VASP Bulk Test Output Complete (Comparison Pending...)\n");
+  fprintf(stdout,"VASP Bulk Test Output Complete (Comparison Pending...)\n");
 
 
 }
