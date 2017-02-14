@@ -123,12 +123,12 @@ Clang by removing certain warning flags.
 
 To install:
 
-1. Run `./configure` with any additonal options (see `./configure --help` for
+(a) Run `./configure` with any additonal options (see `./configure --help` for
 details). Use `--prefix=/path/to/install/root` to change the root directory for
 the install. By default `make install` will install the binary file to
 '/usr/local/bin'.
-2. Run `make`
-3. Assuming everything went smoothly run `make install` (you may need to run
+(b) Run `make`
+(c) Assuming everything went smoothly run `make install` (you may need to run
 this as root or use sudo depending on the installation directory). 
 
 - To uninstall simply run `make uninstall`
