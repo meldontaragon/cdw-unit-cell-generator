@@ -3,4 +3,5 @@
 aclocal
 autoconf
 automake -a
-./configure
+
+#./configure
