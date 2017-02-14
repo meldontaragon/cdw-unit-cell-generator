@@ -103,10 +103,10 @@ Currently I have used this on Ubuntu 16.04, and CentOS 6.6.
 Dependencies (with earliest tested version):
 
 + GNU gcc 4.6.4
-+ GNU Make 4.1
++ GNU Make 3.81
 + GNU bash 4.1.2 
-+ GNU automake 1.15
-+ GNU autoconf 2.69
++ GNU automake 1.11.1
++ GNU autoconf 2.63
 
 Also, this does compile with the C99 ISO standards. This includes using the gcc
 `-std=c99` option. If you wish to compile without this dependency there should be
@@ -142,7 +142,7 @@ This code is available at:
 [repository](https://github.com/david-c-miller/cdw-unit-cell-generator)
 
 For releases see:
-[releases](https://github.com/david-c-miller/cdw-unit-cell-generator/releases)
+[releases](https://github.com/david-c-miller/cdw-unit-cell-generator/releases/latest)
 
 For other information go to:
 [cdw-unit-cell-generator](https://david-c-miller.github.io/cdw-unit-cell-generator/)
