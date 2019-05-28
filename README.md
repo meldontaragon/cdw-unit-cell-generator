@@ -144,7 +144,7 @@ For releases see:
 [releases](https://github.com/meldontaragon/cdw-unit-cell-generator/releases/latest)
 
 -For other information go to:
--[cdw-unit-cell-generator](https://david-c-miller.github.io/cdw-unit-cell-generator/)
+[cdw-unit-cell-generator](https://david-c-miller.github.io/cdw-unit-cell-generator/)
 
 ### Bug Reports
 
