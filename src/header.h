@@ -86,8 +86,8 @@ void generate_frac_coord(double frac_loc[][3], const unsigned num,\
 int make_structure(double orig_lattice[3], int supercell[2][2],\
 		   const int inversion, const int randomize, const unsigned layers, \
 		   const AtomicSymbol elem_m, const AtomicSymbol elem_x,\
-		   const int strained, int strain_axis[3], const int strain_min, \
-		   const int strain_max);
+		   const int strained, int strain_axis[3], const int absolute_strain, \
+		   const double strain_value, const int strain_min, const int strain_max);
 
 /* additional functions used throughout the code */
 double get_lattice_vector_angle(const int a, const int b);

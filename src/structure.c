@@ -54,7 +54,8 @@ int make_structure\
 (double orig_lattice[3], int supercell[2][2], const int inversion, \
  const int randomize, const unsigned layers, const AtomicSymbol elem_m,\
  const AtomicSymbol elem_x, const int strained, int strain_axis[3],\
- const int strain_min, const int strain_max)
+ const int absolute_strain, const double strain_value, const int strain_min,\
+ const int strain_max)
 {
   /* ******************************************
      NEEDED INFORMATION AND FORMAT
@@ -73,8 +74,12 @@ int make_structure\
      - require length contractions
      (F) Strain and whether it is applied to
      - a given axis
-     (G) Amount of strain to put on the system
-     - with a minimum and maximum percentage
+     (G) Whether to add absolute or relative
+     - strain to the cell
+     (H) Amount of strain to put on the system
+     - with a minimum and maximum (Ang or %) 
+     - and the number of negative and positive
+     - iterations
   ****************************************/
 
   /* number of M atoms, number of X atoms = 2*num */
@@ -84,8 +89,9 @@ int make_structure\
   double lattice[3][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
   double angle[3];
   int strain_start, strain_end, i, kk;
-  double delta_x = 1.0, delta_y = 1.0, delta_z = 1.0;
+  double delta_x = 0.0, delta_y = 0.0, delta_z = 0.0;
   double strained_lattice[3] = {0,0,0};
+  double sigma;
 
   /* various strings used for naming and file output */
   char name[100], sym_type[20], inv_type[20], s_el_m[5], s_el_x[5],\
@@ -110,22 +116,37 @@ int make_structure\
   
   for (i = strain_start; i <= strain_end; ++i)
     {
-      /* delta value is 1.0 by default */
-      delta_x = 1.0;
-      delta_y = 1.0;
-      delta_z = 1.0;
+      /* detla values should always be ABSOLUTE */
+      /* it seems they are currently a percentage */
+      delta_x = 0.0;
+      delta_y = 0.0;
+      delta_z = 0.0;
 
-      if (strain_axis[0])
-	  delta_x = (1.0) + i*0.01;
-      if (strain_axis[1])
-	  delta_y = (1.0) + i*0.01;
-      if (strain_axis[2])
-	  delta_z = (1.0) + i*0.01;
+      /* absolute values first */
+      if (absolute_strain)
+	{
+	  if (strain_axis[0])
+	    delta_x = strain_value * (double)i;
+	  if (strain_axis[1])
+	    delta_y = strain_value * (double)i;
+	  if (strain_axis[2])
+	    delta_z = strain_value * (double)i;
+	}
+      /* percentage change */
+      else
+	{
+	  if (strain_axis[0])
+	    delta_x = (strain_value*0.01 * (double)i) * orig_lattice[0];
+	  if (strain_axis[1])
+	    delta_y = (strain_value*0.01 * (double)i) * orig_lattice[1];
+	  if (strain_axis[2])
+	    delta_z = (strain_value*0.01 * (double)i) * orig_lattice[2];
+	}
 
       /* calculate strained lattice parameters */
-      strained_lattice[0] = orig_lattice[0] * delta_x; 
-      strained_lattice[1] = orig_lattice[1] * delta_y; 
-      strained_lattice[2] = orig_lattice[2] * delta_z;
+      strained_lattice[0] = orig_lattice[0] + delta_x; 
+      strained_lattice[1] = orig_lattice[1] + delta_y; 
+      strained_lattice[2] = orig_lattice[2] + delta_z;
       
       /*
 	num = sqrt(a' * a') * sqrt(b' * b') / sqrt(a*a)
@@ -156,25 +177,21 @@ int make_structure\
 	}
 
       /* make the M and X sites (call the fractional sites internally) */
-      fprintf(stderr, "num = %d\n", num);
+      /* fprintf(stderr, "num = %d\n", num); don't print this anymore */
       make_m_site(atoms_m, num, strained_lattice, supercell, randomize, inversion, layers);
       make_x_site(atoms_x, num, strained_lattice, supercell, inversion, layers);
 
       /* get the new lattice parameters */
-      lattice[0][0] = supercell[0][0]*orig_lattice[0]\
-	- 0.5*supercell[0][1]*orig_lattice[0];
-      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*orig_lattice[1];
+      /* if this just uses the strained_lattice values */
+      /* then this should correctly calculate the super cell */
+      /* lattice without the need for later corrections */
+      lattice[0][0] = supercell[0][0]*strained_lattice[0]\
+	- 0.5*supercell[0][1]*strained_lattice[0];
+      lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*strained_lattice[1];
 
-      lattice[1][0] = supercell[1][0]*orig_lattice[0]\
-	- 0.5*supercell[1][1]*orig_lattice[0];
-      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*orig_lattice[1];
-
-      /* strain the super cell lattice parameters */
-      lattice[0][0] *= delta_x;
-      lattice[0][1] *= delta_x;
-
-      lattice[1][0] *= delta_y;
-      lattice[1][1] *= delta_y;
+      lattice[1][0] = supercell[1][0]*strained_lattice[0]\
+	- 0.5*supercell[1][1]*strained_lattice[0];
+      lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*strained_lattice[1];
 
       /* **AFTER THIS NUM IS NO LONGER REPRESENTATIVE OF 
 	 THE NUMBER OF FRACTIONAL SITES TO BE GENERATED** */
@@ -186,13 +203,11 @@ int make_structure\
 	{
 	  if (inversion)
 	    {
-	      lattice[2][2] = orig_lattice[2];
-	      lattice[2][2] *= delta_z;
+	      lattice[2][2] = strained_lattice[2];
 	    }
 	  else
 	    {
-	      lattice[2][2] = orig_lattice[2];
-	      lattice[2][2] *= delta_z;
+	      lattice[2][2] = strained_lattice[2];
 	      num *= 2;
 	    }
 	}
@@ -209,7 +224,7 @@ int make_structure\
       */
 
       if (randomize) strcpy(sym_type,"Rand");
-      else strcpy(sym_type, "HS");
+      else strcpy(sym_type, "Symm");
 
       /*
 	this program uses the naming convention that

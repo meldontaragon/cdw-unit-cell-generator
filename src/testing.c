@@ -34,17 +34,19 @@ void __test_print_vasp(const unsigned layers)
 {
   double orig_lattice[3] = {5, 5, 10};
   int supercell[2][2] = { {1,0}, {0,1} };
-  const AtomicSymbol elem_m = Ca, elem_x = Ne;
+  const AtomicSymbol elem_m = Ta, elem_x = S;
 
   const int strain = 1;
   int strain_logic[3] = {1,1,0};
+  int abs_strain = 1;
+  double strain_val = 0.01;
 
   /* test output for strain with -1% and 1% along with default unstrained file*/
   make_structure(orig_lattice, supercell, 1, 0, layers, elem_m, elem_x,\
-		 strain, strain_logic, -1, 1);
+		 strain, strain_logic, abs_strain, strain_val, -2, 2);
 
   make_structure(orig_lattice, supercell, 0, 0, layers, elem_m, elem_x,\
-		 strain, strain_logic, -1, 1);
+		 strain, strain_logic, abs_strain, strain_val, -2, 2);
 }
 
 

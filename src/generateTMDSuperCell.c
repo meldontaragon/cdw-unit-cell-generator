@@ -48,9 +48,11 @@ int main(int argc, char* argv[])
     13 Strain axis a T/F
     14 Strain axis b T/F
     15 Strain axis c T/F
+    
+    16 Strain Absolute or Relative (Percentage) T/F
 
-    16 Max Compressive Strain (%)
-    17 Max Expansive Strain (%)
+    17 Max Compressive Strain (Ang or %)
+    18 Max Expansive Strain (Ang or %)
   */
   /* (1-2) */
   double orig_lattice[3];
@@ -79,15 +81,21 @@ int main(int argc, char* argv[])
   /* (13-15) */
   int strain_axis[3] = {0, 0, 0};
 
-  /* (16-17) */
+  /* (16) */
+  int absolute_strain = 1;
+  
+  /* (17-19) */
+  double strain_value = 0;
   int strain_min = -5;
   int strain_max =  5;
 
   switch (argc)
     {
-    case (17+1):
-      strain_min = atoi(argv[16]);
-      strain_max = atoi(argv[17]);
+    case (19+1):
+      absolute_strain = atoi(argv[16]);
+      strain_value = atof(argv[17]);
+      strain_min = atoi(argv[18]);
+      strain_max = atoi(argv[19]);
     case (15+1):
       strained = atob(argv[12][0]);
       strain_axis[0] = atob(argv[13][0]);
@@ -130,7 +138,8 @@ int main(int argc, char* argv[])
 
   fprintf(stdout,"Starting normal operation...\n");
   make_structure(orig_lattice, supercell, inversion, randomize, layers, \
-		elem_m, elem_x, strained, strain_axis, strain_min, strain_max);
+		 elem_m, elem_x, strained, strain_axis, absolute_strain, \
+		 strain_value, strain_min, strain_max);
   return 1;
 }
 

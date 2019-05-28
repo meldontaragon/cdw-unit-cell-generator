@@ -38,11 +38,11 @@
 #endif
 /* URL */
 #ifndef PACKAGE_URL
-#define PACKAGE_URL "https://github.com/david-c-miller/cdw-unit-cell-generator"
+#define PACKAGE_URL "https://github.com/meldontaragon/cdw-unit-cell-generator"
 #endif
 /* BUG REPORT */
 #ifndef PACKAGE_BUGREPORT
-#define PACKAGE_BUGREPORT "https://github.com/david-c-miller/cdw-unit-cell-generator/issues"
+#define PACKAGE_BUGREPORT "https://github.com/meldontaragon/cdw-unit-cell-generator/issues"
 #endif
 /* DO NOT EDIT */
 
@@ -126,15 +126,18 @@ void print_help()
   fprintf(stdout,"\t(13) Strain a axis (T/F)\n");
   fprintf(stdout,"\t(14) Strain b axis (T/F)\n");
   fprintf(stdout,"\t(15) Strain c axis (T/F)\n");
-  fprintf(stdout,"\t(16) Minimum strain (%%)\n");
-  fprintf(stdout,"\t(17) Maximum strain (%%)\n");
+  fprintf(stdout,"\n");
+  fprintf(stdout,"\t(16) Absolute/Relative Strain (T/F)\n");
+  fprintf(stdout,"\t(17) Strain Value (Ang or %%)\n");
+  fprintf(stdout,"\t(18) Minimum strain (#)\n");
+  fprintf(stdout,"\t(19) Maximum strain (#)\n");
   fprintf(stdout,"\n");
 }
 
 void print_version()
 {
   fprintf(stdout,"%s %s\n",PACKAGE_NAME, VERSION);
-  fprintf(stdout,"Copyright (C) 2016-2017 David C. Miller\n");
+  fprintf(stdout,"Copyright (C) 2016-2019 David C. Miller\n");
   fprintf(stdout,"\n");
   fprintf(stdout,"Code written by David C. Miller (mill2723 at msu dot edu)\n");
   fprintf(stdout,"Available at: <%s>\n",PACKAGE_URL);
