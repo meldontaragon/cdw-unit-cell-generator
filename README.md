@@ -69,11 +69,13 @@ cells with strain added along different axes:
       14. Strain b axis (T/F)
       15. Strain c axis (T/F)
 
-In addition to those options above, the following two options can be added after
+In addition to those options above, the following four options can be added after
 to specify the amount of strain:
    
-      16. Minimum strain (%)
-      17. Maximum strain (%)
+      16. Absolute/Relative Strain (T/F)
+      17. Strain Value (Ang or %)
+      18. Minimum strain (#)
+      19. Maximum strain (#)
 
 The a', a'', b', and b'' parameters are the two-vectors that specify the
 super-cell size. These describe how the super-cell is constructed in terms of
@@ -97,7 +99,8 @@ compiler options will need to be changed. This program does not use any special
 libraries so it should suffice to pass the include and source directories (./src
 and ./inc). 
 
-Currently I have used this on Ubuntu 16.04, and CentOS 6.6, .
+Currently I have used this on Ubuntu 16.04, Ubuntu 18.04, Ubuntu 16.04, and
+CentOS 6.6, CentOS 7, and ArchLinux.
 
 Dependencies (with earliest tested version):
 
@@ -110,7 +113,7 @@ Dependencies (with earliest tested version):
 Also, this does compile with the C99 ISO standards. This includes using the gcc
 `-std=c99` option. If you wish to compile without this dependency there should be
 no problems. This is mostly to ensure better portability. Additionally, one may
-wish to remove the `WARN_FLAG` variable from the makefile.
+wish to remove the `WARN_FLAG` variable from the makefile when compiling.
 
 Also, the code was written on an x64 system but there shouldn't be many
 dependencies if any. If you do compile and run this code on a widely different
