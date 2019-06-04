@@ -167,8 +167,10 @@ void print_test_start()
   fprintf(stdout,"Starting VASP Bulk Test\n");
   test_print_vasp_bulk();
   fprintf(stdout,"VASP Bulk Test Output Complete (Comparison Pending...)\n");
-
-
+  fprintf(stdout,"Starting VASP Strain Test\n");
+  test_print_vasp_biaxial_strain();
+  test_print_vasp_uniaxial_strain();
+  fprintf(stdout,"VASP Strain Test Output Complete (Comparision Pending...)\n");
 }
 
 /*

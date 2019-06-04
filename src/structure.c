@@ -88,10 +88,9 @@ int make_structure\
 
   double lattice[3][3] = { {0,0,0}, {0,0,0}, {0,0,0} };
   double angle[3];
-  int strain_start, strain_end, i, kk;
+  int i, kk;
   double delta_x = 0.0, delta_y = 0.0, delta_z = 0.0;
   double strained_lattice[3] = {0,0,0};
-  double sigma;
   char strain_char = 'a';
 
   /* various strings used for naming and file output */
@@ -104,18 +103,8 @@ int make_structure\
   angle[2] = 120.;
 
   /* actual structure generation contained here */
-  if (strained)
-    {
-      strain_end = strain_max;
-      strain_start = strain_min;
-    }
-  else
-    {
-      strain_start = 0;
-      strain_end = 0;
-    }
   
-  for (i = strain_start; i <= strain_end; ++i)
+  for (i = strain_min; i <= strain_max; ++i)
     {
       /* detla values should always be ABSOLUTE */
       /* it seems they are currently a percentage */
@@ -126,6 +115,7 @@ int make_structure\
       /* absolute values first */
       if (absolute_strain)
 	{
+	  fprintf(stderr, "\n -- ABS STRAIN -- \n");
 	  if (strain_axis[0])
 	    delta_x = strain_value * (double)i;
 	  if (strain_axis[1])
@@ -136,6 +126,7 @@ int make_structure\
       /* percentage change */
       else
 	{
+	  fprintf(stderr, "\n -- REL STRAIN -- \n");
 	  if (strain_axis[0])
 	    delta_x = (strain_value*0.01 * (double)i) * orig_lattice[0];
 	  if (strain_axis[1])
@@ -194,6 +185,27 @@ int make_structure\
 	- 0.5*supercell[1][1]*strained_lattice[0];
       lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*strained_lattice[1];
 
+      fprintf(stderr, "\n");
+      
+      fprintf(stderr, "a0  - %+.4f\n", orig_lattice[0]);
+      fprintf(stderr, "b0  - %+.4f\n", orig_lattice[1]);
+
+      fprintf(stderr, "str - %+.4f\n", strain_value);
+      fprintf(stderr, "i   - %+.0f\n", (double) i);
+
+      fprintf(stderr, "a   - %+.4f\n", strained_lattice[0]);
+      fprintf(stderr, "b   - %+.4f\n", strained_lattice[1]);
+
+      fprintf(stderr, "dx  - %+.4f\n", delta_x);
+      fprintf(stderr, "dy  - %+.4f\n", delta_y);
+      
+      fprintf(stderr, "L00 - %+.4f\n", lattice[0][0]);
+      fprintf(stderr, "L10 - %+.4f\n", lattice[1][0]);
+      fprintf(stderr, "L01 - %+.4f\n", lattice[0][1]);
+      fprintf(stderr, "L11 - %+.4f\n", lattice[1][1]);
+
+      fprintf(stderr, "\n");
+      
       /* **AFTER THIS NUM IS NO LONGER REPRESENTATIVE OF 
 	 THE NUMBER OF FRACTIONAL SITES TO BE GENERATED** */
       if (layers == 1)

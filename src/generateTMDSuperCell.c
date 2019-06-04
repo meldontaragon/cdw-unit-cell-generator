@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
   switch (argc)
     {
     case (19+1):
-      absolute_strain = atoi(argv[16]);
+      absolute_strain = atob(argv[16][0]);
       strain_value = atof(argv[17]);
       strain_min = atoi(argv[18]);
       strain_max = atoi(argv[19]);

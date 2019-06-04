@@ -100,6 +100,8 @@ int get_sign(const double value) __attribute__((const));
 /* test suite related functions */
 void test_print_vasp_monolayer();
 void test_print_vasp_bulk();
+void test_print_vasp_uniaxial_strain();
+void test_print_vasp_biaxial_strain();
 void test_print_xyz_monolayer();
 void test_print_xyz_bulk();
  
