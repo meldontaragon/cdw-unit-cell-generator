@@ -71,7 +71,7 @@ void __test_print_vasp_strain(const unsigned type)
     }
   else if (type == 1)
     {
-      strain_logic[0] = 1;
+      strain_logic[1] = 1;
     }
 
     /* test output for strain with -1% and 1% along with default unstrained file*/
