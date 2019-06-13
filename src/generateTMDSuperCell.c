@@ -96,11 +96,15 @@ int main(int argc, char* argv[])
       strain_value = atof(argv[17]);
       strain_min = atoi(argv[18]);
       strain_max = atoi(argv[19]);
+      /* __attribute__ ((fallthrough)); */
+      /* FALLTHRU */
     case (15+1):
       strained = atob(argv[12][0]);
       strain_axis[0] = atob(argv[13][0]);
       strain_axis[1] = atob(argv[14][0]);
       strain_axis[2] = atob(argv[15][0]);
+      /* __attribute__ ((fallthrough)); */
+      /* FALLTHRU */
     case (11+1):
       orig_lattice[0] = atof(argv[1]);
       orig_lattice[1] = orig_lattice[0];
