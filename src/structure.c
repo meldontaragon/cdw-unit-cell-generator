@@ -248,8 +248,21 @@ int make_structure\
 	even monolayer 2H structures use 2H as opposed
 	to 1H
       */
-      if (inversion) strcpy(inv_type, "1T");
-      else strcpy(inv_type, "2H");
+      if (inversion)
+	{
+	  strcpy(inv_type, "1T");
+	}      
+      else
+	{
+	  if (layers == 1)
+	    {
+	      strcpy(inv_type, "1H");
+	    }
+	  else
+	    {
+	      strcpy(inv_type, "2H");
+	    }
+	}
 
       strcpy(s_el_m, Symbol[elem_m]);
       strcpy(s_el_x, Symbol[elem_x]);
