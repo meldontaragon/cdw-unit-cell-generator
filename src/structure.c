@@ -181,8 +181,8 @@ int make_structure\
 	- 0.5*supercell[0][1]*strained_lattice[0];
       lattice[0][1] = sqrt(3)*0.5*supercell[0][1]*strained_lattice[1];
 
-      lattice[1][0] = supercell[1][0]*strained_lattice[0]\
-	- 0.5*supercell[1][1]*strained_lattice[0];
+      lattice[1][0] = supercell[1][0]*strained_lattice[1]\
+	- 0.5*supercell[1][1]*strained_lattice[1];
       lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*strained_lattice[1];
 
       fprintf(stderr, "\n");
@@ -328,9 +328,9 @@ int make_structure\
       
       sprintf(name,"%s-%s%s2-%s %s %s %c",
 	      inv_type, s_el_m, s_el_x, layer_type, sym_type, cdw_type, strain_char);
-      sprintf(filename, "%s-%s%s2-%s-%s-%s-%c-%.3f.vasp",
+      sprintf(filename, "%s-%s%s2-%s-%s-%s-%c-%.3f-%.3f.vasp",
 	      inv_type, s_el_m, s_el_x, cdw_type, layer_type,
-	      sym_type, strain_char, strained_lattice[0]);
+	      sym_type, strain_char, strained_lattice[0], strained_lattice[1]);
 
 	             
       /* print to file filename */
