@@ -115,7 +115,7 @@ int make_structure\
       /* absolute values first */
       if (absolute_strain)
 	{
-	  fprintf(stderr, "\n -- ABS STRAIN -- \n");
+	  /* fprintf(stderr, "\n -- ABS STRAIN -- \n"); */
 	  if (strain_axis[0])
 	    delta_x = strain_value * (double)i;
 	  if (strain_axis[1])
@@ -185,6 +185,9 @@ int make_structure\
 	- 0.5*supercell[1][1]*strained_lattice[1];
       lattice[1][1] = sqrt(3)*0.5*supercell[1][1]*strained_lattice[1];
 
+      /* error printing */
+
+      /*
       fprintf(stderr, "\n");
       
       fprintf(stderr, "a0  - %+.4f\n", orig_lattice[0]);
@@ -205,7 +208,8 @@ int make_structure\
       fprintf(stderr, "L11 - %+.4f\n", lattice[1][1]);
 
       fprintf(stderr, "\n");
-      
+      */
+
       /* **AFTER THIS NUM IS NO LONGER REPRESENTATIVE OF 
 	 THE NUMBER OF FRACTIONAL SITES TO BE GENERATED** */
       if (layers == 1)
