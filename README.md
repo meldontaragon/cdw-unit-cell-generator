@@ -3,9 +3,7 @@
 Copyright (C) 2016-2019 David C. Miller
 
 Code written by David C. Miller (`mill2723 at msu dot edu`)
-
 Michigan State University
-
 Department of Physics and Astronomy
 
 ## Quick Install:
@@ -39,7 +37,13 @@ information regarding the phase and layers of the material.
 ### Current Functionality
 Currently the only options for layers are bulk and monolayer systems. In the
 future I hope to add functionallity to have an arbitrary number of layer (i.e. 0
-for bulk, 1 for monolayer, 2 for bilayer, etc.). 
+for bulk, 1 for monolayer, 2 for bilayer, etc.).
+
+Currently there is a test functionallity (`-t` command line option) which will
+generate some sample files for monolayer with and without uniaxial and
+biaxial strain and some bulk structures. Currently there is no verification code
+for this so files need to be verified manually. This full testing functionallity
+is planned for a future release.
 
 ### Use
 Use of this program involves calling the binary and giving it all the arguments

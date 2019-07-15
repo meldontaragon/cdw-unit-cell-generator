@@ -1,6 +1,6 @@
 AC_INIT(
 	[TMD Unit Cell Generator],
-	[1.0.0-beta],
+	[1.0.0],
 	[https://github.com/david-c-miller/cdw-unit-cell-generator/issues],
         [tmd_unit_cell_generator],
 	[https://github.com/david-c-miller/cdw-unit-cell-generator])

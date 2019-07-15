@@ -77,5 +77,4 @@ ERROR_FLAG=\
 -Wno-error=unused-parameter\
 -Wno-error=unused-variable\
 -Wno-error=pedantic
-#-Wno-error=implicit-fallthrough
 
